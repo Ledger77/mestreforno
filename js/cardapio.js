@@ -1,94 +1,160 @@
 /*
   Cardápio — Mestre Forno
   -----------------------
-  Este arquivo é a lista que o JavaScript usa para montar os
-  cartões e os atalhos (Salgados, Pizzas e qualquer grupo novo).
-  A mesma lista está escrita no index.html para aparecer sem
-  JavaScript. Se mudar um item aqui, mude o cartão correspondente
-  na seção Cardápio do index.html.
+  Os itens, as descrições e os preços abaixo são EXEMPLOS
+  FICTÍCIOS, só para o site de teste. Troque pelos oficiais
+  quando a casa fechar o cardápio de verdade.
 
-  Para trocar um item, edite nome, descricao e preco.
-  Preço no formato brasileiro, como texto: "R$ 8,00".
-  Enquanto o preço não existir, deixe "R$ --,--".
-
-  exemplo: true  → mostra a etiqueta "Exemplo" no cartão.
-  exemplo: false → item tratado como oficial (sem a etiqueta).
-
-  Para incluir um item, copie um bloco { ... } para dentro
-  de "itens". Pode deixar a vírgula no último bloco.
+  preco: texto exibido, no formato brasileiro.
+  centavos: valor inteiro usado para somar o pedido.
+  destaque: "mais-pedido", "festa", "regional" ou vazio.
+  Se mudar um item aqui, atualize também o HTML do cardápio
+  em index.html (a página precisa funcionar sem JavaScript).
 */
 const CARDAPIO = [
   {
     id: "salgados",
     titulo: "Salgados",
-    resumo: "",
+    resumo: "Fritos na hora, para o lanche ou para a festa. Valores por unidade, salvo o cento.",
     itens: [
       {
+        id: "coxinha",
         nome: "Coxinha de frango",
-        descricao: "Descrição a confirmar.",
-        preco: "R$ --,--",
-        exemplo: true,
+        descricao: "Massa sequinha e recheio cremoso de frango desfiado.",
+        preco: "R$ 8,00",
+        centavos: 800,
+        unidade: "un",
+        foto: "coxinha",
+        destaque: "mais-pedido",
+        alt: "Coxinhas douradas, uma aberta com recheio de frango e vapor.",
       },
       {
+        id: "kibe",
+        nome: "Kibe",
+        descricao: "Trigo, carne e um toque de hortelã, crocante por fora.",
+        preco: "R$ 8,00",
+        centavos: 800,
+        unidade: "un",
+        foto: "kibe",
+        destaque: "",
+        alt: "Kibes fritos, um cortado mostrando o recheio de carne.",
+      },
+      {
+        id: "risole",
         nome: "Risole de queijo",
-        descricao: "Descrição a confirmar.",
-        preco: "R$ --,--",
-        exemplo: true,
+        descricao: "Massa leve e queijo derretido no primeiro pedaço.",
+        preco: "R$ 7,50",
+        centavos: 750,
+        unidade: "un",
+        foto: "risole",
+        destaque: "",
+        alt: "Risolis dourados, um aberto com queijo puxando.",
       },
       {
-        nome: "Pastel de carne",
-        descricao: "Descrição a confirmar.",
-        preco: "R$ --,--",
-        exemplo: true,
-      },
-      {
-        nome: "Bolinha de queijo",
-        descricao: "Descrição a confirmar.",
-        preco: "R$ --,--",
-        exemplo: true,
-      },
-      {
+        id: "enroladinho",
         nome: "Enroladinho de salsicha",
-        descricao: "Descrição a confirmar.",
-        preco: "R$ --,--",
-        exemplo: true,
+        descricao: "O clássico de festa, com massa fininha.",
+        preco: "R$ 6,50",
+        centavos: 650,
+        unidade: "un",
+        foto: "enroladinho",
+        destaque: "",
+        alt: "Enroladinhos de salsicha fritos em uma assadeira.",
       },
       {
-        nome: "Esfiha de carne",
-        descricao: "Descrição a confirmar.",
-        preco: "R$ --,--",
-        exemplo: true,
+        id: "bolinha",
+        nome: "Bolinha de queijo",
+        descricao: "Bem crocante, com o queijo esticando na hora.",
+        preco: "R$ 7,00",
+        centavos: 700,
+        unidade: "un",
+        foto: "bolinha",
+        destaque: "",
+        alt: "Bolinha de queijo aberta, com o recheio derretido.",
+      },
+      {
+        id: "pastel",
+        nome: "Pastel de carne",
+        descricao: "Massa fina e carne moída bem temperada.",
+        preco: "R$ 9,00",
+        centavos: 900,
+        unidade: "un",
+        foto: "pastel",
+        destaque: "",
+        alt: "Pastel de carne frito, aberto, com recheio de carne.",
+      },
+      {
+        id: "cento",
+        nome: "Cento de salgados",
+        descricao: "Cem unidades sortidas para festa. O mix se combina no pedido.",
+        preco: "R$ 120,00",
+        centavos: 12000,
+        unidade: "cento",
+        foto: "cento",
+        destaque: "festa",
+        alt: "Bandeja com cento de salgados sortidos: coxinhas, bolinhas, enroladinhos e kibes.",
       },
     ],
   },
   {
     id: "pizzas",
     titulo: "Pizzas",
-    resumo: "",
+    resumo: "Pizza grande, com cerca de oito fatias, assada no forno.",
     itens: [
       {
-        nome: "Mussarela",
-        descricao: "Descrição a confirmar.",
-        preco: "R$ --,--",
-        exemplo: true,
-      },
-      {
+        id: "calabresa",
         nome: "Calabresa",
-        descricao: "Descrição a confirmar.",
-        preco: "R$ --,--",
-        exemplo: true,
+        descricao: "Pizza grande com calabresa, cebola e mussarela.",
+        preco: "R$ 52,00",
+        centavos: 5200,
+        unidade: "pizza",
+        foto: "calabresa",
+        destaque: "mais-pedido",
+        alt: "Pizza calabresa recém-assada, com cebola e borda bolhada.",
       },
       {
+        id: "frango-catupiry",
         nome: "Frango com catupiry",
-        descricao: "Descrição a confirmar.",
-        preco: "R$ --,--",
-        exemplo: true,
+        descricao: "Pizza grande com frango desfiado e catupiry.",
+        preco: "R$ 58,00",
+        centavos: 5800,
+        unidade: "pizza",
+        foto: "frango-catupiry",
+        destaque: "mais-pedido",
+        alt: "Pizza de frango com catupiry, queijo dourado e borda assada.",
       },
       {
+        id: "marguerita",
+        nome: "Marguerita",
+        descricao: "Pizza grande com mussarela, tomate e manjericão.",
+        preco: "R$ 48,00",
+        centavos: 4800,
+        unidade: "pizza",
+        foto: "marguerita",
+        destaque: "",
+        alt: "Pizza marguerita com manjericão fresco e borda bem assada.",
+      },
+      {
+        id: "portuguesa",
         nome: "Portuguesa",
-        descricao: "Descrição a confirmar.",
-        preco: "R$ --,--",
-        exemplo: true,
+        descricao: "Pizza grande com presunto, ovo, cebola, azeitona e ervilha.",
+        preco: "R$ 56,00",
+        centavos: 5600,
+        unidade: "pizza",
+        foto: "portuguesa",
+        destaque: "",
+        alt: "Pizza portuguesa com presunto, ovo, azeitona e ervilha.",
+      },
+      {
+        id: "tucuma",
+        nome: "Tucumã com queijo coalho",
+        descricao: "Pizza grande com tucumã e queijo coalho, um sabor da região.",
+        preco: "R$ 62,00",
+        centavos: 6200,
+        unidade: "pizza",
+        foto: "tucuma",
+        destaque: "regional",
+        alt: "Pizza de tucumã com tiras de queijo coalho grelhado.",
       },
     ],
   },

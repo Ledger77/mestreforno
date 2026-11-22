@@ -1,36 +1,42 @@
 /*
-  Atualiza os links do WhatsApp, redesenha o cardápio a partir de
-  js/cardapio.js e controla o menu. O HTML já traz cardápio e links
-  wa.me, então a página funciona se este arquivo não carregar.
+  Liga o WhatsApp, o cardápio com quantidades, o vídeo do hero,
+  as revelações e o menu. O HTML já traz o cardápio e os links
+  wa.me, então a página continua utilizável se este arquivo falhar.
 */
 (function () {
   "use strict";
 
-  function urlWhatsApp() {
+  var STORAGE = "mestreforno-pedido";
+
+  function urlWhatsApp(texto) {
     if (typeof SITE === "undefined" || !SITE) return "";
     var numero = String(SITE.whatsapp || "").replace(/\D/g, "");
     if (!numero) return "";
-    var texto = encodeURIComponent(SITE.mensagem || "");
-    return "https://wa.me/" + numero + "?text=" + texto;
+    var msg = texto != null ? texto : SITE.mensagem || "";
+    return "https://wa.me/" + numero + "?text=" + encodeURIComponent(msg);
   }
 
-  function aplicarWhatsApp() {
+  function aplicarLink(el, url) {
+    if (!url) {
+      el.setAttribute("aria-disabled", "true");
+      return;
+    }
+    el.href = url;
+    el.removeAttribute("aria-disabled");
+    el.target = "_blank";
+    el.rel = "noopener noreferrer";
+    if (!el.querySelector(".js-nova-aba")) {
+      var nota = document.createElement("span");
+      nota.className = "sr-only js-nova-aba";
+      nota.textContent = " (abre em nova aba)";
+      el.appendChild(nota);
+    }
+  }
+
+  function aplicarWhatsAppGenerico() {
     var url = urlWhatsApp();
     document.querySelectorAll("[data-whatsapp]").forEach(function (el) {
-      if (url) el.href = url;
-      if (!el.getAttribute("href") || el.getAttribute("href").charAt(0) === "#") {
-        el.setAttribute("aria-disabled", "true");
-        return;
-      }
-      el.removeAttribute("aria-disabled");
-      el.target = "_blank";
-      el.rel = "noopener noreferrer";
-      if (!el.querySelector(".js-nova-aba")) {
-        var nota = document.createElement("span");
-        nota.className = "sr-only js-nova-aba";
-        nota.textContent = " (abre em nova aba)";
-        el.appendChild(nota);
-      }
+      aplicarLink(el, url);
     });
   }
 
@@ -42,65 +48,163 @@
       .replace(/"/g, "&quot;");
   }
 
-  function idSeguro(valor) {
-    var id = String(valor || "").toLowerCase().replace(/[^a-z0-9-]/g, "");
-    return id || "grupo";
+  function formatarReais(centavos) {
+    var n = (Number(centavos) || 0) / 100;
+    return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
   }
 
-  function temCardapio() {
-    return typeof CARDAPIO !== "undefined" && CARDAPIO && CARDAPIO.length;
+  function mapaItens() {
+    var mapa = {};
+    if (typeof CARDAPIO === "undefined" || !CARDAPIO) return mapa;
+    CARDAPIO.forEach(function (grupo) {
+      (grupo.itens || []).forEach(function (item) {
+        mapa[item.id] = item;
+      });
+    });
+    return mapa;
   }
 
-  function renderAtalhos() {
-    var nav = document.querySelector("[data-menu-jump]");
-    if (!nav || !temCardapio()) return;
-    nav.innerHTML = CARDAPIO.map(function (grupo) {
-      return '<a href="#' + idSeguro(grupo.id) + '">' + escapar(grupo.titulo) + "</a>";
-    }).join("");
+  function lerPedido() {
+    try {
+      var bruto = localStorage.getItem(STORAGE);
+      var dados = bruto ? JSON.parse(bruto) : {};
+      return dados && typeof dados === "object" ? dados : {};
+    } catch (e) {
+      return {};
+    }
   }
 
-  function renderCardapio() {
-    var raiz = document.querySelector("[data-cardapio]");
-    if (!raiz || !temCardapio()) return;
+  function gravarPedido(pedido) {
+    try {
+      localStorage.setItem(STORAGE, JSON.stringify(pedido));
+    } catch (e) {}
+  }
 
-    raiz.innerHTML = CARDAPIO.map(function (grupo) {
-      var itens = grupo.itens || [];
-      var id = idSeguro(grupo.id);
-      var cabeca =
-        '<div class="menu-group__head">' +
-        '<h3 id="titulo-' + id + '">' + escapar(grupo.titulo) + "</h3>" +
-        (grupo.resumo ? "<p>" + escapar(grupo.resumo) + "</p>" : "") +
-        "</div>";
+  function totalItens(pedido) {
+    return Object.keys(pedido).reduce(function (s, id) {
+      return s + (Number(pedido[id]) || 0);
+    }, 0);
+  }
 
-      var corpo;
-      if (!itens.length) {
-        corpo = "<p>Nenhum item neste grupo ainda.</p>";
-      } else {
-        corpo =
-          '<ul class="menu-grid">' +
-          itens
-            .map(function (item) {
-              var preco = item.preco ? item.preco : "R$ --,--";
-              var etiqueta = item.exemplo ? '<span class="badge">Exemplo</span>' : "";
-              return (
-                '<li class="item">' +
-                '<div class="item__top"><h4>' + escapar(item.nome) + "</h4>" + etiqueta + "</div>" +
-                "<p>" + escapar(item.descricao || "") + "</p>" +
-                '<p class="price"><span class="sr-only">Preço: </span>' + escapar(preco) + "</p>" +
-                "</li>"
-              );
-            })
-            .join("") +
-          "</ul>";
+  function montarMensagem(pedido, itens) {
+    var linhas = ["Olá, Mestre Forno! Quero fazer um pedido:", ""];
+    var subtotal = 0;
+    var tem = false;
+    Object.keys(pedido).forEach(function (id) {
+      var qtd = Number(pedido[id]) || 0;
+      var item = itens[id];
+      if (!qtd || !item) return;
+      tem = true;
+      subtotal += qtd * (Number(item.centavos) || 0);
+      linhas.push("• " + qtd + "× " + item.nome + " (" + item.preco + ")");
+    });
+    if (!tem) return SITE && SITE.mensagem ? SITE.mensagem : "Olá, Mestre Forno! Quero fazer um pedido.";
+    linhas.push("");
+    linhas.push("Subtotal estimado: " + formatarReais(subtotal));
+    linhas.push("Taxa de entrega via 99 Entrega a combinar.");
+    return linhas.join("\n");
+  }
+
+  function iniciarPedido() {
+    var itens = mapaItens();
+    var pedido = lerPedido();
+    var bar = document.querySelector("[data-pedido-bar]");
+    var rotulo = document.querySelector("[data-pedido-rotulo]");
+    var lista = document.querySelector("[data-carrinho-lista]");
+    var totalEl = document.querySelector("[data-carrinho-total]");
+    var drawer = document.getElementById("carrinho");
+
+    function quantidadeDe(id) {
+      return Number(pedido[id]) || 0;
+    }
+
+    function atualizarControles() {
+      document.querySelectorAll("[data-item]").forEach(function (card) {
+        var id = card.getAttribute("data-item");
+        var q = quantidadeDe(id);
+        var span = card.querySelector("[data-qty]");
+        if (span) span.textContent = String(q);
+        card.classList.toggle("is-escolhido", q > 0);
+      });
+
+      var n = totalItens(pedido);
+      var mensagem = montarMensagem(pedido, itens);
+      var url = urlWhatsApp(mensagem);
+      document.querySelectorAll("[data-whatsapp-pedido]").forEach(function (el) {
+        aplicarLink(el, url);
+      });
+      if (rotulo) {
+        rotulo.textContent = n
+          ? n + (n === 1 ? " item" : " itens") + " · Enviar pedido"
+          : "Pedir pelo WhatsApp";
       }
+      if (bar) bar.classList.toggle("tem-itens", n > 0);
 
-      return (
-        '<section class="menu-group" id="' + id + '" aria-labelledby="titulo-' + id + '">' +
-        cabeca +
-        corpo +
-        "</section>"
-      );
-    }).join("");
+      if (lista) {
+        if (!n) {
+          lista.innerHTML = "<p>Nenhum item ainda. Escolha no cardápio.</p>";
+          if (totalEl) totalEl.hidden = true;
+        } else {
+          var subtotal = 0;
+          var html = "<ul>";
+          Object.keys(pedido).forEach(function (id) {
+            var q = Number(pedido[id]) || 0;
+            var item = itens[id];
+            if (!q || !item) return;
+            subtotal += q * (Number(item.centavos) || 0);
+            html +=
+              "<li><strong>" +
+              escapar(item.nome) +
+              "</strong> — " +
+              q +
+              "× " +
+              escapar(item.preco) +
+              "</li>";
+          });
+          html += "</ul>";
+          lista.innerHTML = html;
+          if (totalEl) {
+            totalEl.hidden = false;
+            totalEl.textContent = "Subtotal estimado: " + formatarReais(subtotal);
+          }
+        }
+      }
+    }
+
+    function mudar(id, delta) {
+      if (!itens[id]) return;
+      var atual = quantidadeDe(id) + delta;
+      if (atual <= 0) delete pedido[id];
+      else pedido[id] = Math.min(atual, 99);
+      gravarPedido(pedido);
+      atualizarControles();
+    }
+
+    document.querySelectorAll("[data-item]").forEach(function (card) {
+      var id = card.getAttribute("data-item");
+      var mais = card.querySelector("[data-mais]");
+      var menos = card.querySelector("[data-menos]");
+      if (mais) mais.addEventListener("click", function () { mudar(id, 1); });
+      if (menos) menos.addEventListener("click", function () { mudar(id, -1); });
+    });
+
+    if (bar) {
+      bar.addEventListener("click", function (evento) {
+        if (!totalItens(pedido)) return;
+        if (evento.target.closest("[data-whatsapp-pedido]") && drawer && evento.shiftKey) {
+          /* atalho: shift mantém o envio direto */
+          return;
+        }
+      });
+    }
+
+    document.querySelectorAll("[data-fecha-carrinho]").forEach(function (botao) {
+      botao.addEventListener("click", function () {
+        if (drawer) drawer.hidden = true;
+      });
+    });
+
+    atualizarControles();
   }
 
   function iniciarMenu() {
@@ -164,56 +268,130 @@
       })
       .filter(Boolean);
 
-    if (!("IntersectionObserver" in window) || !secoes.length) return;
-
-    var ativas = new Set();
-    var observador = null;
-    var espera;
-
-    function margem() {
-      var altura = window.innerHeight || 800;
-      var topo = Math.round(Math.max(72, Math.min(altura * 0.12, 110)));
-      var fundo = Math.round(altura * 0.55);
-      return "-" + topo + "px 0px -" + fundo + "px 0px";
-    }
-
-    function aplicar() {
-      var id = null;
-      secoes.forEach(function (secao) {
-        if (ativas.has(secao.id)) id = secao.id;
-      });
-      links.forEach(function (link) {
-        if (id && link.getAttribute("href") === "#" + id) {
-          link.setAttribute("aria-current", "true");
-        } else {
-          link.removeAttribute("aria-current");
-        }
-      });
-    }
-
-    function observar() {
-      if (observador) observador.disconnect();
-      ativas.clear();
-      aplicar();
-      observador = new IntersectionObserver(
+    if ("IntersectionObserver" in window && secoes.length) {
+      var atual = null;
+      var observador = new IntersectionObserver(
         function (entradas) {
-          entradas.forEach(function (entrada) {
-            if (entrada.isIntersecting) ativas.add(entrada.target.id);
-            else ativas.delete(entrada.target.id);
+          var visivel = entradas.some(function (entrada) {
+            return entrada.isIntersecting;
           });
-          aplicar();
+          entradas.forEach(function (entrada) {
+            if (!entrada.isIntersecting) return;
+            atual = entrada.target.id;
+          });
+          links.forEach(function (link) {
+            if (visivel && atual && link.getAttribute("href") === "#" + atual) {
+              link.setAttribute("aria-current", "true");
+            } else {
+              link.removeAttribute("aria-current");
+            }
+          });
+          if (!visivel) atual = null;
         },
-        { rootMargin: margem(), threshold: 0 }
+        { rootMargin: "-40% 0px -45% 0px", threshold: 0 }
       );
       secoes.forEach(function (secao) {
         observador.observe(secao);
       });
     }
+  }
 
-    observar();
-    window.addEventListener("resize", function () {
-      window.clearTimeout(espera);
-      espera = window.setTimeout(observar, 150);
+  function podeVideo() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+    var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (c) {
+      if (c.saveData) return false;
+      var tipo = String(c.effectiveType || "");
+      if (tipo === "slow-2g" || tipo === "2g") return false;
+    }
+    return true;
+  }
+
+  function ligarVideo(seletor, src, botaoPausa) {
+    var video = document.querySelector(seletor);
+    if (!video || !src) return;
+    if (!podeVideo()) return;
+    video.src = src;
+    var play = video.play();
+    if (play && play.catch) play.catch(function () {});
+    if (botaoPausa) {
+      botaoPausa.hidden = false;
+      botaoPausa.addEventListener("click", function () {
+        if (video.paused) {
+          var p = video.play();
+          if (p && p.catch) p.catch(function () {});
+          botaoPausa.textContent = "Pausar vídeo";
+        } else {
+          video.pause();
+          botaoPausa.textContent = "Reproduzir vídeo";
+        }
+      });
+    }
+  }
+
+  function iniciarVideos() {
+    ligarVideo(".hero__video", "assets/video/hero-queijo.mp4", document.querySelector(".hero__pause"));
+    var clip = document.querySelector(".historia-clip__video");
+    if (clip && clip.getAttribute("data-src") && "IntersectionObserver" in window && podeVideo()) {
+      var o2 = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (entrada) {
+          if (!entrada.isIntersecting) return;
+          ligarVideo(".historia-clip__video", clip.getAttribute("data-src"));
+          o2.disconnect();
+        });
+      }, { rootMargin: "200px 0px" });
+      o2.observe(clip);
+    }
+
+    var assinatura = document.querySelector(".assinatura");
+    var videoAssinatura = document.querySelector(".assinatura__video");
+    if (!assinatura || !videoAssinatura || !podeVideo()) return;
+    if (!("IntersectionObserver" in window)) {
+      ligarVideo(".assinatura__video", "assets/video/forno-abre.mp4");
+      return;
+    }
+    var visto = false;
+    var obs = new IntersectionObserver(
+      function (entradas) {
+        entradas.forEach(function (entrada) {
+          if (!entrada.isIntersecting || visto) return;
+          visto = true;
+          ligarVideo(".assinatura__video", "assets/video/forno-abre.mp4");
+          obs.disconnect();
+        });
+      },
+      { rootMargin: "200px 0px" }
+    );
+    obs.observe(assinatura);
+  }
+
+  function iniciarRevelacoes() {
+    var blocos = document.querySelectorAll(".reveal");
+    if (!blocos.length) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      blocos.forEach(function (el) {
+        el.classList.add("is-in");
+      });
+      return;
+    }
+    if (!("IntersectionObserver" in window)) {
+      blocos.forEach(function (el) {
+        el.classList.add("is-in");
+      });
+      return;
+    }
+    var obs = new IntersectionObserver(
+      function (entradas) {
+        entradas.forEach(function (entrada) {
+          if (!entrada.isIntersecting) return;
+          entrada.target.classList.add("is-in");
+          obs.unobserve(entrada.target);
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+    );
+    blocos.forEach(function (el) {
+      obs.observe(el);
     });
   }
 
@@ -223,9 +401,10 @@
     });
   }
 
-  aplicarWhatsApp();
-  renderAtalhos();
-  renderCardapio();
+  aplicarWhatsAppGenerico();
+  iniciarPedido();
   iniciarMenu();
+  iniciarVideos();
+  iniciarRevelacoes();
   marcarAno();
 })();

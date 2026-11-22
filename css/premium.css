@@ -1,0 +1,432 @@
+/*
+  Camada visual da versão premium.
+  Mantém o kit: preto, amarelo #FFC629, branco, Montserrat.
+  Amarelo só sobre preto. Respeita prefers-reduced-motion.
+*/
+
+.js .qty {
+  display: inline-flex;
+}
+
+.qty {
+  display: none;
+  align-items: center;
+  gap: 0.2rem;
+  border: 1.5px solid var(--black);
+  border-radius: 999px;
+  padding: 0.1rem;
+  background: var(--white);
+}
+
+.qty button {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--black);
+  color: var(--yellow);
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.qty button:hover {
+  background: #1a1a1a;
+}
+
+.qty [data-qty] {
+  min-width: 1.4rem;
+  text-align: center;
+  font-weight: 800;
+  color: var(--black);
+}
+
+.item.is-escolhido {
+  border-color: var(--black);
+  box-shadow: 0 0 0 2px var(--yellow);
+}
+
+.item {
+  padding: 0;
+  overflow: hidden;
+}
+
+.item picture,
+.item img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: #111;
+}
+
+.item__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.9rem 1rem 1rem;
+  flex: 1;
+}
+
+.item__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  min-height: min(100svh, 52rem);
+  display: grid;
+  align-items: end;
+  text-align: left;
+  padding: 0;
+  overflow: hidden;
+  border-bottom: 3px solid var(--yellow);
+}
+
+.hero__media,
+.hero__media picture,
+.hero__media img,
+.hero__video,
+.hero__shade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero__media img,
+.hero__video {
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero__video {
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.hero__video[src] {
+  opacity: 1;
+}
+
+.hero__shade {
+  z-index: 2;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.15) 32%, rgba(0, 0, 0, 0.82) 100%);
+  pointer-events: none;
+}
+
+.hero__copy {
+  position: relative;
+  z-index: 3;
+  padding: 7.5rem 0 3rem;
+  max-width: 38rem;
+  margin-right: auto;
+  text-align: left;
+}
+
+.hero h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(2.6rem, 9vw, 5.4rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  max-width: 10ch;
+}
+
+.hero h1 span {
+  display: block;
+}
+
+.hero .lede {
+  margin: 0;
+  max-width: 28ch;
+  color: #f3f3f3;
+  font-size: 1.125rem;
+  text-align: left;
+}
+
+.hero .actions {
+  justify-content: flex-start;
+  margin-top: 1.5rem;
+}
+
+.hero__pause {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 4;
+  min-height: 40px;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.aviso {
+  font-weight: 700;
+}
+
+.assinatura {
+  position: relative;
+  isolation: isolate;
+  min-height: min(36rem, 90svh);
+  display: grid;
+  align-items: end;
+  overflow: hidden;
+  border-top: 3px solid var(--yellow);
+  border-bottom: 3px solid var(--yellow);
+}
+
+.assinatura__media,
+.assinatura__media picture,
+.assinatura__media img,
+.assinatura__video,
+.assinatura__shade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.assinatura__media img,
+.assinatura__video {
+  object-fit: cover;
+}
+
+.assinatura__video {
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.assinatura__video[src] {
+  opacity: 1;
+}
+
+.assinatura__shade {
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.82));
+  pointer-events: none;
+}
+
+.assinatura__copy {
+  position: relative;
+  z-index: 3;
+  padding: 6rem 0 3.2rem;
+  max-width: 36rem;
+}
+
+.assinatura__logo {
+  width: 4.4rem;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.assinatura__copy p:last-child {
+  max-width: 46ch;
+  color: #f3f3f3;
+}
+
+.historia-fotos {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-bottom: 3.5rem;
+}
+
+.historia-fotos figure,
+.quote picture,
+.quote img {
+  margin: 0;
+}
+
+.historia-fotos img,
+.quote img {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.historia-fotos figcaption,
+.quote figcaption {
+  margin-top: 0.7rem;
+  font-weight: 700;
+}
+
+.ig-handle {
+  color: var(--yellow);
+  font-weight: 800;
+}
+
+.ig-strip {
+  list-style: none;
+  display: flex;
+  gap: 0.65rem;
+  margin: 1.4rem 0 0;
+  padding: 0 0 0.4rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ig-strip li {
+  flex: 0 0 auto;
+  width: min(11rem, 70vw);
+  scroll-snap-align: start;
+}
+
+.ig-strip a {
+  display: block;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #2a2a2a;
+}
+
+.ig-strip img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.pedido-bar {
+  display: none;
+}
+
+.js .pedido-bar {
+  display: none;
+}
+
+@media (max-width: 859px) {
+  .js .pedido-bar {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    padding: 0.65rem 1rem calc(0.65rem + env(safe-area-inset-bottom));
+    background: rgba(0, 0, 0, 0.92);
+    border-top: 2px solid var(--yellow);
+  }
+
+  .js .pedido-bar .btn {
+    width: 100%;
+  }
+
+  .js body {
+    padding-bottom: 5.75rem;
+  }
+
+  .hero__copy {
+    padding-top: 6.5rem;
+    padding-bottom: 4.2rem;
+  }
+}
+
+@media (min-width: 860px) {
+  .hero__copy {
+    padding: 9rem 0 4.2rem;
+  }
+
+  .historia-fotos {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .assinatura__copy {
+    padding: 8rem 0 4rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(1.15rem);
+  }
+
+  .reveal.is-in {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .assinatura.is-in .brand-glow,
+  .assinatura .brand-glow {
+    filter: drop-shadow(0 0 0 transparent);
+  }
+
+  .assinatura:has(.assinatura__video[src]) .brand-glow,
+  .js .assinatura.is-in .brand-glow {
+    animation: acende 2.6s ease forwards;
+  }
+
+  .item img {
+    transition: transform 0.45s ease;
+  }
+
+  .item:hover img,
+  .item:focus-within img {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes acende {
+  0% {
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  45%,
+  100% {
+    filter: drop-shadow(0 0 14px #ffc629) drop-shadow(0 0 32px rgba(255, 198, 41, 0.4));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__video,
+  .assinatura__video {
+    display: none !important;
+  }
+
+  .hero__pause {
+    display: none !important;
+  }
+}
+
+.historia-clip__frame {
+  position: relative;
+}
+
+.historia-clip__frame img {
+  display: block;
+}
+
+.historia-clip__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.historia-clip__video[src] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .historia-clip__video {
+    display: none !important;
+  }
+}
