@@ -2,7 +2,35 @@
   Mestre Forno
   Preto, amarelo #FFC629 e branco.
   Texto amarelo só em fundo preto. Em fundo claro, texto preto.
+  Neutros de apoio (não são cor de marca): papel #f4f2ee, texto #1a1a1a, fio #e4e4e4.
 */
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/montserrat-500.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../assets/fonts/montserrat-700.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("../assets/fonts/montserrat-800.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 :root {
   --black: #000000;
@@ -263,7 +291,7 @@ a.btn--ghost:hover {
 
 .brand__horizontal {
   display: none;
-  height: 46px;
+  height: 48px;
 }
 
 .header-cta {
@@ -272,7 +300,6 @@ a.btn--ghost:hover {
   flex: 0 0 auto;
 }
 
-.cta-m,
 .cta-l {
   display: none;
 }
@@ -345,6 +372,9 @@ a.btn--ghost:hover {
 
 .nav.is-open {
   display: block;
+  max-height: calc(100dvh - var(--header-h) - env(safe-area-inset-top));
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .nav ul {
@@ -379,16 +409,6 @@ a.btn--ghost:hover {
   text-underline-offset: 0.28em;
 }
 
-@media (min-width: 520px) {
-  .cta-s {
-    display: none;
-  }
-
-  .cta-m {
-    display: inline;
-  }
-}
-
 @media (min-width: 860px) {
   .brand {
     margin-right: 0;
@@ -402,7 +422,7 @@ a.btn--ghost:hover {
     display: block;
   }
 
-  .cta-m {
+  .cta-s {
     display: none;
   }
 
@@ -422,6 +442,8 @@ a.btn--ghost:hover {
   .nav.is-open {
     display: block;
     position: static;
+    max-height: none;
+    overflow: visible;
     margin-left: auto;
     padding: 0;
     border: 0;
@@ -453,8 +475,18 @@ html.nav-open body {
 
 .hero h1 {
   margin: 0 0 1rem;
-  font-size: clamp(2.4rem, 8vw, 4.5rem);
-  line-height: 1;
+  font-size: 1rem;
+  line-height: 1.15;
+}
+
+.hero-title {
+  display: block;
+  margin-top: 0.85rem;
+  color: var(--white);
+  font-size: clamp(1.35rem, 2.8vw, 2.05rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
 }
 
 .hero h1 img {
@@ -532,7 +564,7 @@ html.nav-open body {
   border-radius: 12px;
   background: var(--yellow);
   color: var(--black);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .aviso strong {
@@ -554,6 +586,7 @@ html.nav-open body {
   border-radius: 999px;
   background: var(--black);
   color: var(--white);
+  font-family: var(--font);
   font-weight: 800;
   text-decoration: none;
 }
@@ -779,8 +812,31 @@ html.nav-open body {
 }
 
 .footer__logo {
-  width: min(210px, 70vw);
+  width: min(240px, 70vw);
   height: auto;
+}
+
+.not-found {
+  text-align: center;
+  padding-top: 3rem;
+  padding-bottom: 4rem;
+}
+
+.not-found img {
+  width: min(200px, 54vw);
+  height: auto;
+  margin: 0 auto 1.25rem;
+}
+
+.not-found h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+}
+
+.not-found p {
+  margin: 0 auto;
+  max-width: 36ch;
+  color: #f3f3f3;
 }
 
 .footer__tag {

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ledger77.github.io/mestreforno/sitemap.xml
