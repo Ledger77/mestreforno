@@ -1,8 +1,11 @@
 /*
   Cardápio — Mestre Forno
   -----------------------
-  Este é o único arquivo do cardápio. A página lê esta lista
-  e monta os cartões sozinha.
+  Este arquivo é a lista que o JavaScript usa para montar os
+  cartões e os atalhos (Salgados, Pizzas e qualquer grupo novo).
+  A mesma lista está escrita no index.html para aparecer sem
+  JavaScript. Se mudar um item aqui, mude o cartão correspondente
+  na seção Cardápio do index.html.
 
   Para trocar um item, edite nome, descricao e preco.
   Preço no formato brasileiro, como texto: "R$ 8,00".
@@ -18,7 +21,7 @@ const CARDAPIO = [
   {
     id: "salgados",
     titulo: "Salgados",
-    resumo: "Prévia do cardápio. Itens e preços ainda serão confirmados.",
+    resumo: "",
     itens: [
       {
         nome: "Coxinha de frango",
@@ -61,7 +64,7 @@ const CARDAPIO = [
   {
     id: "pizzas",
     titulo: "Pizzas",
-    resumo: "Sabores de exemplo. Tamanhos e preços ainda serão definidos.",
+    resumo: "",
     itens: [
       {
         nome: "Mussarela",

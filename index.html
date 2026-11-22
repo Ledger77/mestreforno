@@ -1,5 +1,11 @@
 <!DOCTYPE html>
-<!-- Textos da página: este arquivo. WhatsApp: js/config.js. Cardápio: js/cardapio.js. -->
+<!--
+  Endereço público (SITE.siteUrl em js/config.js):
+  https://ledger77.github.io/mestreforno/
+  Na migração, troque esta URL no canonical, og:url, og:image,
+  twitter:image, JSON-LD, sitemap.xml, robots.txt e no 404.html.
+  Passo a passo: docs/checklist-dominio.md
+-->
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
@@ -8,27 +14,74 @@
   <meta name="theme-color" content="#000000">
   <meta name="format-detection" content="telephone=no">
   <meta name="apple-mobile-web-app-title" content="Mestre Forno">
+  <link rel="canonical" href="https://ledger77.github.io/mestreforno/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
   <meta property="og:site_name" content="Mestre Forno">
+  <meta property="og:url" content="https://ledger77.github.io/mestreforno/">
   <meta property="og:title" content="Mestre Forno — Salgados e pizzas em Manaus">
   <meta property="og:description" content="Salgados e pizzas frescos em Manaus. A Mestre Forno é um negócio de família — peça pelo WhatsApp.">
-  <meta property="og:image" content="assets/mestreforno_selo_1080.png">
-  <meta property="og:image:width" content="1080">
-  <meta property="og:image:height" content="1080">
-  <meta property="og:image:alt" content="Selo da Mestre Forno: monograma MF branco com chapéu de chef amarelo, em fundo preto.">
+  <meta property="og:image" content="https://ledger77.github.io/mestreforno/assets/og-1200x630.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Mestre Forno: monograma MF branco com chapéu de chef amarelo. Salgados e pizzas em Manaus.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Mestre Forno — Salgados e pizzas em Manaus">
   <meta name="twitter:description" content="Salgados e pizzas frescos em Manaus. A Mestre Forno é um negócio de família — peça pelo WhatsApp.">
-  <meta name="twitter:image" content="assets/mestreforno_selo_1080.png">
+  <meta name="twitter:image" content="https://ledger77.github.io/mestreforno/assets/og-1200x630.png">
   <title>Mestre Forno — Salgados e pizzas em Manaus</title>
   <link rel="icon" href="assets/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="assets/favicon-32.png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&amp;display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/fonts/montserrat-800.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/styles.css">
+  <noscript>
+    <style>
+      @media (max-width: 859px) {
+        .nav-toggle { display: none !important; }
+        .nav {
+          display: block;
+          position: static;
+          max-height: none;
+          overflow: visible;
+          border: 0;
+          padding: 0;
+          background: transparent;
+        }
+        .nav ul { flex-direction: row; flex-wrap: wrap; gap: 0.25rem 0.9rem; }
+        .nav a { border-bottom: 0; min-height: 44px; }
+      }
+    </style>
+  </noscript>
+  <!--
+    Telefone, rua e horário abaixo são marcadores.
+    Troque quando a casa confirmar o número, o endereço e o expediente.
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FoodEstablishment",
+    "name": "Mestre Forno",
+    "description": "Salgados e pizzas em Manaus.",
+    "servesCuisine": ["Salgados", "Pizzas"],
+    "url": "https://ledger77.github.io/mestreforno/",
+    "image": "https://ledger77.github.io/mestreforno/assets/og-1200x630.png",
+    "logo": "https://ledger77.github.io/mestreforno/assets/mestreforno_selo_1080.png",
+    "sameAs": ["https://instagram.com/mestreforno"],
+    "telephone": "+5592900000000",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "A confirmar",
+      "addressLocality": "Manaus",
+      "addressRegion": "AM",
+      "addressCountry": "BR"
+    },
+    "areaServed": {
+      "@type": "City",
+      "name": "Manaus"
+    }
+  }
+  </script>
 </head>
 <body>
   <svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -43,7 +96,7 @@
     <div class="header__inner">
       <a class="brand" href="#topo" aria-label="Mestre Forno">
         <img class="brand__symbol" src="assets/mestreforno_simbolo_transparente.svg" width="51" height="40" alt="">
-        <img class="brand__horizontal" src="assets/mestreforno_horizontal_transparente.svg" width="174" height="46" alt="">
+        <img class="brand__horizontal" src="assets/mestreforno_horizontal_transparente.svg" width="292" height="48" alt="">
       </a>
 
       <nav class="nav" id="menu-site" aria-label="Seções">
@@ -54,12 +107,11 @@
         </ul>
       </nav>
 
-      <a class="btn btn--yellow header-cta" data-whatsapp href="#como-pedir">
+      <a class="btn btn--yellow header-cta" data-whatsapp href="https://wa.me/5592900000000?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
         <svg aria-hidden="true"><use href="#i-wa"></use></svg>
-        <span class="sr-only">Peça pelo WhatsApp</span>
-        <span class="cta-s" aria-hidden="true">Pedir</span>
-        <span class="cta-m" aria-hidden="true">WhatsApp</span>
-        <span class="cta-l" aria-hidden="true">Peça pelo WhatsApp</span>
+        <span class="cta-s">Pedir</span>
+        <span class="cta-l">Peça pelo WhatsApp</span>
+        <span class="sr-only js-nova-aba"> (abre em nova aba)</span>
       </a>
 
       <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="menu-site" aria-label="Abrir menu">
@@ -73,13 +125,15 @@
       <div class="wrap">
         <p class="eyebrow">Manaus · Amazonas</p>
         <h1 id="titulo-principal">
-          <img src="assets/mestreforno_completo_transparente.svg" width="723" height="673" alt="Mestre Forno" fetchpriority="high" decoding="async">
+          <img src="assets/mestreforno_completo_transparente.svg" width="723" height="673" alt="" fetchpriority="high" decoding="async">
+          <span class="hero-title"><span class="sr-only">Mestre Forno. </span>Salgados e pizzas em Manaus</span>
         </h1>
-        <p class="lede">Salgados e pizzas frescos, preparados em família. Peça pelo WhatsApp e receba quentinho.</p>
+        <p class="lede">Feitos na hora, em família. Peça pelo WhatsApp e receba quentinho.</p>
         <div class="actions">
-          <a class="btn btn--yellow" data-whatsapp href="#como-pedir">
+          <a class="btn btn--yellow" data-whatsapp href="https://wa.me/5592900000000?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
             <svg aria-hidden="true"><use href="#i-wa"></use></svg>
             Peça pelo WhatsApp
+            <span class="sr-only js-nova-aba"> (abre em nova aba)</span>
           </a>
           <a class="btn btn--ghost" href="#cardapio">Ver cardápio</a>
         </div>
@@ -95,16 +149,84 @@
       <div class="wrap">
         <p class="eyebrow">Cardápio</p>
         <h2 id="titulo-cardapio">O que sai do forno</h2>
-        <p class="lead">Uma prévia de salgados e pizzas. Os nomes e os preços oficiais entram aqui quando o cardápio estiver definido.</p>
-        <p class="aviso" role="note"><strong>Cardápio de exemplo.</strong> Nomes, descrições e preços ainda não foram definidos. O valor aparece como <span class="nowrap">R$ --,--</span> de propósito.</p>
-        <nav class="menu-jump" aria-label="Grupos do cardápio">
+        <p class="lead">Salgados e pizzas para pedir pelo WhatsApp.</p>
+        <p class="aviso" role="note">Cardápio em atualização — confirme sabores e valores pelo WhatsApp.</p>
+        <nav class="menu-jump" data-menu-jump aria-label="Grupos do cardápio">
           <a href="#salgados">Salgados</a>
           <a href="#pizzas">Pizzas</a>
         </nav>
         <div data-cardapio>
-          <noscript>
-            <p>Ative o JavaScript para ver os itens. A lista fica em js/cardapio.js.</p>
-          </noscript>
+          <section class="menu-group" id="salgados" aria-labelledby="titulo-salgados">
+            <div class="menu-group__head">
+              <h3 id="titulo-salgados">Salgados</h3>
+            </div>
+            <ul class="menu-grid">
+              <li class="item">
+                <div class="item__top"><h4>Coxinha de frango</h4><span class="badge">Exemplo</span></div>
+                <p>Descrição a confirmar.</p>
+                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              </li>
+              <li class="item">
+                <div class="item__top"><h4>Risole de queijo</h4><span class="badge">Exemplo</span></div>
+                <p>Descrição a confirmar.</p>
+                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              </li>
+              <li class="item">
+                <div class="item__top"><h4>Pastel de carne</h4><span class="badge">Exemplo</span></div>
+                <p>Descrição a confirmar.</p>
+                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              </li>
+              <li class="item">
+                <div class="item__top"><h4>Bolinha de queijo</h4><span class="badge">Exemplo</span></div>
+                <p>Descrição a confirmar.</p>
+                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              </li>
+              <li class="item">
+                <div class="item__top"><h4>Enroladinho de salsicha</h4><span class="badge">Exemplo</span></div>
+                <p>Descrição a confirmar.</p>
+                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              </li>
+              <li class="item">
+                <div class="item__top"><h4>Esfiha de carne</h4><span class="badge">Exemplo</span></div>
+                <p>Descrição a confirmar.</p>
+                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              </li>
+            </ul>
+          </section>
+          <section class="menu-group" id="pizzas" aria-labelledby="titulo-pizzas">
+            <div class="menu-group__head">
+              <h3 id="titulo-pizzas">Pizzas</h3>
+            </div>
+            <ul class="menu-grid">
+              <li class="item">
+                <div class="item__top"><h4>Mussarela</h4><span class="badge">Exemplo</span></div>
+                <p>Descrição a confirmar.</p>
+                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              </li>
+              <li class="item">
+                <div class="item__top"><h4>Calabresa</h4><span class="badge">Exemplo</span></div>
+                <p>Descrição a confirmar.</p>
+                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              </li>
+              <li class="item">
+                <div class="item__top"><h4>Frango com catupiry</h4><span class="badge">Exemplo</span></div>
+                <p>Descrição a confirmar.</p>
+                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              </li>
+              <li class="item">
+                <div class="item__top"><h4>Portuguesa</h4><span class="badge">Exemplo</span></div>
+                <p>Descrição a confirmar.</p>
+                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              </li>
+            </ul>
+          </section>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn--yellow" data-whatsapp href="https://wa.me/5592900000000?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
+            <svg aria-hidden="true"><use href="#i-wa"></use></svg>
+            Peça pelo WhatsApp
+            <span class="sr-only js-nova-aba"> (abre em nova aba)</span>
+          </a>
         </div>
       </div>
     </section>
@@ -113,13 +235,13 @@
       <div class="wrap">
         <p class="eyebrow">Como pedir</p>
         <h2 id="titulo-pedir">Peça pelo WhatsApp</h2>
-        <p class="lead">O caminho é curto: escolha no cardápio, chame a gente e combine a entrega ou a retirada. A área atendida e o horário ainda estão em definição — o texto abaixo é provisório.</p>
+        <p class="lead">Escolha no cardápio, chame no WhatsApp e combine a entrega ou a retirada. A área atendida e o horário ainda serão confirmados.</p>
 
         <div class="steps">
           <article class="panel">
             <span class="step__num">01</span>
             <h3>Escolha</h3>
-            <p>Separe os salgados e as pizzas. Os itens desta página ainda são exemplos.</p>
+            <p>Separe os salgados e as pizzas no cardápio.</p>
           </article>
           <article class="panel">
             <span class="step__num">02</span>
@@ -136,30 +258,28 @@
         <div class="info-grid">
           <article class="panel">
             <h3>Entrega</h3>
-            <span class="badge badge--on-dark">Provisório</span>
+            <span class="badge badge--on-dark">A confirmar</span>
             <p>Área de entrega: a definir. Na hora do pedido, pergunte pelo WhatsApp se o seu bairro entra na rota.</p>
           </article>
           <article class="panel">
             <h3>Horário</h3>
-            <span class="badge badge--on-dark">Provisório</span>
+            <span class="badge badge--on-dark">A confirmar</span>
             <p>Horário de funcionamento: a definir. Os dias e os turnos serão publicados aqui.</p>
           </article>
           <article class="panel">
             <h3>Retirada</h3>
-            <span class="badge badge--on-dark">Provisório</span>
+            <span class="badge badge--on-dark">A confirmar</span>
             <p>Retirada no local: endereço a confirmar, em Manaus/AM.</p>
           </article>
         </div>
 
         <div class="cta-row">
-          <a class="btn btn--yellow" data-whatsapp href="#como-pedir">
+          <a class="btn btn--yellow" data-whatsapp href="https://wa.me/5592900000000?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
             <svg aria-hidden="true"><use href="#i-wa"></use></svg>
             Peça pelo WhatsApp
+            <span class="sr-only js-nova-aba"> (abre em nova aba)</span>
           </a>
         </div>
-        <noscript>
-          <p>WhatsApp provisório: 55 92 90000-0000. O número certo entra em js/config.js.</p>
-        </noscript>
       </div>
     </section>
 
@@ -169,7 +289,6 @@
           <p class="eyebrow">Sobre</p>
           <h2 id="titulo-sobre">Um forno de família</h2>
           <p class="lead">A Mestre Forno é um negócio de família em Manaus. O salgado sai sequinho, a pizza sai quente, e o pedido chega pelo WhatsApp — do jeito simples de quem cozinha para a própria casa.</p>
-          <p class="note">Texto provisório. A história da família entra no lugar deste parágrafo.</p>
         </div>
         <figure class="quote">
           <blockquote>Quentinho, feito em casa, pedido pelo WhatsApp.</blockquote>
@@ -182,21 +301,21 @@
   <footer class="site-footer on-dark">
     <div class="wrap footer__grid">
       <div>
-        <img class="footer__logo" src="assets/mestreforno_horizontal_transparente.svg" width="210" height="56" alt="Mestre Forno" decoding="async">
+        <img class="footer__logo" src="assets/mestreforno_horizontal_transparente.svg" width="240" height="39" alt="Mestre Forno" decoding="async">
         <p class="footer__tag">Salgados e pizzas em Manaus/AM.</p>
       </div>
       <nav aria-label="Redes e contato">
         <ul class="footer-links">
           <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer">Instagram<span class="sr-only"> (abre em nova aba)</span></a></li>
-          <li><a data-whatsapp href="#como-pedir">WhatsApp</a></li>
+          <li><a data-whatsapp href="https://wa.me/5592900000000?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">WhatsApp<span class="sr-only js-nova-aba"> (abre em nova aba)</span></a></li>
         </ul>
       </nav>
     </div>
     <p class="legal">© <span data-ano>2026</span> Mestre Forno. Todos os direitos reservados.</p>
   </footer>
 
-  <script src="js/config.js"></script>
-  <script src="js/cardapio.js"></script>
-  <script src="js/main.js"></script>
+  <script defer src="js/config.js"></script>
+  <script defer src="js/cardapio.js"></script>
+  <script defer src="js/main.js"></script>
 </body>
 </html>

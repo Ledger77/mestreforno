@@ -1,6 +1,7 @@
 /*
-  Liga o número do WhatsApp, desenha o cardápio e controla o menu.
-  Não precisa editar este arquivo para trocar textos, preços ou o telefone.
+  Atualiza os links do WhatsApp, redesenha o cardápio a partir de
+  js/cardapio.js e controla o menu. O HTML já traz cardápio e links
+  wa.me, então a página funciona se este arquivo não carregar.
 */
 (function () {
   "use strict";
@@ -16,12 +17,12 @@
   function aplicarWhatsApp() {
     var url = urlWhatsApp();
     document.querySelectorAll("[data-whatsapp]").forEach(function (el) {
-      if (!url) {
-        el.removeAttribute("href");
+      if (url) el.href = url;
+      if (!el.getAttribute("href") || el.getAttribute("href").charAt(0) === "#") {
         el.setAttribute("aria-disabled", "true");
         return;
       }
-      el.href = url;
+      el.removeAttribute("aria-disabled");
       el.target = "_blank";
       el.rel = "noopener noreferrer";
       if (!el.querySelector(".js-nova-aba")) {
@@ -46,31 +47,28 @@
     return id || "grupo";
   }
 
+  function temCardapio() {
+    return typeof CARDAPIO !== "undefined" && CARDAPIO && CARDAPIO.length;
+  }
+
+  function renderAtalhos() {
+    var nav = document.querySelector("[data-menu-jump]");
+    if (!nav || !temCardapio()) return;
+    nav.innerHTML = CARDAPIO.map(function (grupo) {
+      return '<a href="#' + idSeguro(grupo.id) + '">' + escapar(grupo.titulo) + "</a>";
+    }).join("");
+  }
+
   function renderCardapio() {
     var raiz = document.querySelector("[data-cardapio]");
-    if (!raiz) return;
+    if (!raiz || !temCardapio()) return;
 
-    if (typeof CARDAPIO === "undefined" || !CARDAPIO || !CARDAPIO.length) {
-      raiz.innerHTML = "<p>O cardápio ainda não foi publicado.</p>";
-      return;
-    }
-
-    var html = CARDAPIO.map(function (grupo) {
+    raiz.innerHTML = CARDAPIO.map(function (grupo) {
       var itens = grupo.itens || [];
       var id = idSeguro(grupo.id);
-      var todosExemplo = itens.length > 0 && itens.every(function (item) {
-        return item.exemplo;
-      });
-      var legenda = "";
-      if (itens.length) {
-        legenda = itens.length + (itens.length === 1 ? " item" : " itens");
-        if (todosExemplo) legenda += " de exemplo";
-      }
-
       var cabeca =
         '<div class="menu-group__head">' +
         '<h3 id="titulo-' + id + '">' + escapar(grupo.titulo) + "</h3>" +
-        (legenda ? '<p class="menu-meta">' + escapar(legenda) + "</p>" : "") +
         (grupo.resumo ? "<p>" + escapar(grupo.resumo) + "</p>" : "") +
         "</div>";
 
@@ -80,19 +78,19 @@
       } else {
         corpo =
           '<ul class="menu-grid">' +
-          itens.map(function (item) {
-            var preco = item.preco ? item.preco : "R$ --,--";
-            var etiqueta = item.exemplo
-              ? '<span class="badge">Exemplo</span>'
-              : "";
-            return (
-              "<li class=\"item\">" +
-              '<div class="item__top"><h4>' + escapar(item.nome) + "</h4>" + etiqueta + "</div>" +
-              "<p>" + escapar(item.descricao || "") + "</p>" +
-              '<p class="price"><span class="sr-only">Preço: </span>' + escapar(preco) + "</p>" +
-              "</li>"
-            );
-          }).join("") +
+          itens
+            .map(function (item) {
+              var preco = item.preco ? item.preco : "R$ --,--";
+              var etiqueta = item.exemplo ? '<span class="badge">Exemplo</span>' : "";
+              return (
+                '<li class="item">' +
+                '<div class="item__top"><h4>' + escapar(item.nome) + "</h4>" + etiqueta + "</div>" +
+                "<p>" + escapar(item.descricao || "") + "</p>" +
+                '<p class="price"><span class="sr-only">Preço: </span>' + escapar(preco) + "</p>" +
+                "</li>"
+              );
+            })
+            .join("") +
           "</ul>";
       }
 
@@ -103,8 +101,6 @@
         "</section>"
       );
     }).join("");
-
-    raiz.innerHTML = html;
   }
 
   function iniciarMenu() {
@@ -168,28 +164,57 @@
       })
       .filter(Boolean);
 
-    if ("IntersectionObserver" in window && secoes.length) {
-      var atual = null;
-      var observador = new IntersectionObserver(
+    if (!("IntersectionObserver" in window) || !secoes.length) return;
+
+    var ativas = new Set();
+    var observador = null;
+    var espera;
+
+    function margem() {
+      var altura = window.innerHeight || 800;
+      var topo = Math.round(Math.max(72, Math.min(altura * 0.12, 110)));
+      var fundo = Math.round(altura * 0.55);
+      return "-" + topo + "px 0px -" + fundo + "px 0px";
+    }
+
+    function aplicar() {
+      var id = null;
+      secoes.forEach(function (secao) {
+        if (ativas.has(secao.id)) id = secao.id;
+      });
+      links.forEach(function (link) {
+        if (id && link.getAttribute("href") === "#" + id) {
+          link.setAttribute("aria-current", "true");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    }
+
+    function observar() {
+      if (observador) observador.disconnect();
+      ativas.clear();
+      aplicar();
+      observador = new IntersectionObserver(
         function (entradas) {
           entradas.forEach(function (entrada) {
-            if (!entrada.isIntersecting) return;
-            atual = entrada.target.id;
+            if (entrada.isIntersecting) ativas.add(entrada.target.id);
+            else ativas.delete(entrada.target.id);
           });
-          links.forEach(function (link) {
-            if (atual && link.getAttribute("href") === "#" + atual) {
-              link.setAttribute("aria-current", "true");
-            } else {
-              link.removeAttribute("aria-current");
-            }
-          });
+          aplicar();
         },
-        { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+        { rootMargin: margem(), threshold: 0 }
       );
       secoes.forEach(function (secao) {
         observador.observe(secao);
       });
     }
+
+    observar();
+    window.addEventListener("resize", function () {
+      window.clearTimeout(espera);
+      espera = window.setTimeout(observar, 150);
+    });
   }
 
   function marcarAno() {
@@ -199,6 +224,7 @@
   }
 
   aplicarWhatsApp();
+  renderAtalhos();
   renderCardapio();
   iniciarMenu();
   marcarAno();
