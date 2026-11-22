@@ -10,7 +10,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Salgados e pizzas frescos em Manaus. A Mestre Forno é um negócio de família — peça pelo WhatsApp.">
+  <meta name="description" content="Salgados e pizzas frescos em Manaus, feitos em família. Peça pelo WhatsApp. Entregamos em toda a cidade; a taxa é calculada pela 99 Entrega.">
   <meta name="theme-color" content="#000000">
   <meta name="format-detection" content="telephone=no">
   <meta name="apple-mobile-web-app-title" content="Mestre Forno">
@@ -20,21 +20,23 @@
   <meta property="og:site_name" content="Mestre Forno">
   <meta property="og:url" content="https://ledger77.github.io/mestreforno/">
   <meta property="og:title" content="Mestre Forno — Salgados e pizzas em Manaus">
-  <meta property="og:description" content="Salgados e pizzas frescos em Manaus. A Mestre Forno é um negócio de família — peça pelo WhatsApp.">
-  <meta property="og:image" content="https://ledger77.github.io/mestreforno/assets/og-1200x630.png">
+  <meta property="og:description" content="Salgados e pizzas frescos em Manaus, feitos em família. Peça pelo WhatsApp. Entregamos em toda a cidade.">
+  <meta property="og:image" content="https://ledger77.github.io/mestreforno/assets/og-1200x630.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Mestre Forno: monograma MF branco com chapéu de chef amarelo. Salgados e pizzas em Manaus.">
+  <meta property="og:image:alt" content="Mestre Forno: monograma MF branco com chapéu de chef amarelo, e uma pizza saindo do forno. Salgados e pizzas em Manaus.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Mestre Forno — Salgados e pizzas em Manaus">
-  <meta name="twitter:description" content="Salgados e pizzas frescos em Manaus. A Mestre Forno é um negócio de família — peça pelo WhatsApp.">
-  <meta name="twitter:image" content="https://ledger77.github.io/mestreforno/assets/og-1200x630.png">
+  <meta name="twitter:description" content="Salgados e pizzas frescos em Manaus, feitos em família. Peça pelo WhatsApp.">
+  <meta name="twitter:image" content="https://ledger77.github.io/mestreforno/assets/og-1200x630.jpg">
   <title>Mestre Forno — Salgados e pizzas em Manaus</title>
   <link rel="icon" href="assets/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="assets/favicon-32.png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
   <link rel="preload" href="assets/fonts/montserrat-800.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="image" type="image/avif" imagesrcset="assets/foto/hero-mobile-720.avif 720w, assets/foto/hero-mobile-1080.avif 1080w, assets/foto/hero-desktop-960.avif 960w, assets/foto/hero-desktop-1600.avif 1600w" imagesizes="100vw">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/premium.css">
   <noscript>
     <style>
       @media (max-width: 859px) {
@@ -53,22 +55,19 @@
       }
     </style>
   </noscript>
-  <!--
-    Telefone, rua e horário abaixo são marcadores.
-    Troque quando a casa confirmar o número, o endereço e o expediente.
-  -->
+  <script>document.documentElement.classList.add("js");</script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FoodEstablishment",
     "name": "Mestre Forno",
-    "description": "Salgados e pizzas em Manaus.",
+    "description": "Salgados e pizzas em Manaus, feitos em família. Pedidos pelo WhatsApp. Entrega em toda Manaus; taxa calculada pela 99 Entrega.",
     "servesCuisine": ["Salgados", "Pizzas"],
     "url": "https://ledger77.github.io/mestreforno/",
-    "image": "https://ledger77.github.io/mestreforno/assets/og-1200x630.png",
+    "image": "https://ledger77.github.io/mestreforno/assets/og-1200x630.jpg",
     "logo": "https://ledger77.github.io/mestreforno/assets/mestreforno_selo_1080.png",
     "sameAs": ["https://instagram.com/mestreforno"],
-    "telephone": "+5592900000000",
+    "telephone": "+5592992487642",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "A confirmar",
@@ -78,8 +77,27 @@
     },
     "areaServed": {
       "@type": "City",
-      "name": "Manaus"
-    }
+      "name": "Manaus",
+      "containedInPlace": {
+        "@type": "State",
+        "name": "Amazonas",
+        "containedInPlace": { "@type": "Country", "name": "BR" }
+      }
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "08:00",
+        "closes": "20:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Saturday", "Sunday"],
+        "opens": "08:00",
+        "closes": "17:00"
+      }
+    ]
   }
   </script>
 </head>
@@ -103,13 +121,13 @@
         <ul>
           <li><a href="#cardapio">Cardápio</a></li>
           <li><a href="#como-pedir">Como pedir</a></li>
-          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#historia">História</a></li>
         </ul>
       </nav>
 
-      <a class="btn btn--yellow header-cta" data-whatsapp href="https://wa.me/5592900000000?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
+      <a class="btn btn--yellow header-cta" data-whatsapp href="https://wa.me/5592992487642?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
         <svg aria-hidden="true"><use href="#i-wa"></use></svg>
-        <span class="cta-s">Pedir</span>
+        <span class="cta-s">Peça</span>
         <span class="cta-l">Peça pelo WhatsApp</span>
         <span class="sr-only js-nova-aba"> (abre em nova aba)</span>
       </a>
@@ -122,35 +140,40 @@
 
   <main id="conteudo" tabindex="-1">
     <section class="hero on-dark" aria-labelledby="titulo-principal">
-      <div class="wrap">
+      <div class="hero__media">
+        <picture>
+          <source media="(max-width: 719px)" type="image/avif" srcset="assets/foto/hero-mobile-720.avif 720w, assets/foto/hero-mobile-1080.avif 1080w" sizes="100vw">
+          <source media="(max-width: 719px)" type="image/webp" srcset="assets/foto/hero-mobile-720.webp 720w, assets/foto/hero-mobile-1080.webp 1080w" sizes="100vw">
+          <source media="(max-width: 719px)" srcset="assets/foto/hero-mobile-720.jpg 720w, assets/foto/hero-mobile-1080.jpg 1080w" sizes="100vw">
+          <source type="image/avif" srcset="assets/foto/hero-desktop-640.avif 640w, assets/foto/hero-desktop-960.avif 960w, assets/foto/hero-desktop-1600.avif 1600w" sizes="100vw">
+          <source type="image/webp" srcset="assets/foto/hero-desktop-640.webp 640w, assets/foto/hero-desktop-960.webp 960w, assets/foto/hero-desktop-1600.webp 1600w" sizes="100vw">
+          <img class="hero__poster" src="assets/foto/hero-desktop-960.jpg" width="1600" height="900" alt="Pizza saindo do forno, com o queijo puxando, em uma cozinha escura." fetchpriority="high" decoding="async">
+        </picture>
+        <video class="hero__video" muted playsinline loop preload="none" tabindex="-1" aria-hidden="true" poster="assets/foto/hero-desktop-960.jpg"></video>
+        <div class="hero__shade"></div>
+      </div>
+      <div class="wrap hero__copy">
         <p class="eyebrow">Manaus · Amazonas</p>
-        <h1 id="titulo-principal">
-          <img src="assets/mestreforno_completo_transparente.svg" width="723" height="673" alt="" fetchpriority="high" decoding="async">
-          <span class="hero-title"><span class="sr-only">Mestre Forno. </span>Salgados e pizzas em Manaus</span>
-        </h1>
-        <p class="lede">Feitos na hora, em família. Peça pelo WhatsApp e receba quentinho.</p>
+        <h1 id="titulo-principal">Salgados e pizzas <span>em Manaus</span></h1>
+        <p class="lede">Quentinho, feito em família. Peça pelo WhatsApp e receba em toda a cidade.</p>
         <div class="actions">
-          <a class="btn btn--yellow" data-whatsapp href="https://wa.me/5592900000000?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
+          <a class="btn btn--yellow" data-whatsapp href="https://wa.me/5592992487642?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
             <svg aria-hidden="true"><use href="#i-wa"></use></svg>
             Peça pelo WhatsApp
             <span class="sr-only js-nova-aba"> (abre em nova aba)</span>
           </a>
           <a class="btn btn--ghost" href="#cardapio">Ver cardápio</a>
         </div>
-        <ul class="facts">
-          <li>Feito na hora</li>
-          <li>Salgados e pizzas</li>
-          <li>Peça pelo WhatsApp</li>
-        </ul>
+        <button type="button" class="hero__pause" hidden>Pausar vídeo</button>
       </div>
     </section>
 
     <section class="section section--light" id="cardapio" aria-labelledby="titulo-cardapio">
       <div class="wrap">
         <p class="eyebrow">Cardápio</p>
-        <h2 id="titulo-cardapio">O que sai do forno</h2>
-        <p class="lead">Salgados e pizzas para pedir pelo WhatsApp.</p>
-        <p class="aviso" role="note">Cardápio em atualização — confirme sabores e valores pelo WhatsApp.</p>
+        <h2 id="titulo-cardapio" class="reveal">O que sai do forno</h2>
+        <p class="lead">Escolha os itens, monte o pedido na página e envie pelo WhatsApp. A taxa de entrega é calculada pela 99 Entrega e se confirma na conversa.</p>
+        <p class="aviso" role="note">Cardápio de exemplo, só para esta versão de teste. Nomes, descrições e preços ainda não são os oficiais da casa.</p>
         <nav class="menu-jump" data-menu-jump aria-label="Grupos do cardápio">
           <a href="#salgados">Salgados</a>
           <a href="#pizzas">Pizzas</a>
@@ -159,70 +182,250 @@
           <section class="menu-group" id="salgados" aria-labelledby="titulo-salgados">
             <div class="menu-group__head">
               <h3 id="titulo-salgados">Salgados</h3>
+              <p>Fritos na hora, para o lanche ou para a festa. Valores por unidade, salvo o cento.</p>
             </div>
             <ul class="menu-grid">
-              <li class="item">
-                <div class="item__top"><h4>Coxinha de frango</h4><span class="badge">Exemplo</span></div>
-                <p>Descrição a confirmar.</p>
-                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              <li class="item" data-item="coxinha" data-centavos="800">
+                <picture>
+              <source type="image/avif" srcset="assets/foto/coxinha-320.avif 320w, assets/foto/coxinha-600.avif 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <source type="image/webp" srcset="assets/foto/coxinha-320.webp 320w, assets/foto/coxinha-600.webp 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <img src="assets/foto/coxinha-320.jpg" width="600" height="600" alt="Coxinhas douradas, uma aberta com recheio de frango e vapor." loading="lazy" decoding="async">
+            </picture>
+                <div class="item__body">
+                  <div class="item__top"><h4>Coxinha de frango</h4><span class="badge">Mais pedido</span></div>
+                  <p>Massa sequinha e recheio cremoso de frango desfiado.</p>
+                  <div class="item__foot">
+                    <p class="price"><span class="sr-only">Preço: </span>R$ 8,00</p>
+                    <div class="qty">
+                      <button type="button" data-menos aria-label="Tirar Coxinha de frango">−</button>
+                      <span data-qty aria-live="polite">0</span>
+                      <button type="button" data-mais aria-label="Adicionar Coxinha de frango">+</button>
+                    </div>
+                  </div>
+                </div>
               </li>
-              <li class="item">
-                <div class="item__top"><h4>Risole de queijo</h4><span class="badge">Exemplo</span></div>
-                <p>Descrição a confirmar.</p>
-                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              <li class="item" data-item="kibe" data-centavos="800">
+                <picture>
+              <source type="image/avif" srcset="assets/foto/kibe-320.avif 320w, assets/foto/kibe-600.avif 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <source type="image/webp" srcset="assets/foto/kibe-320.webp 320w, assets/foto/kibe-600.webp 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <img src="assets/foto/kibe-320.jpg" width="600" height="600" alt="Kibes fritos, um cortado mostrando o recheio de carne." loading="lazy" decoding="async">
+            </picture>
+                <div class="item__body">
+                  <div class="item__top"><h4>Kibe</h4></div>
+                  <p>Trigo, carne e um toque de hortelã, crocante por fora.</p>
+                  <div class="item__foot">
+                    <p class="price"><span class="sr-only">Preço: </span>R$ 8,00</p>
+                    <div class="qty">
+                      <button type="button" data-menos aria-label="Tirar Kibe">−</button>
+                      <span data-qty aria-live="polite">0</span>
+                      <button type="button" data-mais aria-label="Adicionar Kibe">+</button>
+                    </div>
+                  </div>
+                </div>
               </li>
-              <li class="item">
-                <div class="item__top"><h4>Pastel de carne</h4><span class="badge">Exemplo</span></div>
-                <p>Descrição a confirmar.</p>
-                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              <li class="item" data-item="risole" data-centavos="750">
+                <picture>
+              <source type="image/avif" srcset="assets/foto/risole-320.avif 320w, assets/foto/risole-600.avif 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <source type="image/webp" srcset="assets/foto/risole-320.webp 320w, assets/foto/risole-600.webp 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <img src="assets/foto/risole-320.jpg" width="600" height="600" alt="Risolis dourados, um aberto com queijo puxando." loading="lazy" decoding="async">
+            </picture>
+                <div class="item__body">
+                  <div class="item__top"><h4>Risole de queijo</h4></div>
+                  <p>Massa leve e queijo derretido no primeiro pedaço.</p>
+                  <div class="item__foot">
+                    <p class="price"><span class="sr-only">Preço: </span>R$ 7,50</p>
+                    <div class="qty">
+                      <button type="button" data-menos aria-label="Tirar Risole de queijo">−</button>
+                      <span data-qty aria-live="polite">0</span>
+                      <button type="button" data-mais aria-label="Adicionar Risole de queijo">+</button>
+                    </div>
+                  </div>
+                </div>
               </li>
-              <li class="item">
-                <div class="item__top"><h4>Bolinha de queijo</h4><span class="badge">Exemplo</span></div>
-                <p>Descrição a confirmar.</p>
-                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              <li class="item" data-item="enroladinho" data-centavos="650">
+                <picture>
+              <source type="image/avif" srcset="assets/foto/enroladinho-320.avif 320w, assets/foto/enroladinho-600.avif 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <source type="image/webp" srcset="assets/foto/enroladinho-320.webp 320w, assets/foto/enroladinho-600.webp 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <img src="assets/foto/enroladinho-320.jpg" width="600" height="600" alt="Enroladinhos de salsicha fritos em uma assadeira." loading="lazy" decoding="async">
+            </picture>
+                <div class="item__body">
+                  <div class="item__top"><h4>Enroladinho de salsicha</h4></div>
+                  <p>O clássico de festa, com massa fininha.</p>
+                  <div class="item__foot">
+                    <p class="price"><span class="sr-only">Preço: </span>R$ 6,50</p>
+                    <div class="qty">
+                      <button type="button" data-menos aria-label="Tirar Enroladinho de salsicha">−</button>
+                      <span data-qty aria-live="polite">0</span>
+                      <button type="button" data-mais aria-label="Adicionar Enroladinho de salsicha">+</button>
+                    </div>
+                  </div>
+                </div>
               </li>
-              <li class="item">
-                <div class="item__top"><h4>Enroladinho de salsicha</h4><span class="badge">Exemplo</span></div>
-                <p>Descrição a confirmar.</p>
-                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              <li class="item" data-item="bolinha" data-centavos="700">
+                <picture>
+              <source type="image/avif" srcset="assets/foto/bolinha-320.avif 320w, assets/foto/bolinha-600.avif 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <source type="image/webp" srcset="assets/foto/bolinha-320.webp 320w, assets/foto/bolinha-600.webp 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <img src="assets/foto/bolinha-320.jpg" width="600" height="600" alt="Bolinha de queijo aberta, com o recheio derretido." loading="lazy" decoding="async">
+            </picture>
+                <div class="item__body">
+                  <div class="item__top"><h4>Bolinha de queijo</h4></div>
+                  <p>Bem crocante, com o queijo esticando na hora.</p>
+                  <div class="item__foot">
+                    <p class="price"><span class="sr-only">Preço: </span>R$ 7,00</p>
+                    <div class="qty">
+                      <button type="button" data-menos aria-label="Tirar Bolinha de queijo">−</button>
+                      <span data-qty aria-live="polite">0</span>
+                      <button type="button" data-mais aria-label="Adicionar Bolinha de queijo">+</button>
+                    </div>
+                  </div>
+                </div>
               </li>
-              <li class="item">
-                <div class="item__top"><h4>Esfiha de carne</h4><span class="badge">Exemplo</span></div>
-                <p>Descrição a confirmar.</p>
-                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              <li class="item" data-item="pastel" data-centavos="900">
+                <picture>
+              <source type="image/avif" srcset="assets/foto/pastel-320.avif 320w, assets/foto/pastel-600.avif 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <source type="image/webp" srcset="assets/foto/pastel-320.webp 320w, assets/foto/pastel-600.webp 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <img src="assets/foto/pastel-320.jpg" width="600" height="600" alt="Pastel de carne frito, aberto, com recheio de carne." loading="lazy" decoding="async">
+            </picture>
+                <div class="item__body">
+                  <div class="item__top"><h4>Pastel de carne</h4></div>
+                  <p>Massa fina e carne moída bem temperada.</p>
+                  <div class="item__foot">
+                    <p class="price"><span class="sr-only">Preço: </span>R$ 9,00</p>
+                    <div class="qty">
+                      <button type="button" data-menos aria-label="Tirar Pastel de carne">−</button>
+                      <span data-qty aria-live="polite">0</span>
+                      <button type="button" data-mais aria-label="Adicionar Pastel de carne">+</button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="item" data-item="cento" data-centavos="12000">
+                <picture>
+              <source type="image/avif" srcset="assets/foto/cento-320.avif 320w, assets/foto/cento-600.avif 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <source type="image/webp" srcset="assets/foto/cento-320.webp 320w, assets/foto/cento-600.webp 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <img src="assets/foto/cento-320.jpg" width="600" height="600" alt="Bandeja com cento de salgados sortidos: coxinhas, bolinhas, enroladinhos e kibes." loading="lazy" decoding="async">
+            </picture>
+                <div class="item__body">
+                  <div class="item__top"><h4>Cento de salgados</h4><span class="badge">Festa</span></div>
+                  <p>Cem unidades sortidas para festa. O mix se combina no pedido.</p>
+                  <div class="item__foot">
+                    <p class="price"><span class="sr-only">Preço: </span>R$ 120,00</p>
+                    <div class="qty">
+                      <button type="button" data-menos aria-label="Tirar Cento de salgados">−</button>
+                      <span data-qty aria-live="polite">0</span>
+                      <button type="button" data-mais aria-label="Adicionar Cento de salgados">+</button>
+                    </div>
+                  </div>
+                </div>
               </li>
             </ul>
           </section>
           <section class="menu-group" id="pizzas" aria-labelledby="titulo-pizzas">
             <div class="menu-group__head">
               <h3 id="titulo-pizzas">Pizzas</h3>
+              <p>Pizza grande, com cerca de oito fatias, assada no forno.</p>
             </div>
             <ul class="menu-grid">
-              <li class="item">
-                <div class="item__top"><h4>Mussarela</h4><span class="badge">Exemplo</span></div>
-                <p>Descrição a confirmar.</p>
-                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              <li class="item" data-item="calabresa" data-centavos="5200">
+                <picture>
+              <source type="image/avif" srcset="assets/foto/calabresa-320.avif 320w, assets/foto/calabresa-600.avif 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <source type="image/webp" srcset="assets/foto/calabresa-320.webp 320w, assets/foto/calabresa-600.webp 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <img src="assets/foto/calabresa-320.jpg" width="600" height="600" alt="Pizza calabresa recém-assada, com cebola e borda bolhada." loading="lazy" decoding="async">
+            </picture>
+                <div class="item__body">
+                  <div class="item__top"><h4>Calabresa</h4><span class="badge">Mais pedido</span></div>
+                  <p>Pizza grande com calabresa, cebola e mussarela.</p>
+                  <div class="item__foot">
+                    <p class="price"><span class="sr-only">Preço: </span>R$ 52,00</p>
+                    <div class="qty">
+                      <button type="button" data-menos aria-label="Tirar Calabresa">−</button>
+                      <span data-qty aria-live="polite">0</span>
+                      <button type="button" data-mais aria-label="Adicionar Calabresa">+</button>
+                    </div>
+                  </div>
+                </div>
               </li>
-              <li class="item">
-                <div class="item__top"><h4>Calabresa</h4><span class="badge">Exemplo</span></div>
-                <p>Descrição a confirmar.</p>
-                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              <li class="item" data-item="frango-catupiry" data-centavos="5800">
+                <picture>
+              <source type="image/avif" srcset="assets/foto/frango-catupiry-320.avif 320w, assets/foto/frango-catupiry-600.avif 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <source type="image/webp" srcset="assets/foto/frango-catupiry-320.webp 320w, assets/foto/frango-catupiry-600.webp 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <img src="assets/foto/frango-catupiry-320.jpg" width="600" height="600" alt="Pizza de frango com catupiry, queijo dourado e borda assada." loading="lazy" decoding="async">
+            </picture>
+                <div class="item__body">
+                  <div class="item__top"><h4>Frango com catupiry</h4><span class="badge">Mais pedido</span></div>
+                  <p>Pizza grande com frango desfiado e catupiry.</p>
+                  <div class="item__foot">
+                    <p class="price"><span class="sr-only">Preço: </span>R$ 58,00</p>
+                    <div class="qty">
+                      <button type="button" data-menos aria-label="Tirar Frango com catupiry">−</button>
+                      <span data-qty aria-live="polite">0</span>
+                      <button type="button" data-mais aria-label="Adicionar Frango com catupiry">+</button>
+                    </div>
+                  </div>
+                </div>
               </li>
-              <li class="item">
-                <div class="item__top"><h4>Frango com catupiry</h4><span class="badge">Exemplo</span></div>
-                <p>Descrição a confirmar.</p>
-                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              <li class="item" data-item="marguerita" data-centavos="4800">
+                <picture>
+              <source type="image/avif" srcset="assets/foto/marguerita-320.avif 320w, assets/foto/marguerita-600.avif 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <source type="image/webp" srcset="assets/foto/marguerita-320.webp 320w, assets/foto/marguerita-600.webp 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <img src="assets/foto/marguerita-320.jpg" width="600" height="600" alt="Pizza marguerita com manjericão fresco e borda bem assada." loading="lazy" decoding="async">
+            </picture>
+                <div class="item__body">
+                  <div class="item__top"><h4>Marguerita</h4></div>
+                  <p>Pizza grande com mussarela, tomate e manjericão.</p>
+                  <div class="item__foot">
+                    <p class="price"><span class="sr-only">Preço: </span>R$ 48,00</p>
+                    <div class="qty">
+                      <button type="button" data-menos aria-label="Tirar Marguerita">−</button>
+                      <span data-qty aria-live="polite">0</span>
+                      <button type="button" data-mais aria-label="Adicionar Marguerita">+</button>
+                    </div>
+                  </div>
+                </div>
               </li>
-              <li class="item">
-                <div class="item__top"><h4>Portuguesa</h4><span class="badge">Exemplo</span></div>
-                <p>Descrição a confirmar.</p>
-                <p class="price"><span class="sr-only">Preço: </span>R$ --,--</p>
+              <li class="item" data-item="portuguesa" data-centavos="5600">
+                <picture>
+              <source type="image/avif" srcset="assets/foto/portuguesa-320.avif 320w, assets/foto/portuguesa-600.avif 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <source type="image/webp" srcset="assets/foto/portuguesa-320.webp 320w, assets/foto/portuguesa-600.webp 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <img src="assets/foto/portuguesa-320.jpg" width="600" height="600" alt="Pizza portuguesa com presunto, ovo, azeitona e ervilha." loading="lazy" decoding="async">
+            </picture>
+                <div class="item__body">
+                  <div class="item__top"><h4>Portuguesa</h4></div>
+                  <p>Pizza grande com presunto, ovo, cebola, azeitona e ervilha.</p>
+                  <div class="item__foot">
+                    <p class="price"><span class="sr-only">Preço: </span>R$ 56,00</p>
+                    <div class="qty">
+                      <button type="button" data-menos aria-label="Tirar Portuguesa">−</button>
+                      <span data-qty aria-live="polite">0</span>
+                      <button type="button" data-mais aria-label="Adicionar Portuguesa">+</button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="item" data-item="tucuma" data-centavos="6200">
+                <picture>
+              <source type="image/avif" srcset="assets/foto/tucuma-320.avif 320w, assets/foto/tucuma-600.avif 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <source type="image/webp" srcset="assets/foto/tucuma-320.webp 320w, assets/foto/tucuma-600.webp 600w" sizes="(max-width: 640px) 46vw, 280px">
+              <img src="assets/foto/tucuma-320.jpg" width="600" height="600" alt="Pizza de tucumã com tiras de queijo coalho grelhado." loading="lazy" decoding="async">
+            </picture>
+                <div class="item__body">
+                  <div class="item__top"><h4>Tucumã com queijo coalho</h4><span class="badge">Sabor da casa</span></div>
+                  <p>Pizza grande com tucumã e queijo coalho, um sabor da região.</p>
+                  <div class="item__foot">
+                    <p class="price"><span class="sr-only">Preço: </span>R$ 62,00</p>
+                    <div class="qty">
+                      <button type="button" data-menos aria-label="Tirar Tucumã com queijo coalho">−</button>
+                      <span data-qty aria-live="polite">0</span>
+                      <button type="button" data-mais aria-label="Adicionar Tucumã com queijo coalho">+</button>
+                    </div>
+                  </div>
+                </div>
               </li>
             </ul>
           </section>
         </div>
         <div class="cta-row">
-          <a class="btn btn--yellow" data-whatsapp href="https://wa.me/5592900000000?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
+          <a class="btn btn--yellow" data-whatsapp href="https://wa.me/5592992487642?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
             <svg aria-hidden="true"><use href="#i-wa"></use></svg>
             Peça pelo WhatsApp
             <span class="sr-only js-nova-aba"> (abre em nova aba)</span>
@@ -234,66 +437,146 @@
     <section class="section on-dark" id="como-pedir" aria-labelledby="titulo-pedir">
       <div class="wrap">
         <p class="eyebrow">Como pedir</p>
-        <h2 id="titulo-pedir">Peça pelo WhatsApp</h2>
-        <p class="lead">Escolha no cardápio, chame no WhatsApp e combine a entrega ou a retirada. A área atendida e o horário ainda serão confirmados.</p>
+        <h2 id="titulo-pedir" class="reveal">Do cardápio ao WhatsApp</h2>
+        <p class="lead">O caminho é curto: escolha no cardápio, chame a gente e combine a entrega. Levamos para toda Manaus.</p>
 
         <div class="steps">
-          <article class="panel">
+          <article class="panel reveal">
             <span class="step__num">01</span>
             <h3>Escolha</h3>
-            <p>Separe os salgados e as pizzas no cardápio.</p>
+            <p>Separe os salgados e as pizzas e, se quiser, monte a lista aqui na página.</p>
           </article>
-          <article class="panel">
+          <article class="panel reveal">
             <span class="step__num">02</span>
             <h3>Chame</h3>
-            <p>Toque em Peça pelo WhatsApp. A conversa abre com a mensagem já escrita.</p>
+            <p>Toque em Peça pelo WhatsApp. A conversa já abre com a mensagem pronta para você revisar e enviar.</p>
           </article>
-          <article class="panel">
+          <article class="panel reveal">
             <span class="step__num">03</span>
             <h3>Combine</h3>
-            <p>A gente confirma o pedido, o valor e se vai de entrega ou de retirada.</p>
+            <p>A gente confirma o pedido e a taxa de entrega, calculada pela 99 Entrega no momento do envio.</p>
           </article>
         </div>
 
         <div class="info-grid">
-          <article class="panel">
+          <article class="panel reveal">
             <h3>Entrega</h3>
-            <span class="badge badge--on-dark">A confirmar</span>
-            <p>Área de entrega: a definir. Na hora do pedido, pergunte pelo WhatsApp se o seu bairro entra na rota.</p>
+            <p>Entregamos para toda Manaus. A taxa é variável: depende da distância e é calculada pela 99 Entrega na hora do pedido. O valor se confirma no WhatsApp, antes do envio.</p>
           </article>
-          <article class="panel">
+          <article class="panel reveal">
             <h3>Horário</h3>
-            <span class="badge badge--on-dark">A confirmar</span>
-            <p>Horário de funcionamento: a definir. Os dias e os turnos serão publicados aqui.</p>
+            <p>Segunda a sexta, das 8h às 20h. Sábado e domingo, das 8h às 17h.</p>
           </article>
-          <article class="panel">
+          <article class="panel reveal">
             <h3>Retirada</h3>
-            <span class="badge badge--on-dark">A confirmar</span>
-            <p>Retirada no local: endereço a confirmar, em Manaus/AM.</p>
+            <p>Também dá para retirar. O endereço se confirma no WhatsApp, no momento do pedido.</p>
           </article>
-        </div>
-
-        <div class="cta-row">
-          <a class="btn btn--yellow" data-whatsapp href="https://wa.me/5592900000000?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
-            <svg aria-hidden="true"><use href="#i-wa"></use></svg>
-            Peça pelo WhatsApp
-            <span class="sr-only js-nova-aba"> (abre em nova aba)</span>
-          </a>
         </div>
       </div>
     </section>
 
-    <section class="section section--paper" id="sobre" aria-labelledby="titulo-sobre">
+    <section class="assinatura on-dark reveal" id="forno" aria-labelledby="titulo-forno">
+      <div class="assinatura__media">
+        <picture>
+              <source type="image/avif" srcset="assets/foto/forno-720.avif 720w, assets/foto/forno-1280.avif 1280w" sizes="100vw">
+              <source type="image/webp" srcset="assets/foto/forno-720.webp 720w, assets/foto/forno-1280.webp 1280w" sizes="100vw">
+              <img src="assets/foto/forno-720.jpg" width="1280" height="720" alt="Forno aceso, com uma pizza na pá entrando na labareda." loading="lazy" decoding="async">
+            </picture>
+        <video class="assinatura__video" muted playsinline loop preload="none" tabindex="-1" aria-hidden="true" poster="assets/foto/forno-1280.jpg"></video>
+        <div class="assinatura__shade"></div>
+      </div>
+      <div class="wrap assinatura__copy reveal">
+        <img class="assinatura__logo brand-glow" src="assets/mestreforno_simbolo_transparente.svg" width="102" height="80" alt="">
+        <p class="eyebrow">O forno acende</p>
+        <h2 id="titulo-forno">A brasa, o queijo, o ponto</h2>
+        <p>Este é o momento da casa: o forno quente e o pedido saindo no ponto. Um recorte curto, só para ver de perto — e, se a conexão estiver lenta ou você preferir menos movimento, a foto fica no lugar do vídeo.</p>
+      </div>
+    </section>
+
+    <section class="section section--paper" id="historia" aria-labelledby="titulo-historia">
       <div class="wrap about">
-        <div>
-          <p class="eyebrow">Sobre</p>
-          <h2 id="titulo-sobre">Um forno de família</h2>
-          <p class="lead">A Mestre Forno é um negócio de família em Manaus. O salgado sai sequinho, a pizza sai quente, e o pedido chega pelo WhatsApp — do jeito simples de quem cozinha para a própria casa.</p>
+        <div class="reveal">
+          <p class="eyebrow">História</p>
+          <h2 id="titulo-historia">A empresa é nova. A experiência, não.</h2>
+          <p class="lead">O Cláudio trabalha com salgados desde 1990. Em 2000, ele e a Nilde abriram a primeira empresa da família. O movimento cresceu, mas naquela época faltou transporte e logística para acompanhar a demanda, e a casa precisou encerrar.</p>
+          <p class="lead">Nesse tempo, a família não parou. Aprimorou a coxinha, as frituras e as massas — e o Cláudio acumulou uma experiência que hoje também chega à pizza.</p>
+          <p class="lead">Agora a Mestre Forno volta ao forno, em Manaus. A empresa começa agora. O jeito de fazer, não.</p>
         </div>
-        <figure class="quote">
+        <figure class="quote reveal">
+          <picture>
+              <source type="image/avif" srcset="assets/foto/familia-720.avif 720w, assets/foto/familia-1200.avif 1200w" sizes="(max-width: 859px) 100vw, 28vw">
+              <source type="image/webp" srcset="assets/foto/familia-720.webp 720w, assets/foto/familia-1200.webp 1200w" sizes="(max-width: 859px) 100vw, 28vw">
+              <img src="assets/foto/familia-720.jpg" width="1200" height="900" alt="Duas pessoas de costas, em uma cozinha, preparando massas ao lado do forno aceso." loading="lazy" decoding="async">
+            </picture>
           <blockquote>Quentinho, feito em casa, pedido pelo WhatsApp.</blockquote>
           <figcaption>Mestre Forno · Manaus</figcaption>
         </figure>
+      </div>
+      <div class="wrap historia-fotos">
+        <figure class="reveal historia-clip">
+          <div class="historia-clip__frame">
+          <picture>
+              <source type="image/avif" srcset="assets/foto/massas-720.avif 720w, assets/foto/massas-1200.avif 1200w" sizes="(max-width: 859px) 100vw, 45vw">
+              <source type="image/webp" srcset="assets/foto/massas-720.webp 720w, assets/foto/massas-1200.webp 1200w" sizes="(max-width: 859px) 100vw, 45vw">
+              <img src="assets/foto/massas-720.jpg" width="1200" height="900" alt="Duas pares de mãos preparando massa de pizza em uma mesa enfarinhada." loading="lazy" decoding="async">
+            </picture>
+              <video class="historia-clip__video" muted playsinline loop preload="none" tabindex="-1" aria-hidden="true" poster="assets/foto/massas-1200.jpg" data-src="assets/video/preparo-massas.mp4"></video>
+          </div>
+          <figcaption>As massas, no capricho de sempre.</figcaption>
+        </figure>
+        <figure class="reveal">
+          <picture>
+              <source type="image/avif" srcset="assets/foto/fritura-720.avif 720w, assets/foto/fritura-1200.avif 1200w" sizes="(max-width: 859px) 100vw, 45vw">
+              <source type="image/webp" srcset="assets/foto/fritura-720.webp 720w, assets/foto/fritura-1200.webp 1200w" sizes="(max-width: 859px) 100vw, 45vw">
+              <img src="assets/foto/fritura-720.jpg" width="1200" height="900" alt="Mãos retirando coxinhas douradas de uma panela de óleo quente." loading="lazy" decoding="async">
+            </picture>
+          <figcaption>A fritura no ponto, como a casa aprendeu com o tempo.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section on-dark" id="instagram" aria-labelledby="titulo-instagram">
+      <div class="wrap">
+        <p class="eyebrow">Instagram</p>
+        <h2 id="titulo-instagram" class="reveal">Do forno para a tela</h2>
+        <p class="lead">Uma prévia do que sai por aqui. Siga <a class="ig-handle" href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer">@mestreforno<span class="sr-only"> (abre em nova aba)</span></a> para ver o dia a dia da casa.</p>
+        <ul class="ig-strip">
+          <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
+              <source type="image/avif" srcset="assets/foto/coxinha-320.avif 320w, assets/foto/coxinha-600.avif 600w" sizes="160px">
+              <source type="image/webp" srcset="assets/foto/coxinha-320.webp 320w, assets/foto/coxinha-600.webp 600w" sizes="160px">
+              <img src="assets/foto/coxinha-320.jpg" width="600" height="600" alt="Coxinhas douradas." loading="lazy" decoding="async">
+            </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
+          <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
+              <source type="image/avif" srcset="assets/foto/calabresa-320.avif 320w, assets/foto/calabresa-600.avif 600w" sizes="160px">
+              <source type="image/webp" srcset="assets/foto/calabresa-320.webp 320w, assets/foto/calabresa-600.webp 600w" sizes="160px">
+              <img src="assets/foto/calabresa-320.jpg" width="600" height="600" alt="Pizza calabresa saindo do forno." loading="lazy" decoding="async">
+            </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
+          <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
+              <source type="image/avif" srcset="assets/foto/forno-720.avif 720w, assets/foto/forno-1280.avif 1280w" sizes="160px">
+              <source type="image/webp" srcset="assets/foto/forno-720.webp 720w, assets/foto/forno-1280.webp 1280w" sizes="160px">
+              <img src="assets/foto/forno-720.jpg" width="1280" height="720" alt="Forno a lenha com uma pizza na pá." loading="lazy" decoding="async">
+            </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
+          <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
+              <source type="image/avif" srcset="assets/foto/massas-320.avif 320w, assets/foto/massas-600.avif 600w" sizes="160px">
+              <source type="image/webp" srcset="assets/foto/massas-320.webp 320w, assets/foto/massas-600.webp 600w" sizes="160px">
+              <img src="assets/foto/massas-320.jpg" width="600" height="600" alt="Mãos preparando massa em uma bancada enfarinhada." loading="lazy" decoding="async">
+            </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
+          <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
+              <source type="image/avif" srcset="assets/foto/cento-320.avif 320w, assets/foto/cento-600.avif 600w" sizes="160px">
+              <source type="image/webp" srcset="assets/foto/cento-320.webp 320w, assets/foto/cento-600.webp 600w" sizes="160px">
+              <img src="assets/foto/cento-320.jpg" width="600" height="600" alt="Bandeja de salgados para festa." loading="lazy" decoding="async">
+            </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
+          <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
+              <source type="image/avif" srcset="assets/foto/tucuma-320.avif 320w, assets/foto/tucuma-600.avif 600w" sizes="160px">
+              <source type="image/webp" srcset="assets/foto/tucuma-320.webp 320w, assets/foto/tucuma-600.webp 600w" sizes="160px">
+              <img src="assets/foto/tucuma-320.jpg" width="600" height="600" alt="Pizza de tucumã com queijo coalho." loading="lazy" decoding="async">
+            </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
+          <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
+              <source type="image/avif" srcset="assets/foto/balcao-720.avif 720w, assets/foto/balcao-1200.avif 1200w" sizes="160px">
+              <source type="image/webp" srcset="assets/foto/balcao-720.webp 720w, assets/foto/balcao-1200.webp 1200w" sizes="160px">
+              <img src="assets/foto/balcao-720.jpg" width="1200" height="900" alt="Balcão com bandejas de salgados e uma pizza." loading="lazy" decoding="async">
+            </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
+        </ul>
       </div>
     </section>
   </main>
@@ -301,21 +584,29 @@
   <footer class="site-footer on-dark">
     <div class="wrap footer__grid">
       <div>
-        <img class="footer__logo" src="assets/mestreforno_horizontal_transparente.svg" width="240" height="39" alt="Mestre Forno" decoding="async">
-        <p class="footer__tag">Salgados e pizzas em Manaus/AM.</p>
+        <img class="footer__logo" src="assets/mestreforno_horizontal_transparente.svg" width="210" height="56" alt="Mestre Forno" decoding="async">
+        <p class="footer__tag">Salgados e pizzas em Manaus/AM. Entrega em toda a cidade, com taxa pela 99 Entrega.</p>
       </div>
       <nav aria-label="Redes e contato">
         <ul class="footer-links">
           <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer">Instagram<span class="sr-only"> (abre em nova aba)</span></a></li>
-          <li><a data-whatsapp href="https://wa.me/5592900000000?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">WhatsApp<span class="sr-only js-nova-aba"> (abre em nova aba)</span></a></li>
+          <li><a data-whatsapp href="https://wa.me/5592992487642?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">WhatsApp<span class="sr-only js-nova-aba"> (abre em nova aba)</span></a></li>
         </ul>
       </nav>
     </div>
     <p class="legal">© <span data-ano>2026</span> Mestre Forno. Todos os direitos reservados.</p>
   </footer>
 
-  <script defer src="js/config.js"></script>
-  <script defer src="js/cardapio.js"></script>
-  <script defer src="js/main.js"></script>
+  <div class="pedido-bar" data-pedido-bar>
+    <a class="btn btn--yellow" data-whatsapp-pedido href="https://wa.me/5592992487642?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
+      <svg aria-hidden="true"><use href="#i-wa"></use></svg>
+      <span data-pedido-rotulo>Pedir pelo WhatsApp</span>
+      <span class="sr-only"> (abre em nova aba)</span>
+    </a>
+  </div>
+
+    <script src="js/config.js" defer></script>
+  <script src="js/cardapio.js" defer></script>
+  <script src="js/main.js" defer></script>
 </body>
 </html>

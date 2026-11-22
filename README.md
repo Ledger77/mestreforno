@@ -28,7 +28,7 @@ A mesma lista está escrita na seção Cardápio do **`index.html`**, para quem 
 
 Número e mensagem ficam em **`js/config.js`**, na constante `SITE`.
 
-- `whatsapp`: DDI + DDD + número, só dígitos. `5592900000000` é um marcador.
+- `whatsapp`: DDI + DDD + número, só dígitos. `5592992487642` é um marcador.
 - `mensagem`: o texto que já abre na conversa. O padrão é `Olá, Mestre Forno! Quero fazer um pedido.`
 
 Os botões já nascem com o link `wa.me` no HTML (`index.html` e `404.html`), então o pedido abre sem JavaScript. Se trocar o número ou a mensagem, atualize `SITE` e também esses `href`.
@@ -48,3 +48,7 @@ Hero, aviso do cardápio, como pedir, entrega, horário, retirada, sobre e rodap
 - Papel `#f4f2ee` e texto `#1a1a1a` são neutros de apoio, não cor de marca.
 - Títulos em Montserrat ExtraBold, hospedada em `assets/fonts/` (pesos 500, 700 e 800).
 - Logos oficiais em `assets/`. Não estique nem mude as cores. O viewBox do logo horizontal só corta a margem transparente, sem alterar o desenho.
+
+## Versão de teste
+
+Os itens e os preços do cardápio nesta versão são exemplos fictícios, só para o endereço de teste. As fotos e os vídeos também são encenações, não imagens oficiais da casa.
