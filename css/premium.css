@@ -1,3 +1,7 @@
+html {
+  overflow-x: clip;
+}
+
 /*
   Camada visual da versão premium.
   Mantém o kit: preto, amarelo #FFC629, branco, Montserrat.
@@ -274,7 +278,11 @@
   gap: 0.65rem;
   margin: 1.4rem 0 0;
   padding: 0 0 0.4rem;
+  max-width: 100%;
+  min-width: 0;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+  contain: content;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 }
