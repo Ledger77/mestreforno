@@ -23,9 +23,10 @@ const SITE = {
 };
 
 /*
-  Endereço de retirada, mostrado no checkout quando o cliente
-  escolhe buscar no local. A taxa de entrega é combinada no
-  WhatsApp; a entrega é feita por aplicativo, como a 99 Entrega.
+  Endereço da casa, mostrado no checkout na retirada e, no
+  delivery, como o ponto de onde a entrega sai. A taxa é
+  combinada no WhatsApp; a entrega é feita por aplicativo,
+  como a 99 Entrega. Este endereço não entra na mensagem.
 */
 const RETIRADA = {
   texto:
