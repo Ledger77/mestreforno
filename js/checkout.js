@@ -463,10 +463,16 @@
         var bloqueado = el.getAttribute("aria-disabled") === "true" || el.classList.contains("is-bloqueado");
         var url = el.getAttribute("data-wa-url") || el.getAttribute("href") || "";
         if (!bloqueado && url) {
-          if (el.tagName !== "A") {
-            ev.preventDefault();
-            var janela = window.open(url, "_blank", "noopener,noreferrer");
-            if (!janela) return;
+          ev.preventDefault();
+          // window.open com "noopener" devolve null mesmo quando a aba abre,
+          // então não dá para usar o retorno como prova de popup bloqueado.
+          // Limpa memória e storage no clique, independente da navegação
+          // (o WhatsApp abre em nova aba; esta aba continua com o estado).
+          var janela = window.open(url, "_blank");
+          if (janela) {
+            try {
+              janela.opener = null;
+            } catch (e) {}
           }
           depoisDeEnviarWhatsApp();
           return;
