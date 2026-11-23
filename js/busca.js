@@ -123,25 +123,72 @@
     var itens = Array.prototype.slice.call(raiz.querySelectorAll("[data-item]")).map(dadosDoItem);
     var grupos = Array.prototype.slice.call(raiz.querySelectorAll(".menu-group"));
     var jump = document.querySelector("[data-menu-jump]");
+    var filtro = "";
 
     function setHidden(el, hidden) {
       if (!el) return;
       el.hidden = hidden;
     }
 
+    function grupoDoItem(it) {
+      var g = it.el.closest && it.el.closest(".menu-group");
+      return g ? g.id : "";
+    }
+
+    function tituloGrupo(id) {
+      var mapa = { salgados: "Salgados", pizzas: "Pizzas" };
+      return mapa[id] || id;
+    }
+
+    function atualizarBotoes() {
+      if (!jump) return;
+      Array.prototype.slice.call(jump.querySelectorAll("[data-filtro]")).forEach(function (btn) {
+        var ativo = Boolean(filtro) && btn.getAttribute("data-filtro") === filtro;
+        btn.classList.toggle("is-ativo", ativo);
+        btn.setAttribute("aria-pressed", ativo ? "true" : "false");
+      });
+    }
+
+    function mostrarSugestao(nome, extra, grupoId) {
+      if (!sugestaoEl) return;
+      sugestaoEl.hidden = false;
+      sugestaoEl.innerHTML = "";
+      sugestaoEl.appendChild(document.createTextNode("Você quis dizer: "));
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.setAttribute("data-sugestao", nome);
+      if (grupoId) btn.setAttribute("data-sugestao-filtro", grupoId);
+      btn.textContent = nome + "?";
+      sugestaoEl.appendChild(btn);
+      if (extra) sugestaoEl.appendChild(document.createTextNode(" " + extra));
+    }
+
+    function limparSugestao() {
+      setHidden(sugestaoEl, true);
+      if (sugestaoEl) sugestaoEl.textContent = "";
+    }
+
     function aplicar(valor) {
       var q = valor == null ? campo.value : valor;
       var tem = Boolean(String(q).trim());
       setHidden(limpar, !tem);
+      setHidden(jump, false);
+      atualizarBotoes();
+
+      function noFiltro(a) {
+        return !filtro || grupoDoItem(a.item) === filtro;
+      }
 
       if (!tem) {
-        itens.forEach(function (it) { setHidden(it.el, false); });
-        grupos.forEach(function (g) { setHidden(g, false); });
-        setHidden(jump, false);
-        setHidden(sugestaoEl, true);
+        itens.forEach(function (it) {
+          setHidden(it.el, Boolean(filtro) && grupoDoItem(it) !== filtro);
+        });
+        grupos.forEach(function (g) {
+          setHidden(g, Boolean(filtro) && g.id !== filtro);
+        });
+        limparSugestao();
         setHidden(vazioEl, true);
-        if (sugestaoEl) sugestaoEl.textContent = "";
-        if (statusEl) statusEl.textContent = "";
+        if (statusEl) statusEl.textContent = filtro ? "Mostrando " + tituloGrupo(filtro) + "." : "";
         return;
       }
 
@@ -154,42 +201,35 @@
       exatos.sort(function (a, b) { return a.ev.pontos - b.ev.pontos; });
       fuzzys.sort(function (a, b) { return a.ev.pontos - b.ev.pontos; });
 
-      var mostrar = exatos.length ? exatos : fuzzys;
-      var visiveis = {};
+      var exatosAqui = exatos.filter(noFiltro);
+      var fuzzysAqui = fuzzys.filter(noFiltro);
+      var mostrar = exatosAqui.length ? exatosAqui : fuzzysAqui;
+      var outros = (exatos.length ? exatos : fuzzys).filter(function (a) { return !noFiltro(a); });
+
       itens.forEach(function (it) { setHidden(it.el, true); });
-      mostrar.forEach(function (a) {
-        setHidden(a.item.el, false);
-        visiveis[a.item.el.getAttribute("data-item")] = true;
-      });
+      mostrar.forEach(function (a) { setHidden(a.item.el, false); });
 
       grupos.forEach(function (g) {
         var algum = g.querySelector("[data-item]:not([hidden])");
         setHidden(g, !algum);
       });
-      setHidden(jump, true);
 
-      if (!exatos.length && fuzzys.length) {
-        var nome = fuzzys[0].item.nome;
-        if (sugestaoEl) {
-          sugestaoEl.hidden = false;
-          sugestaoEl.innerHTML = "";
-          sugestaoEl.appendChild(document.createTextNode("Você quis dizer: "));
-          var btn = document.createElement("button");
-          btn.type = "button";
-          btn.setAttribute("data-sugestao", nome);
-          btn.textContent = nome + "?";
-          sugestaoEl.appendChild(btn);
-        }
+      if (mostrar.length && !exatosAqui.length && fuzzysAqui.length) {
+        mostrarSugestao(fuzzysAqui[0].item.nome);
         setHidden(vazioEl, true);
-        if (statusEl) statusEl.textContent = "Sugestão: " + nome + ". " + fuzzys.length + (fuzzys.length === 1 ? " item encontrado." : " itens encontrados.");
+        if (statusEl) statusEl.textContent = "Sugestão: " + fuzzysAqui[0].item.nome + ".";
       } else if (mostrar.length) {
-        setHidden(sugestaoEl, true);
-        if (sugestaoEl) sugestaoEl.textContent = "";
+        limparSugestao();
         setHidden(vazioEl, true);
         if (statusEl) statusEl.textContent = mostrar.length + (mostrar.length === 1 ? " item encontrado." : " itens encontrados.");
+      } else if (outros.length) {
+        var outro = outros[0];
+        var gid = grupoDoItem(outro.item);
+        mostrarSugestao(outro.item.nome, "(em " + tituloGrupo(gid) + ")", gid);
+        setHidden(vazioEl, true);
+        if (statusEl) statusEl.textContent = "Nenhum resultado em " + tituloGrupo(filtro) + ". Sugestão em " + tituloGrupo(gid) + ": " + outro.item.nome + ".";
       } else {
-        setHidden(sugestaoEl, true);
-        if (sugestaoEl) sugestaoEl.textContent = "";
+        limparSugestao();
         setHidden(vazioEl, false);
         if (statusEl) statusEl.textContent = "Nenhum item encontrado.";
       }
@@ -213,9 +253,40 @@
       sugestaoEl.addEventListener("click", function (ev) {
         var btn = ev.target.closest && ev.target.closest("[data-sugestao]");
         if (!btn) return;
+        var grupoSug = btn.getAttribute("data-sugestao-filtro");
+        if (grupoSug) filtro = grupoSug;
         campo.value = btn.getAttribute("data-sugestao") || "";
         aplicar(campo.value);
         campo.focus();
+      });
+    }
+
+    function rolarGrupoVisivel() {
+      var g = grupos.filter(function (gr) { return !gr.hidden; })[0];
+      if (!g) return;
+      var header = document.querySelector("header.site-header");
+      var sticky = document.querySelector(".cardapio-busca-wrap");
+      var offset = 6;
+      if (header) offset += header.getBoundingClientRect().height;
+      if (sticky) offset += sticky.getBoundingClientRect().height;
+      g.style.scrollMarginTop = offset + "px";
+      var reduzir = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      try {
+        g.scrollIntoView({ block: "start", behavior: reduzir ? "auto" : "smooth" });
+      } catch (e) {
+        g.scrollIntoView(true);
+      }
+    }
+
+    if (jump) {
+      jump.addEventListener("click", function (ev) {
+        var btn = ev.target.closest && ev.target.closest("[data-filtro]");
+        if (!btn) return;
+        ev.preventDefault();
+        var id = btn.getAttribute("data-filtro") || "";
+        filtro = filtro === id ? "" : id;
+        aplicar(campo.value);
+        rolarGrupoVisivel();
       });
     }
   }

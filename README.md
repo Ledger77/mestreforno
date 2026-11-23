@@ -16,11 +16,11 @@ Abra `http://localhost:8000/`. Para ver como no GitHub Pages, sirva a pasta pai 
 
 ## Editar o cardápio
 
-A lista editável é **`js/cardapio.js`**. Com JavaScript, a página monta os cartões e os atalhos (Salgados, Pizzas) a partir dela.
+A lista editável é **`js/cardapio.js`**. Com JavaScript, a página monta os cartões e os filtros (Salgados, Pizzas) a partir dela.
 
 - Preço é texto, no formato `"R$ 8,00"`. Enquanto não houver preço, deixe `"R$ --,--"`.
 - `exemplo: true` mostra a etiqueta “Exemplo”. No item oficial, use `exemplo: false`.
-- Para um produto novo, copie um bloco `{ ... }` para dentro de `itens`. Um grupo novo, com `id` e `titulo`, também ganha atalho.
+- Para um produto novo, copie um bloco `{ ... }` para dentro de `itens`. Um grupo novo, com `id` e `titulo`, também ganha filtro.
 
 A mesma lista está escrita na seção Cardápio do **`index.html`**, para quem abre o site sem JavaScript. Se mudar um item no arquivo JS, mude o cartão correspondente no HTML.
 
@@ -57,4 +57,4 @@ Os itens e os preços do cardápio nesta versão são exemplos fictícios, só p
 
 Com JavaScript, o visitante monta o pedido no cardápio (vários itens e quantidades), abre a lista do pedido para ajustar ou remover itens, escolhe retirada ou entrega e abre o WhatsApp com a mensagem pronta. A mensagem não pede Pix e não traz taxa. A taxa de entrega é combinada pelo WhatsApp. A entrega é feita por aplicativo, como a 99 Entrega.
 
-O endereço da casa fica em `js/config.js` (`RETIRADA`). No delivery, o cliente informa rua, número, bairro e referência, e o checkout também mostra de onde a entrega sai (esse endereço da casa não entra na mensagem do WhatsApp). O carrinho vale por cerca de 2 horas na mesma visita e é limpo depois de enviar para o WhatsApp; uma visita nova começa vazia.
+O endereço da casa fica em `js/config.js` (`RETIRADA`). No delivery, o cliente informa rua, número, bairro e referência, e o checkout também mostra de onde a entrega sai (esse endereço da casa não entra na mensagem do WhatsApp). Em retirada e entrega há um campo opcional de observação; se preenchido, entra na mensagem como `Observação: …`. O carrinho vale por cerca de 2 horas na mesma visita e é limpo depois de enviar para o WhatsApp; uma visita nova começa vazia.

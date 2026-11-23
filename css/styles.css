@@ -595,6 +595,17 @@ html.nav-open body {
   color: var(--yellow);
 }
 
+.menu-jump a.is-ativo,
+.menu-jump a[aria-pressed="true"] {
+  background: var(--yellow);
+  color: var(--black);
+}
+
+.menu-jump a.is-ativo:hover,
+.menu-jump a[aria-pressed="true"]:hover {
+  color: var(--black);
+}
+
 .menu-group {
   margin-top: 2.5rem;
 }

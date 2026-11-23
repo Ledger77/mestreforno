@@ -506,6 +506,10 @@ html {
   display: none;
 }
 
+.cardapio-busca-wrap .menu-jump {
+  margin-top: 0.85rem;
+}
+
 @media (max-width: 639px) {
   .cardapio-busca-wrap {
     position: sticky;
