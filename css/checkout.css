@@ -49,6 +49,7 @@ button.btn:disabled,
   align-items: center;
   gap: 0.4rem;
   min-height: 44px;
+  overflow: visible;
   padding: 0.3rem 0.65rem;
   border: 2px solid var(--yellow);
   border-radius: 999px;
@@ -68,20 +69,84 @@ button.btn:disabled,
   color: var(--black);
 }
 
-.header-pedido__badge,
-.pedido-bar__badge {
+.carrinho {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 1.4rem;
-  height: 1.4rem;
-  padding: 0 0.3rem;
+  width: 1.85rem;
+  height: 1.85rem;
+  flex: 0 0 auto;
+}
+
+.carrinho__icone {
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: currentColor;
+  transform-origin: 50% 85%;
+}
+
+.header-pedido__badge,
+.pedido-bar__badge,
+.carrinho__badge {
+  position: absolute;
+  top: -0.3rem;
+  right: -0.38rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  padding: 0 0.22rem;
   border-radius: 999px;
   background: var(--yellow);
   color: var(--black);
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   font-weight: 800;
   line-height: 1;
+  box-shadow: 0 0 0 2px var(--black);
+}
+
+.pedido-bar .carrinho {
+  width: 2.15rem;
+  height: 2.15rem;
+}
+
+.pedido-bar .carrinho__icone {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--white);
+}
+
+.pedido-bar .carrinho__badge {
+  min-width: 1.2rem;
+  height: 1.2rem;
+  font-size: 0.7rem;
+  top: -0.2rem;
+  right: -0.28rem;
+}
+
+@keyframes carrinho-pulo {
+  0% { transform: translateY(0) rotate(0deg); }
+  28% { transform: translateY(-6px) rotate(-10deg); }
+  52% { transform: translateY(0) rotate(7deg); }
+  76% { transform: translateY(-3px) rotate(-4deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+@keyframes badge-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.28); }
+  100% { transform: scale(1); }
+}
+
+.carrinho.is-anima .carrinho__icone {
+  animation: carrinho-pulo 0.48s ease;
+}
+
+.carrinho.is-anima .carrinho__badge {
+  animation: badge-pop 0.36s ease;
 }
 
 .header-pedido:hover .header-pedido__badge,
@@ -121,13 +186,6 @@ button.btn:disabled,
   min-width: 0;
   flex: 1;
   color: var(--white);
-}
-
-.pedido-bar__badge {
-  flex: 0 0 auto;
-  min-width: 1.75rem;
-  height: 1.75rem;
-  font-size: 0.875rem;
 }
 
 .pedido-bar__qtd,
@@ -480,12 +538,18 @@ html.checkout-aberto body {
   }
 
   .header-pedido {
-    padding: 0.3rem 0.55rem;
+    padding: 0.25rem 0.45rem;
     font-size: 0;
+    gap: 0;
+  }
+
+  .header-pedido .carrinho__icone {
+    width: 1.4rem;
+    height: 1.4rem;
   }
 
   .header-pedido__badge {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 }
 
@@ -493,6 +557,11 @@ html.checkout-aberto body {
   .checkout,
   .checkout__panel {
     transition: none;
+  }
+
+  .carrinho.is-anima .carrinho__icone,
+  .carrinho.is-anima .carrinho__badge {
+    animation: none;
   }
 }
 

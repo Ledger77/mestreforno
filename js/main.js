@@ -180,6 +180,14 @@
       );
     }
 
+    function animarCarrinho() {
+      document.querySelectorAll("[data-carrinho]").forEach(function (el) {
+        el.classList.remove("is-anima");
+        void el.offsetWidth;
+        el.classList.add("is-anima");
+      });
+    }
+
     function mudar(id, delta) {
       if (!itens[id]) return;
       var atual = quantidadeDe(id) + delta;
@@ -187,6 +195,7 @@
       else pedido[id] = Math.min(atual, 99);
       gravarPedido(pedido);
       atualizarControles();
+      if (delta > 0) animarCarrinho();
     }
 
     document.querySelectorAll("[data-item]").forEach(function (card) {
