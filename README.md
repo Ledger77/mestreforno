@@ -52,3 +52,9 @@ Hero, aviso do cardápio, como pedir, entrega, horário, retirada, sobre e rodap
 ## Versão de teste
 
 Os itens e os preços do cardápio nesta versão são exemplos fictícios, só para o endereço de teste. As fotos e os vídeos também são encenações, não imagens oficiais da casa.
+
+## Pedido, retirada e entrega
+
+Com JavaScript, o visitante monta o pedido no cardápio (vários itens e quantidades), escolhe retirada ou delivery e abre o WhatsApp com a mensagem pronta. A mensagem não pede Pix.
+
+Endereço de retirada, coordenadas de origem, faixas de taxa e o limite de volume da moto ficam em `js/config.js` (`ENTREGA`). A distância usa Nominatim (OpenStreetMap) e OSRM, só no recorte urbano de Manaus, e cai para uma estimativa em linha reta se a rota falhar.

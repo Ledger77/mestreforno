@@ -68,7 +68,16 @@
     try {
       var bruto = localStorage.getItem(STORAGE);
       var dados = bruto ? JSON.parse(bruto) : {};
-      return dados && typeof dados === "object" ? dados : {};
+      if (!dados || typeof dados !== "object" || Array.isArray(dados)) return {};
+      var limpo = {};
+      Object.keys(dados).forEach(function (id) {
+        var q = Number(dados[id]);
+        if (!id || !Number.isFinite(q)) return;
+        q = Math.floor(q);
+        if (q < 1) return;
+        limpo[id] = Math.min(q, 99);
+      });
+      return limpo;
     } catch (e) {
       return {};
     }
@@ -86,23 +95,13 @@
     }, 0);
   }
 
-  function montarMensagem(pedido, itens) {
-    var linhas = ["Olá, Mestre Forno! Quero fazer um pedido:", ""];
-    var subtotal = 0;
-    var tem = false;
-    Object.keys(pedido).forEach(function (id) {
-      var qtd = Number(pedido[id]) || 0;
+  function subtotalCentavos(pedido, itens) {
+    return Object.keys(pedido).reduce(function (s, id) {
+      var q = Number(pedido[id]) || 0;
       var item = itens[id];
-      if (!qtd || !item) return;
-      tem = true;
-      subtotal += qtd * (Number(item.centavos) || 0);
-      linhas.push("• " + qtd + "× " + item.nome + " (" + item.preco + ")");
-    });
-    if (!tem) return SITE && SITE.mensagem ? SITE.mensagem : "Olá, Mestre Forno! Quero fazer um pedido.";
-    linhas.push("");
-    linhas.push("Subtotal estimado: " + formatarReais(subtotal));
-    linhas.push("Taxa de entrega via 99 Entrega a combinar.");
-    return linhas.join("\n");
+      if (!q || !item) return s;
+      return s + q * (Number(item.centavos) || 0);
+    }, 0);
   }
 
   function iniciarPedido() {
@@ -110,9 +109,7 @@
     var pedido = lerPedido();
     var bar = document.querySelector("[data-pedido-bar]");
     var rotulo = document.querySelector("[data-pedido-rotulo]");
-    var lista = document.querySelector("[data-carrinho-lista]");
-    var totalEl = document.querySelector("[data-carrinho-total]");
-    var drawer = document.getElementById("carrinho");
+    var subEl = document.querySelector("[data-pedido-subtotal]");
 
     function quantidadeDe(id) {
       return Number(pedido[id]) || 0;
@@ -128,47 +125,32 @@
       });
 
       var n = totalItens(pedido);
-      var mensagem = montarMensagem(pedido, itens);
-      var url = urlWhatsApp(mensagem);
-      document.querySelectorAll("[data-whatsapp-pedido]").forEach(function (el) {
-        aplicarLink(el, url);
+      var subtotal = subtotalCentavos(pedido, itens);
+      document.querySelectorAll("[data-pedido-badge]").forEach(function (el) {
+        el.textContent = String(n);
+      });
+      document.querySelectorAll("[data-header-pedido]").forEach(function (el) {
+        el.hidden = n === 0;
+        el.setAttribute("aria-label", n ? ("Pedido, " + n + (n === 1 ? " item" : " itens")) : "Pedido");
       });
       if (rotulo) {
         rotulo.textContent = n
-          ? n + (n === 1 ? " item" : " itens") + " · Enviar pedido"
-          : "Pedir pelo WhatsApp";
+          ? n + (n === 1 ? " item escolhido" : " itens escolhidos")
+          : "Nenhum item ainda";
       }
-      if (bar) bar.classList.toggle("tem-itens", n > 0);
+      if (subEl) {
+        subEl.hidden = n === 0;
+        subEl.textContent = n ? "Subtotal " + formatarReais(subtotal) : "";
+      }
+      if (bar) {
+        bar.classList.toggle("tem-itens", n > 0);
+        bar.hidden = n === 0;
+      }
+      document.documentElement.classList.toggle("tem-pedido", n > 0);
 
-      if (lista) {
-        if (!n) {
-          lista.innerHTML = "<p>Nenhum item ainda. Escolha no cardápio.</p>";
-          if (totalEl) totalEl.hidden = true;
-        } else {
-          var subtotal = 0;
-          var html = "<ul>";
-          Object.keys(pedido).forEach(function (id) {
-            var q = Number(pedido[id]) || 0;
-            var item = itens[id];
-            if (!q || !item) return;
-            subtotal += q * (Number(item.centavos) || 0);
-            html +=
-              "<li><strong>" +
-              escapar(item.nome) +
-              "</strong> — " +
-              q +
-              "× " +
-              escapar(item.preco) +
-              "</li>";
-          });
-          html += "</ul>";
-          lista.innerHTML = html;
-          if (totalEl) {
-            totalEl.hidden = false;
-            totalEl.textContent = "Subtotal estimado: " + formatarReais(subtotal);
-          }
-        }
-      }
+      document.dispatchEvent(
+        new CustomEvent("mf:pedido-atualizado", { detail: { pedido: pedido, n: n, subtotal: subtotal } })
+      );
     }
 
     function mudar(id, delta) {
@@ -188,21 +170,18 @@
       if (menos) menos.addEventListener("click", function () { mudar(id, -1); });
     });
 
-    if (bar) {
-      bar.addEventListener("click", function (evento) {
-        if (!totalItens(pedido)) return;
-        if (evento.target.closest("[data-whatsapp-pedido]") && drawer && evento.shiftKey) {
-          /* atalho: shift mantém o envio direto */
-          return;
-        }
-      });
-    }
-
-    document.querySelectorAll("[data-fecha-carrinho]").forEach(function (botao) {
-      botao.addEventListener("click", function () {
-        if (drawer) drawer.hidden = true;
-      });
+    window.addEventListener("storage", function (ev) {
+      if (ev.key !== STORAGE) return;
+      pedido = lerPedido();
+      atualizarControles();
     });
+
+    window.MF = window.MF || {};
+    MF.lerPedido = function () {
+      return lerPedido();
+    };
+    MF.formatarReais = formatarReais;
+    MF.urlWhatsApp = urlWhatsApp;
 
     atualizarControles();
   }
