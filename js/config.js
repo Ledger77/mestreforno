@@ -30,5 +30,5 @@ const SITE = {
 */
 const RETIRADA = {
   texto:
-    "Rua Grande Cidade (antiga Rua 25 de Dezembro), nº 110, Compensa 2, Manaus/AM. Referência: final da rua, portão marrom de ferro com listras brancas.",
+    "Rua Grande Cidade (antiga Rua Vinte e Cinco de Dezembro), nº 110, Compensa 2, Manaus/AM. Referência: final da rua, portão marrom de ferro com listras brancas.",
 };
