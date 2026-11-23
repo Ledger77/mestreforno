@@ -263,12 +263,14 @@
     if (estado.distancia) {
       partes.push(
         "<p>Distância: <strong>" +
-          String(estado.distancia.kmExibido).replace(".", ",") +
-          " km</strong> (" +
-          (estado.distancia.fonte === "rota" ? "rota" : "estimativa aproximada") +
-          (estado.faixaManual ? ", faixa escolhida à mão" : "") +
-          ")</p>"
+          escapar(EntregaServico.textoDistancia(estado.distancia)) +
+          "</strong>" +
+          (estado.faixaManual ? " (faixa escolhida à mão)" : "") +
+          "</p>"
       );
+    }
+    if (estado.escolhido && estado.escolhido.aviso) {
+      partes.push("<p class='checkout__nota'>" + escapar(estado.escolhido.aviso) + "</p>");
     }
     if (estado.faixa) {
       partes.push("<p>Faixa: <strong>" + escapar(estado.faixa.rotulo) + "</strong></p>");
@@ -316,6 +318,9 @@
       if (estado.escolhido && estado.escolhido.label) {
         linhas.push("Endereço encontrado: " + estado.escolhido.label);
       }
+      if (estado.escolhido && estado.escolhido.aviso) {
+        linhas.push(estado.escolhido.aviso);
+      }
     }
 
     linhas.push("");
@@ -330,13 +335,7 @@
     } else {
       linhas.push("Subtotal: " + formatarReais(dados.subtotal));
       if (estado.distancia) {
-        linhas.push(
-          "Distância: " +
-            String(estado.distancia.kmExibido).replace(".", ",") +
-            " km (" +
-            (estado.distancia.fonte === "rota" ? "rota" : "estimativa aproximada") +
-            ")"
-        );
+        linhas.push("Distância: " + EntregaServico.textoDistancia(estado.distancia));
       }
       if (estado.faixa) {
         linhas.push(
@@ -435,24 +434,28 @@
         "<p role='status'>Não encontramos esse endereço em Manaus. Confira os dados, escolha a faixa à mão ou siga e combine no WhatsApp.</p>";
       return;
     }
-    lista = lista.slice(0, 3);
+    lista = lista.slice(0, 5);
     estado.resultados = lista;
     var opts = lista
       .map(function (item, i) {
+        var texto = item.rotulo || EntregaServico.rotuloDestino(item) || item.label;
         return (
           "<label class='checkout__opcao'><input type='radio' name='geo-escolha' value='" +
           i +
           "'" +
           (i === 0 ? " checked" : "") +
           "> <span>" +
-          escapar(item.label) +
+          escapar(texto) +
           "</span></label>"
         );
       })
       .join("");
+    var intro = (lista[0] && lista[0].aviso) || "Encontramos este endereço. Confira se está certo:";
     box.hidden = false;
     box.innerHTML =
-      "<p>Encontramos este endereço. Confira se está certo:</p>" +
+      "<p>" +
+      escapar(intro) +
+      "</p>" +
       "<div class='checkout__lista'>" +
       opts +
       "</div>";
@@ -484,12 +487,8 @@
         status.hidden = false;
         status.textContent =
           "Distância: " +
-          String(dist.kmExibido).replace(".", ",") +
-          " km" +
-          (dist.fonte === "rota"
-            ? " (rota)."
-            : " (estimativa aproximada; a rota não estava disponível).") +
-          " Faixa: " +
+          EntregaServico.textoDistancia(dist) +
+          ". Faixa: " +
           (estado.faixa ? estado.faixa.rotulo : "—") +
           ".";
         try {
@@ -511,7 +510,6 @@
       setErro(erro, "Preencha rua, número e bairro para calcular a entrega.");
       return;
     }
-    var query = rua + ", " + numero + ", " + bairro + ", Manaus, Amazonas, Brasil";
     if (status) {
       status.hidden = false;
       status.textContent = "Buscando o endereço em Manaus…";
@@ -519,7 +517,12 @@
     var botao = $("[data-calcular-entrega]");
     if (botao) botao.disabled = true;
     var seq = ++calcSeq;
-    EntregaServico.geocodificar(query)
+    EntregaServico.geocodificar({
+      rua: rua,
+      numero: numero,
+      bairro: bairro,
+      referencia: String(estado.referencia || "").trim(),
+    })
       .then(function (lista) {
         if (seq !== calcSeq) return;
         estado.resultados = lista;
@@ -584,24 +587,22 @@
       if (!el) return;
       el.addEventListener("input", function () {
         estado[campo] = el.value;
-        if (campo !== "referencia") {
-          calcSeq += 1;
-          estado.escolhido = null;
-          estado.distancia = null;
-          estado.geoFalhou = false;
-          if (!estado.faixaManual) estado.faixa = null;
-          var box = $("[data-geo-resultado]");
-          if (box) {
-            box.hidden = true;
-            box.innerHTML = "";
-          }
-          var st = $("[data-geo-status]");
-          if (st) {
-            st.hidden = true;
-            st.textContent = "";
-          }
-          atualizarTotais();
+        calcSeq += 1;
+        estado.escolhido = null;
+        estado.distancia = null;
+        estado.geoFalhou = false;
+        if (!estado.faixaManual) estado.faixa = null;
+        var box = $("[data-geo-resultado]");
+        if (box) {
+          box.hidden = true;
+          box.innerHTML = "";
         }
+        var st = $("[data-geo-status]");
+        if (st) {
+          st.hidden = true;
+          st.textContent = "";
+        }
+        atualizarTotais();
         atualizarLinkWhatsApp();
       });
     });
@@ -663,7 +664,12 @@
         var alvo = ev.target;
         if (!alvo || alvo.name !== "geo-escolha") return;
         var item = estado.resultados[Number(alvo.value)];
-        if (item) aplicarDestino(item, { seq: calcSeq });
+        if (item) {
+          estado.distancia = null;
+          atualizarTotais();
+          atualizarLinkWhatsApp();
+          aplicarDestino(item);
+        }
       });
     }
   }
