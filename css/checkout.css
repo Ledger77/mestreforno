@@ -420,6 +420,21 @@ button.btn:disabled,
   margin-top: 0.45rem;
 }
 
+.checkout__endereco--origem {
+  margin-bottom: 1.35rem;
+}
+
+.checkout__destino {
+  margin: 0 0 1rem;
+  padding-top: 0.15rem;
+  border-top: 1px solid #e4dfd8;
+}
+
+.checkout__destino legend {
+  margin-top: 1rem;
+  font-size: 1.05rem;
+}
+
 .checkout__aviso {
   margin: 0 0 1rem;
   padding: 0.85rem 1rem;

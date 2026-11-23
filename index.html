@@ -705,26 +705,31 @@
           <input type="text" id="nome-delivery" name="nome-delivery" autocomplete="given-name" maxlength="40" aria-describedby="ajuda-nome-delivery">
           <p class="erro" data-erro-nome-delivery role="alert" hidden></p>
 
-          <div class="checkout__endereco">
+          <div class="checkout__endereco checkout__endereco--origem">
+            <p><strong>De onde a entrega sai</strong></p>
             <p>A entrega sai deste endereço. Se quiser, você mesmo pode simular o valor no app de entrega (ex.: 99 Entrega).</p>
             <p data-endereco-origem></p>
           </div>
 
-          <div class="checkout__linha">
-            <div>
-              <label class="campo" for="end-rua">Rua</label>
-              <input type="text" id="end-rua" name="rua" autocomplete="address-line1" maxlength="80">
+          <fieldset class="checkout__destino">
+            <legend>Coloque o endereço de entrega</legend>
+            <p class="checkout__ajuda">O local onde você vai receber o pedido (não precisa ser sua casa).</p>
+            <div class="checkout__linha">
+              <div>
+                <label class="campo" for="end-rua">Rua</label>
+                <input type="text" id="end-rua" name="rua" autocomplete="address-line1" maxlength="80">
+              </div>
+              <div>
+                <label class="campo" for="end-numero">Número</label>
+                <input type="text" id="end-numero" name="numero" autocomplete="off" maxlength="20">
+              </div>
             </div>
-            <div>
-              <label class="campo" for="end-numero">Número</label>
-              <input type="text" id="end-numero" name="numero" autocomplete="off" maxlength="20">
-            </div>
-          </div>
-          <label class="campo" for="end-bairro">Bairro</label>
-          <input type="text" id="end-bairro" name="bairro" autocomplete="address-level3" maxlength="60">
-          <label class="campo" for="end-referencia">Referência (opcional)</label>
-          <input type="text" id="end-referencia" name="referencia" maxlength="120" placeholder="Ex.: portão azul, perto da praça">
-          <p class="erro" data-erro-endereco role="alert" hidden></p>
+            <label class="campo" for="end-bairro">Bairro</label>
+            <input type="text" id="end-bairro" name="bairro" autocomplete="address-level3" maxlength="60">
+            <label class="campo" for="end-referencia">Referência (opcional)</label>
+            <input type="text" id="end-referencia" name="referencia" maxlength="120" placeholder="Ex.: portão azul, perto da praça">
+            <p class="erro" data-erro-endereco role="alert" hidden></p>
+          </fieldset>
 
           <div class="checkout__totais" data-checkout-totais></div>
           <p class="checkout__nota">A taxa de entrega é combinada pelo WhatsApp. A entrega é feita por aplicativo, como a 99 Entrega.</p>
