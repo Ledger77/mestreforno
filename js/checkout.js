@@ -120,7 +120,7 @@
 
   function textoRetirada() {
     if (typeof RETIRADA !== "undefined" && RETIRADA && RETIRADA.texto) return RETIRADA.texto;
-    return "Rua Grande Cidade (antiga Rua 25 de Dezembro), nº 110, Compensa 2, Manaus/AM. Referência: final da rua, portão marrom de ferro com listras brancas.";
+    return "Rua Grande Cidade (antiga Rua Vinte e Cinco de Dezembro), nº 110, Compensa 2, Manaus/AM. Referência: final da rua, portão marrom de ferro com listras brancas.";
   }
 
   function dialogEl() {
