@@ -27,8 +27,11 @@ const SITE = {
   delivery, como o ponto de onde a entrega sai. A taxa é
   combinada no WhatsApp; a entrega é feita por aplicativo,
   como a 99 Entrega. Este endereço não entra na mensagem.
+  maps: link do Google Maps para o ponto (abre em nova aba).
 */
 const RETIRADA = {
   texto:
-    "Rua Grande Cidade (antiga Rua Vinte e Cinco de Dezembro), nº 110, Compensa 2, Manaus/AM. Referência: final da rua, portão marrom de ferro com listras brancas.",
+    "Rua Grande Cidade (antiga Rua Vinte e Cinco de Dezembro), nº 110 (antigo nº 836), Compensa 2, Manaus/AM. Referência: final da rua, portão marrom de ferro com listras brancas.",
+  maps:
+    "https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+140+-+Compensa,+Manaus+-+AM,+69035-540",
 };

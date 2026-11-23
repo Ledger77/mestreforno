@@ -120,7 +120,12 @@
 
   function textoRetirada() {
     if (typeof RETIRADA !== "undefined" && RETIRADA && RETIRADA.texto) return RETIRADA.texto;
-    return "Rua Grande Cidade (antiga Rua Vinte e Cinco de Dezembro), nº 110, Compensa 2, Manaus/AM. Referência: final da rua, portão marrom de ferro com listras brancas.";
+    return "Rua Grande Cidade (antiga Rua Vinte e Cinco de Dezembro), nº 110 (antigo nº 836), Compensa 2, Manaus/AM. Referência: final da rua, portão marrom de ferro com listras brancas.";
+  }
+
+  function mapsRetirada() {
+    if (typeof RETIRADA !== "undefined" && RETIRADA && RETIRADA.maps) return RETIRADA.maps;
+    return "https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+140+-+Compensa,+Manaus+-+AM,+69035-540";
   }
 
   function dialogEl() {
@@ -229,6 +234,11 @@
     });
     $$("[data-endereco-retirada], [data-endereco-origem]").forEach(function (el) {
       el.textContent = textoRetirada();
+    });
+    $$("[data-endereco-maps]").forEach(function (el) {
+      el.href = mapsRetirada();
+      el.target = "_blank";
+      el.rel = "noopener noreferrer";
     });
     atualizarTotais();
     atualizarLinkWhatsApp();
