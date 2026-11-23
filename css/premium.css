@@ -306,35 +306,7 @@ html {
   object-fit: cover;
 }
 
-.pedido-bar {
-  display: none;
-}
-
-.js .pedido-bar {
-  display: none;
-}
-
 @media (max-width: 859px) {
-  .js .pedido-bar {
-    display: block;
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 50;
-    padding: 0.65rem 1rem calc(0.65rem + env(safe-area-inset-bottom));
-    background: rgba(0, 0, 0, 0.92);
-    border-top: 2px solid var(--yellow);
-  }
-
-  .js .pedido-bar .btn {
-    width: 100%;
-  }
-
-  .js body {
-    padding-bottom: 5.75rem;
-  }
-
   .hero__copy {
     padding-top: 6.5rem;
     padding-bottom: 4.2rem;

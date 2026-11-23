@@ -10,7 +10,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Salgados e pizzas frescos em Manaus, feitos em família. Peça pelo WhatsApp. Entregamos em toda a cidade; a taxa é calculada pela 99 Entrega.">
+  <meta name="description" content="Salgados e pizzas frescos em Manaus, feitos em família. Peça pelo WhatsApp. Entrega em toda a cidade pela 99 Entrega, com taxa máxima mostrada no pedido.">
   <meta name="theme-color" content="#000000">
   <meta name="format-detection" content="telephone=no">
   <meta name="apple-mobile-web-app-title" content="Mestre Forno">
@@ -37,6 +37,7 @@
   <link rel="preload" as="image" type="image/avif" imagesrcset="assets/foto/hero-mobile-720.avif 720w, assets/foto/hero-mobile-1080.avif 1080w, assets/foto/hero-desktop-960.avif 960w, assets/foto/hero-desktop-1600.avif 1600w" imagesizes="100vw">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/premium.css">
+  <link rel="stylesheet" href="css/checkout.css">
   <noscript>
     <style>
       @media (max-width: 859px) {
@@ -61,7 +62,7 @@
     "@context": "https://schema.org",
     "@type": "FoodEstablishment",
     "name": "Mestre Forno",
-    "description": "Salgados e pizzas em Manaus, feitos em família. Pedidos pelo WhatsApp. Entrega em toda Manaus; taxa calculada pela 99 Entrega.",
+    "description": "Salgados e pizzas em Manaus, feitos em família. Pedidos pelo WhatsApp. Entrega em toda Manaus pela 99 Entrega.",
     "servesCuisine": ["Salgados", "Pizzas"],
     "url": "https://ledger77.github.io/mestreforno/",
     "image": "https://ledger77.github.io/mestreforno/assets/og-1200x630.jpg",
@@ -70,10 +71,16 @@
     "telephone": "+5592992487642",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "A confirmar",
+      "streetAddress": "Rua Grande Cidade (antiga Rua 25 de Dezembro), 110, Compensa 2",
       "addressLocality": "Manaus",
       "addressRegion": "AM",
+      "postalCode": "69035-650",
       "addressCountry": "BR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": -3.1054946,
+      "longitude": -60.0586411
     },
     "areaServed": {
       "@type": "City",
@@ -125,6 +132,11 @@
         </ul>
       </nav>
 
+      <button type="button" class="header-pedido" data-abre-checkout data-header-pedido hidden>
+        Pedido
+        <span class="header-pedido__badge" data-pedido-badge>0</span>
+      </button>
+
       <a class="btn btn--yellow header-cta" data-whatsapp href="https://wa.me/5592992487642?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
         <svg aria-hidden="true"><use href="#i-wa"></use></svg>
         <span class="cta-s">Peça</span>
@@ -172,7 +184,7 @@
       <div class="wrap">
         <p class="eyebrow">Cardápio</p>
         <h2 id="titulo-cardapio" class="reveal">O que sai do forno</h2>
-        <p class="lead">Escolha os itens, monte o pedido na página e envie pelo WhatsApp. A taxa de entrega é calculada pela 99 Entrega e se confirma na conversa.</p>
+        <p class="lead">Pode escolher vários produtos e a quantidade de cada um. O pedido aparece na barra embaixo, com o total. Depois você escolhe retirada ou entrega e envia no WhatsApp.</p>
         <p class="aviso" role="note">Cardápio de exemplo, só para esta versão de teste. Nomes, descrições e preços ainda não são os oficiais da casa.</p>
         <nav class="menu-jump" data-menu-jump aria-label="Grupos do cardápio">
           <a href="#salgados">Salgados</a>
@@ -425,9 +437,10 @@
           </section>
         </div>
         <div class="cta-row">
-          <a class="btn btn--yellow" data-whatsapp href="https://wa.me/5592992487642?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
+          <button type="button" class="btn btn--yellow" data-abre-checkout>Continuar o pedido</button>
+          <a class="btn btn--ghost-ink" data-whatsapp href="https://wa.me/5592992487642?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
             <svg aria-hidden="true"><use href="#i-wa"></use></svg>
-            Peça pelo WhatsApp
+            Falar no WhatsApp
             <span class="sr-only js-nova-aba"> (abre em nova aba)</span>
           </a>
         </div>
@@ -437,31 +450,67 @@
     <section class="section on-dark" id="como-pedir" aria-labelledby="titulo-pedir">
       <div class="wrap">
         <p class="eyebrow">Como pedir</p>
-        <h2 id="titulo-pedir" class="reveal">Do cardápio ao WhatsApp</h2>
-        <p class="lead">O caminho é curto: escolha no cardápio, chame a gente e combine a entrega. Levamos para toda Manaus.</p>
+        <h2 id="titulo-pedir" class="reveal">Como funciona a entrega</h2>
+        <p class="lead">Você monta o pedido no site, envia a mensagem no WhatsApp e a gente confirma. As entregas em Manaus são feitas pela 99 Entrega. Também dá para retirar no local.</p>
 
-        <div class="steps">
-          <article class="panel reveal">
+        <ol class="passos-entrega">
+          <li class="reveal">
             <span class="step__num">01</span>
-            <h3>Escolha</h3>
-            <p>Separe os salgados e as pizzas e, se quiser, monte a lista aqui na página.</p>
-          </article>
-          <article class="panel reveal">
+            <div>
+              <strong>Você escolhe</strong>
+              <p>Separe vários produtos e as quantidades no cardápio. O pedido aparece na barra, com o total.</p>
+            </div>
+          </li>
+          <li class="reveal">
             <span class="step__num">02</span>
-            <h3>Chame</h3>
-            <p>Toque em Peça pelo WhatsApp. A conversa já abre com a mensagem pronta para você revisar e enviar.</p>
-          </article>
-          <article class="panel reveal">
+            <div>
+              <strong>Envia no WhatsApp</strong>
+              <p>Toque em Continuar, escolha retirada ou delivery e abra a mensagem pronta para revisar e enviar.</p>
+            </div>
+          </li>
+          <li class="reveal">
             <span class="step__num">03</span>
-            <h3>Combine</h3>
-            <p>A gente confirma o pedido e a taxa de entrega, calculada pela 99 Entrega no momento do envio.</p>
-          </article>
+            <div>
+              <strong>A gente confirma</strong>
+              <p>Conversamos sobre o pedido e o jeito de receber. Em seguida enviamos o Pix.</p>
+            </div>
+          </li>
+          <li class="reveal">
+            <span class="step__num">04</span>
+            <div>
+              <strong>Produção depois do pagamento</strong>
+              <p>Com o Pix confirmado, o pedido vai para o forno.</p>
+            </div>
+          </li>
+          <li class="reveal">
+            <span class="step__num">05</span>
+            <div>
+              <strong>Taxa real da 99</strong>
+              <p>Quando o pedido estiver pronto para sair, mostramos a taxa real da 99 Entrega.</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="taxa-teto reveal">
+          <h3>Você nunca paga mais do que o valor mostrado aqui</h3>
+          <p>A taxa do site é uma estimativa máxima. Se a 99 Entrega cobrar menos, você paga o valor real, menor. Se cobrar mais, você paga só a taxa mostrada no pedido — nunca um valor maior.</p>
         </div>
 
         <div class="info-grid">
           <article class="panel reveal">
             <h3>Entrega</h3>
-            <p>Entregamos para toda Manaus. A taxa é variável: depende da distância e é calculada pela 99 Entrega na hora do pedido. O valor se confirma no WhatsApp, antes do envio.</p>
+            <p>Levamos para toda Manaus, pela 99 Entrega. No pedido você informa o endereço, vê a distância e escolhe moto ou carro. Pedidos grandes vão de carro, porque não cabem na bag da moto.</p>
+            <table class="faixas-tabela">
+              <caption class="sr-only">Taxas máximas estimadas por faixa e veículo</caption>
+              <thead>
+                <tr><th>Faixa</th><th>Moto</th><th>Carro</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Até 5 km</td><td>R$ 10,90</td><td>R$ 18,90</td></tr>
+                <tr><td>5–10 km</td><td>R$ 11,90</td><td>R$ 28,90</td></tr>
+                <tr><td>Acima de 10 km</td><td>R$ 19,90</td><td>R$ 56,90</td></tr>
+              </tbody>
+            </table>
           </article>
           <article class="panel reveal">
             <h3>Horário</h3>
@@ -469,7 +518,7 @@
           </article>
           <article class="panel reveal">
             <h3>Retirada</h3>
-            <p>Também dá para retirar. O endereço se confirma no WhatsApp, no momento do pedido.</p>
+            <p>Rua Grande Cidade (antiga Rua 25 de Dezembro), nº 110, Compensa 2, Manaus/AM. Referência: final da rua, portão marrom de ferro com listras brancas. Na retirada não há taxa de entrega.</p>
           </article>
         </div>
       </div>
@@ -585,7 +634,7 @@
     <div class="wrap footer__grid">
       <div>
         <img class="footer__logo" src="assets/mestreforno_horizontal_transparente.svg" width="210" height="56" alt="Mestre Forno" decoding="async">
-        <p class="footer__tag">Salgados e pizzas em Manaus/AM. Entrega em toda a cidade, com taxa pela 99 Entrega.</p>
+        <p class="footer__tag">Salgados e pizzas em Manaus/AM. Entrega em toda a cidade pela 99 Entrega, com taxa máxima mostrada no pedido. Retirada na Compensa 2.</p>
       </div>
       <nav aria-label="Redes e contato">
         <ul class="footer-links">
@@ -597,16 +646,146 @@
     <p class="legal">© <span data-ano>2026</span> Mestre Forno. Todos os direitos reservados.</p>
   </footer>
 
-  <div class="pedido-bar" data-pedido-bar>
-    <a class="btn btn--yellow" data-whatsapp-pedido href="https://wa.me/5592992487642?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
-      <svg aria-hidden="true"><use href="#i-wa"></use></svg>
-      <span data-pedido-rotulo>Pedir pelo WhatsApp</span>
-      <span class="sr-only"> (abre em nova aba)</span>
-    </a>
+  <div class="pedido-bar" data-pedido-bar hidden>
+    <div class="pedido-bar__inner">
+      <div class="pedido-bar__info">
+        <span class="pedido-bar__badge" data-pedido-badge aria-hidden="true">0</span>
+        <div>
+          <p class="pedido-bar__qtd" data-pedido-rotulo>Nenhum item ainda</p>
+          <p class="pedido-bar__total" data-pedido-subtotal hidden></p>
+        </div>
+      </div>
+      <button type="button" class="btn btn--yellow" data-abre-checkout>Continuar</button>
+    </div>
   </div>
 
-    <script src="js/config.js" defer></script>
+  <dialog class="checkout" id="checkout" aria-labelledby="checkout-titulo">
+    <div class="checkout__panel">
+      <div class="checkout__topo">
+        <button type="button" class="checkout__fechar" data-checkout-fechar aria-label="Fechar pedido">&times;</button>
+        <p class="eyebrow">Pedido</p>
+        <h2 id="checkout-titulo">Seu pedido</h2>
+      </div>
+
+      <ol class="checkout__passos" aria-label="Etapas do pedido">
+        <li data-passo-indicador="resumo">Itens</li>
+        <li data-passo-indicador="receber">Como receber</li>
+        <li data-passo-indicador="dados">Dados</li>
+      </ol>
+
+      <div data-checkout-passo="resumo">
+        <p>Você pode escolher vários produtos no cardápio e ajustar as quantidades.</p>
+        <div class="checkout__itens" data-checkout-itens></div>
+        <p class="checkout__subtotal" data-checkout-subtotal hidden></p>
+        <div class="checkout__acoes">
+          <button type="button" class="btn btn--ghost-ink" data-checkout-fechar>Voltar ao cardápio</button>
+          <button type="button" class="btn btn--yellow" data-checkout-para="receber">Continuar</button>
+        </div>
+      </div>
+
+      <div data-checkout-passo="receber" hidden>
+        <fieldset>
+          <legend>Como você quer receber?</legend>
+          <label class="checkout__opcao">
+            <input type="radio" name="modo-receber" value="retirada">
+            <span><strong>Retirada no local</strong><br>Você busca na Compensa 2. Sem taxa de entrega.</span>
+          </label>
+          <label class="checkout__opcao">
+            <input type="radio" name="modo-receber" value="delivery">
+            <span><strong>Delivery (entrega)</strong><br>Levamos pela 99 Entrega, com taxa máxima mostrada antes de enviar.</span>
+          </label>
+        </fieldset>
+        <p class="erro" data-erro-modo role="alert" hidden></p>
+        <div class="checkout__acoes">
+          <button type="button" class="btn btn--ghost-ink" data-checkout-voltar="resumo">Voltar</button>
+          <button type="button" class="btn btn--yellow" data-checkout-para="dados">Continuar</button>
+        </div>
+      </div>
+
+      <div data-checkout-passo="dados" hidden>
+        <div data-bloco="retirada" hidden>
+          <label class="campo" for="nome-retirada">Primeiro nome</label>
+          <p class="checkout__ajuda" id="ajuda-nome-retirada">Só o primeiro nome, ex.: João</p>
+          <input type="text" id="nome-retirada" name="nome-retirada" autocomplete="given-name" maxlength="40" aria-describedby="ajuda-nome-retirada">
+          <p class="erro" data-erro-nome-retirada role="alert" hidden></p>
+          <div class="checkout__endereco">
+            <p><strong>Onde retirar</strong></p>
+            <p data-endereco-retirada></p>
+          </div>
+          <div class="checkout__totais" data-checkout-totais></div>
+          <div class="checkout__acoes">
+            <button type="button" class="btn btn--ghost-ink" data-checkout-voltar="receber">Voltar</button>
+            <button type="button" class="btn btn--yellow" data-checkout-wa>Enviar no WhatsApp<span class="sr-only"> (abre em nova aba)</span></button>
+          </div>
+        </div>
+
+        <div data-bloco="delivery" hidden>
+          <label class="campo" for="nome-delivery">Primeiro nome</label>
+          <p class="checkout__ajuda" id="ajuda-nome-delivery">Só o primeiro nome, ex.: João</p>
+          <input type="text" id="nome-delivery" name="nome-delivery" autocomplete="given-name" maxlength="40" aria-describedby="ajuda-nome-delivery">
+          <p class="erro" data-erro-nome-delivery role="alert" hidden></p>
+
+          <div class="checkout__linha">
+            <div>
+              <label class="campo" for="end-rua">Rua</label>
+              <input type="text" id="end-rua" name="rua" autocomplete="address-line1" maxlength="80">
+            </div>
+            <div>
+              <label class="campo" for="end-numero">Número</label>
+              <input type="text" id="end-numero" name="numero" autocomplete="off" maxlength="20">
+            </div>
+          </div>
+          <label class="campo" for="end-bairro">Bairro</label>
+          <input type="text" id="end-bairro" name="bairro" autocomplete="address-level3" maxlength="60">
+          <label class="campo" for="end-referencia">Referência (opcional)</label>
+          <input type="text" id="end-referencia" name="referencia" maxlength="120" placeholder="Ex.: portão azul, perto da praça">
+          <p class="erro" data-erro-endereco role="alert" hidden></p>
+
+          <div class="checkout__acoes">
+            <button type="button" class="btn btn--yellow" data-calcular-entrega>Calcular entrega</button>
+          </div>
+          <p data-geo-status role="status" hidden></p>
+          <div data-geo-resultado hidden></div>
+
+          <label class="campo" for="faixa-manual">Se o mapa não achar, escolha a faixa</label>
+          <select id="faixa-manual" aria-describedby="erro-faixa">
+            <option value="">Usar a faixa calculada</option>
+            <option value="ate-5">Até 5 km — moto R$ 10,90 / carro R$ 18,90</option>
+            <option value="5-10">5–10 km — moto R$ 11,90 / carro R$ 28,90</option>
+            <option value="acima-10">Acima de 10 km — moto R$ 19,90 / carro R$ 56,90</option>
+          </select>
+          <p class="erro" id="erro-faixa" data-erro-faixa role="alert" hidden></p>
+
+          <fieldset>
+            <legend>Como enviar</legend>
+            <p class="checkout__aviso" data-aviso-moto>Pedidos com muitos produtos precisam ir de carro, porque não cabem na bag da moto.</p>
+            <label class="checkout__opcao">
+              <input type="radio" name="veiculo" id="veiculo-moto" value="moto">
+              <span>Moto</span>
+            </label>
+            <label class="checkout__opcao">
+              <input type="radio" name="veiculo" id="veiculo-carro" value="carro">
+              <span>Carro</span>
+            </label>
+          </fieldset>
+
+          <div class="checkout__totais" data-checkout-totais></div>
+          <p class="checkout__nota">As entregas são feitas pela 99 Entrega. A taxa mostrada é o valor máximo. Você nunca paga mais do que o valor mostrado aqui.</p>
+
+          <div class="checkout__acoes">
+            <button type="button" class="btn btn--ghost-ink" data-checkout-voltar="receber">Voltar</button>
+            <button type="button" class="btn btn--yellow" data-checkout-wa>Enviar no WhatsApp<span class="sr-only"> (abre em nova aba)</span></button>
+          </div>
+          <p class="checkout__atribuicao">Busca de endereço e rota: dados do OpenStreetMap, Nominatim e OSRM.</p>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="js/config.js" defer></script>
   <script src="js/cardapio.js" defer></script>
+  <script src="js/entrega.js" defer></script>
   <script src="js/main.js" defer></script>
+  <script src="js/checkout.js" defer></script>
 </body>
 </html>
