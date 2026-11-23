@@ -571,6 +571,140 @@ html.nav-open body {
   font-weight: 800;
 }
 
+.loja-info {
+  margin: 1rem 0 0;
+  padding: 0.85rem 1rem 0.95rem;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: var(--white);
+  color: var(--ink);
+}
+
+.loja-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+}
+
+.loja-status__dot {
+  flex: 0 0 auto;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-top: 0.42rem;
+  border-radius: 50%;
+  background: #5c5c5c;
+}
+
+.loja-status[data-estado="aberto"] .loja-status__dot {
+  background: #146c32;
+}
+
+.loja-status[data-estado="fechando"] .loja-status__dot {
+  background: #a15c00;
+}
+
+.loja-status[data-estado="fechado"] .loja-status__dot {
+  background: #5c5c5c;
+}
+
+.loja-status__texto {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--black);
+}
+
+.loja-horarios {
+  margin: 0.55rem 0 0;
+}
+
+.loja-horarios summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0;
+  cursor: pointer;
+  font-weight: 800;
+  color: var(--black);
+  list-style: none;
+}
+
+.loja-horarios summary::-webkit-details-marker {
+  display: none;
+}
+
+.loja-horarios summary::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  margin-right: 0.15rem;
+}
+
+.loja-horarios[open] summary::before {
+  transform: rotate(45deg);
+  margin-top: -0.15rem;
+}
+
+.loja-horarios summary:focus-visible {
+  outline: 3px solid var(--black);
+  outline-offset: 3px;
+}
+
+.loja-horarios summary span {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #3d3a36;
+}
+
+.loja-horarios ul {
+  margin: 0.15rem 0 0.35rem;
+  padding: 0 0 0 1.2rem;
+}
+
+.loja-horarios li {
+  margin: 0.15rem 0;
+  font-weight: 600;
+}
+
+.loja-pagamento {
+  margin: 0.35rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--black);
+}
+
+.panel [data-horario-exemplo] {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+@media (max-width: 639px) {
+  .loja-info {
+    margin-top: 0.85rem;
+    padding: 0.7rem 0.8rem 0.8rem;
+  }
+
+  .loja-status__texto,
+  .loja-pagamento {
+    font-size: 0.88rem;
+  }
+
+  .loja-status__dot {
+    margin-top: 0.35rem;
+  }
+}
+
 .menu-jump {
   display: flex;
   flex-wrap: wrap;

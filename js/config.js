@@ -35,3 +35,36 @@ const RETIRADA = {
   maps:
     "https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+140+-+Compensa,+Manaus+-+AM,+69035-540",
 };
+
+/*
+  Horários da casa, no fuso America/Manaus (UTC-4 o ano todo).
+  A faixa de status e o texto em "Como pedir" saem daqui.
+  Semana: 0 = domingo, 1 = segunda, … 6 = sábado.
+  abre/fecha no formato HH:MM (24h). Se mudar, atualize também
+  o openingHoursSpecification do JSON-LD em index.html.
+  exemplo: true enquanto forem horários fictícios de teste.
+*/
+const HORARIOS = {
+  fuso: "America/Manaus",
+  exemplo: true,
+  fechandoMinutos: 60,
+  semana: {
+    0: { abre: "08:00", fecha: "17:00" },
+    1: { abre: "08:00", fecha: "20:00" },
+    2: { abre: "08:00", fecha: "20:00" },
+    3: { abre: "08:00", fecha: "20:00" },
+    4: { abre: "08:00", fecha: "20:00" },
+    5: { abre: "08:00", fecha: "20:00" },
+    6: { abre: "08:00", fecha: "17:00" },
+  },
+};
+
+/*
+  Texto único de pagamento, usado no cardápio e no checkout.
+  O pagamento é combinado no WhatsApp (retirada ou entrega).
+  A mensagem do pedido não inclui Pix nem valor de taxa.
+*/
+const PAGAMENTO = {
+  texto:
+    "Pagamento: Pix, cartão ou dinheiro. Combinamos no WhatsApp, na retirada ou na entrega.",
+};
