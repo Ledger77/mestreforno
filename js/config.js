@@ -74,5 +74,6 @@ const ENTREGA = {
     sul: -3.2,
   },
   nominatim: "https://nominatim.openstreetmap.org/search",
+  photon: "https://photon.komoot.io/api/",
   osrm: "https://router.project-osrm.org/route/v1/driving/",
 };
