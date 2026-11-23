@@ -591,19 +591,27 @@ html.nav-open body {
   text-decoration: none;
 }
 
-.menu-jump a:hover {
-  color: var(--yellow);
-}
-
 .menu-jump a.is-ativo,
 .menu-jump a[aria-pressed="true"] {
   background: var(--yellow);
   color: var(--black);
 }
 
-.menu-jump a.is-ativo:hover,
-.menu-jump a[aria-pressed="true"]:hover {
-  color: var(--black);
+/* No toque, :hover pode "grudar" e deixar o texto amarelo depois de desmarcar. */
+@media (hover: hover) and (pointer: fine) {
+  .menu-jump a:hover {
+    color: var(--yellow);
+  }
+
+  .menu-jump a.is-ativo:hover,
+  .menu-jump a[aria-pressed="true"]:hover {
+    color: var(--black);
+  }
+}
+
+.menu-jump a:focus-visible {
+  outline: 3px solid var(--black);
+  outline-offset: 3px;
 }
 
 .menu-group {

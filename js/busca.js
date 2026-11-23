@@ -287,6 +287,10 @@
         filtro = filtro === id ? "" : id;
         aplicar(campo.value);
         rolarGrupoVisivel();
+        var hoverFino = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+        if (!hoverFino && ev.detail !== 0) {
+          try { btn.blur(); } catch (e) {}
+        }
       });
     }
   }
