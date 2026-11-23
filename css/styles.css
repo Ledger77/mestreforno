@@ -731,15 +731,13 @@ html.nav-open body {
   color: #f2f2f2;
 }
 
-.panel .mapa-link,
-.footer__tag .mapa-link {
+.panel .mapa-link {
   color: var(--yellow);
   font-weight: 700;
   text-underline-offset: 0.22em;
 }
 
-.panel .mapa-link:hover,
-.footer__tag .mapa-link:hover {
+.panel .mapa-link:hover {
   color: var(--white);
 }
 
@@ -853,7 +851,7 @@ html.nav-open body {
 
 .footer__tag {
   margin: 0.8rem 0 0;
-  max-width: 42ch;
+  max-width: 28ch;
   color: #f3f3f3;
 }
 
