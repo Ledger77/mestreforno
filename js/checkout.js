@@ -15,6 +15,7 @@
     numero: "",
     bairro: "",
     referencia: "",
+    observacao: "",
   };
 
   var ultimoFoco = null;
@@ -273,6 +274,9 @@
       if (end) linhas.push("Endereço: " + end);
       if (estado.referencia.trim()) linhas.push("Referência: " + estado.referencia.trim());
     }
+    if (estado.observacao && estado.observacao.trim()) {
+      linhas.push("Observação: " + estado.observacao.trim());
+    }
 
     linhas.push("");
     linhas.push("Pedido:");
@@ -359,6 +363,10 @@
   }
 
   function depoisDeEnviarWhatsApp() {
+    estado.observacao = "";
+    $$("[data-observacao]").forEach(function (el) {
+      el.value = "";
+    });
     if (window.MF && typeof MF.limparPedido === "function") MF.limparPedido();
     fechar();
   }
@@ -394,6 +402,17 @@
       el.addEventListener("input", function () {
         estado[campo] = el.value;
         setErro($("[data-erro-endereco]"), "");
+        atualizarLinkWhatsApp();
+      });
+    });
+
+    var obsCampos = $$("[data-observacao]");
+    obsCampos.forEach(function (el) {
+      el.addEventListener("input", function () {
+        estado.observacao = el.value;
+        obsCampos.forEach(function (outro) {
+          if (outro !== el) outro.value = el.value;
+        });
         atualizarLinkWhatsApp();
       });
     });

@@ -425,7 +425,8 @@ button.btn:disabled,
 }
 
 .checkout input[type="text"],
-.checkout select {
+.checkout select,
+.checkout textarea {
   width: 100%;
   min-height: 48px;
   margin-bottom: 0.85rem;
@@ -437,8 +438,16 @@ button.btn:disabled,
   background: var(--white);
 }
 
+.checkout textarea {
+  min-height: 4.4rem;
+  max-height: 8rem;
+  resize: vertical;
+  line-height: 1.4;
+}
+
 .checkout input[type="text"]:focus,
-.checkout select:focus {
+.checkout select:focus,
+.checkout textarea:focus {
   outline: 3px solid var(--yellow);
   outline-offset: 1px;
   border-color: var(--black);

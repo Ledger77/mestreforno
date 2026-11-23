@@ -202,11 +202,11 @@
           <p class="cardapio-busca__sugestao" data-busca-sugestao hidden></p>
           <p class="cardapio-busca__vazio" data-busca-vazio hidden>Não achamos esse item. <a data-whatsapp href="https://wa.me/5592992487642?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">Chama a gente no WhatsApp<span class="sr-only js-nova-aba"> (abre em nova aba)</span></a>.</p>
           <p class="sr-only" data-busca-status aria-live="polite"></p>
+          <nav class="menu-jump" data-menu-jump aria-label="Filtrar o cardápio">
+            <a href="#salgados" class="menu-jump__btn" data-filtro="salgados" aria-pressed="false">Salgados</a>
+            <a href="#pizzas" class="menu-jump__btn" data-filtro="pizzas" aria-pressed="false">Pizzas</a>
+          </nav>
         </div>
-        <nav class="menu-jump" data-menu-jump aria-label="Grupos do cardápio">
-          <a href="#salgados">Salgados</a>
-          <a href="#pizzas">Pizzas</a>
-        </nav>
         <div data-cardapio>
           <section class="menu-group" id="salgados" aria-labelledby="titulo-salgados">
             <div class="menu-group__head">
@@ -713,6 +713,8 @@
             <p data-endereco-retirada></p>
             <p><a class="mapa-link" data-endereco-maps href="https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+140+-+Compensa,+Manaus+-+AM,+69035-540" target="_blank" rel="noopener noreferrer">Ver no Google Maps<span class="sr-only"> (abre em nova aba)</span></a></p>
           </div>
+          <label class="campo" for="obs-retirada">Observação (opcional)</label>
+          <textarea id="obs-retirada" name="observacao" data-observacao rows="3" maxlength="200" placeholder="Ex.: sem cebola, retirar depois das 18h"></textarea>
           <div class="checkout__totais" data-checkout-totais></div>
           <div class="checkout__acoes">
             <button type="button" class="btn btn--ghost-ink" data-checkout-voltar="receber">Voltar</button>
@@ -752,6 +754,8 @@
             <p class="erro" data-erro-endereco role="alert" hidden></p>
           </fieldset>
 
+          <label class="campo" for="obs-delivery">Observação (opcional)</label>
+          <textarea id="obs-delivery" name="observacao" data-observacao rows="3" maxlength="200" placeholder="Ex.: sem cebola, entregar depois das 18h"></textarea>
           <div class="checkout__totais" data-checkout-totais></div>
           <p class="checkout__nota">A taxa de entrega é combinada pelo WhatsApp. A entrega é feita por aplicativo, como a 99 Entrega.</p>
 
