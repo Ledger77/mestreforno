@@ -55,6 +55,6 @@ Os itens e os preços do cardápio nesta versão são exemplos fictícios, só p
 
 ## Pedido, retirada e entrega
 
-Com JavaScript, o visitante monta o pedido no cardápio (vários itens e quantidades), escolhe retirada ou delivery e abre o WhatsApp com a mensagem pronta. A mensagem não pede Pix.
+Com JavaScript, o visitante monta o pedido no cardápio (vários itens e quantidades), abre a lista do pedido para ajustar ou remover itens, escolhe retirada ou entrega e abre o WhatsApp com a mensagem pronta. A mensagem não pede Pix e não traz taxa. A taxa de entrega é combinada pelo WhatsApp. A entrega é feita por aplicativo, como a 99 Entrega.
 
-Endereço de retirada, coordenadas de origem, faixas de taxa e o limite de volume da moto ficam em `js/config.js` (`ENTREGA`). A distância usa uma cascata de geocodificação (Nominatim/OpenStreetMap, 1 pedido por segundo, e Photon/Komoot como reserva) e rota OSRM, só no recorte urbano de Manaus. Se a rua não aparecer no mapa, a estimativa usa o centroide do bairro (com aviso de que é aproximada) e uma distância conservadora. Se a rota falhar, cai para linha reta × 1,3.
+O endereço de retirada fica em `js/config.js` (`RETIRADA`). No delivery, o cliente informa rua, número, bairro e referência. O carrinho vale por cerca de 2 horas na mesma visita e é limpo depois de enviar para o WhatsApp; uma visita nova começa vazia.

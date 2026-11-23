@@ -1,7 +1,8 @@
 /*
-  Checkout: resumo do pedido, retirada ou delivery, e mensagem
-  do WhatsApp. Não pede Pix na mensagem. Sem JavaScript, a
-  página segue com o link genérico do WhatsApp.
+  Checkout: resumo do pedido (com +/− e remover), retirada ou
+  entrega, e mensagem do WhatsApp. Não pede Pix. A taxa de
+  entrega é combinada no WhatsApp. Sem JavaScript, a página
+  segue com o link genérico do WhatsApp.
 */
 (function () {
   "use strict";
@@ -14,17 +15,9 @@
     numero: "",
     bairro: "",
     referencia: "",
-    resultados: [],
-    escolhido: null,
-    distancia: null,
-    faixa: null,
-    faixaManual: false,
-    veiculo: "",
-    geoFalhou: false,
   };
 
   var ultimoFoco = null;
-  var calcSeq = 0;
 
   function $(sel, raiz) {
     return (raiz || document).querySelector(sel);
@@ -37,6 +30,11 @@
   function formatarReais(centavos) {
     var n = (Number(centavos) || 0) / 100;
     return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  }
+
+  function formatarReaisMsg(centavos) {
+    var n = (Number(centavos) || 0) / 100;
+    return "R$ " + n.toFixed(2).replace(".", ",");
   }
 
   function urlWhatsApp(texto) {
@@ -120,17 +118,17 @@
     return window.MF && typeof MF.lerPedido === "function" ? MF.lerPedido() : {};
   }
 
-  function volumeAtual() {
-    var itens = mapaItens();
-    return EntregaServico.volumeDoPedido(pedidoAtual(), itens);
-  }
-
-  function motoOk() {
-    return EntregaServico.motoPermitida(volumeAtual());
+  function textoRetirada() {
+    if (typeof RETIRADA !== "undefined" && RETIRADA && RETIRADA.texto) return RETIRADA.texto;
+    return "Rua Grande Cidade (antiga Rua 25 de Dezembro), nº 110, Compensa 2, Manaus/AM. Referência: final da rua, portão marrom de ferro com listras brancas.";
   }
 
   function dialogEl() {
     return document.getElementById("checkout");
+  }
+
+  function ordem(passo) {
+    return { resumo: 0, receber: 1, dados: 2 }[passo] || 0;
   }
 
   function mostrarPasso(id) {
@@ -149,7 +147,7 @@
     var titulo = {
       resumo: "Seu pedido",
       receber: "Como você quer receber?",
-      dados: estado.modo === "retirada" ? "Retirada no local" : "Delivery",
+      dados: estado.modo === "retirada" ? "Retirada no local" : "Entrega",
     };
     var h = $("#checkout-titulo");
     if (h) h.textContent = titulo[id] || "Finalize seu pedido";
@@ -161,10 +159,6 @@
         foco.focus();
       } catch (e) {}
     }
-  }
-
-  function ordem(passo) {
-    return { resumo: 0, receber: 1, dados: 2 }[passo] || 0;
   }
 
   function renderResumo() {
@@ -181,14 +175,39 @@
           dados.linhas
             .map(function (l) {
               return (
-                "<li><strong>" +
+                "<li class='checkout__item' data-item-linha='" +
+                escapar(l.id) +
+                "'>" +
+                "<div class='checkout__item-info'>" +
+                "<strong>" +
                 escapar(l.nome) +
-                "</strong> — " +
-                l.qtd +
-                "× " +
-                escapar(l.preco) +
-                " = " +
+                "</strong>" +
+                "<span>" +
                 formatarReais(l.linhaCentavos) +
+                "</span>" +
+                "</div>" +
+                "<div class='checkout__item-acoes'>" +
+                "<div class='qty'>" +
+                "<button type='button' data-menos='" +
+                escapar(l.id) +
+                "' aria-label='Tirar " +
+                escapar(l.nome) +
+                "'>−</button>" +
+                "<span data-qty aria-live='polite'>" +
+                l.qtd +
+                "</span>" +
+                "<button type='button' data-mais='" +
+                escapar(l.id) +
+                "' aria-label='Adicionar " +
+                escapar(l.nome) +
+                "'>+</button>" +
+                "</div>" +
+                "<button type='button' class='checkout__remover' data-remover='" +
+                escapar(l.id) +
+                "' aria-label='Remover " +
+                escapar(l.nome) +
+                " do pedido'>×</button>" +
+                "</div>" +
                 "</li>"
               );
             })
@@ -209,36 +228,9 @@
       el.hidden = el.getAttribute("data-bloco") !== estado.modo;
     });
     var end = $("[data-endereco-retirada]");
-    if (end) end.textContent = EntregaServico.textoOrigem();
-    atualizarVeiculo();
+    if (end) end.textContent = textoRetirada();
     atualizarTotais();
     atualizarLinkWhatsApp();
-  }
-
-  function atualizarVeiculo() {
-    var aviso = $("[data-aviso-moto]");
-    var ok = motoOk();
-    var radioMoto = $("#veiculo-moto");
-    var radioCarro = $("#veiculo-carro");
-    if (!estado.veiculo) estado.veiculo = ok ? "moto" : "carro";
-    if (radioMoto) {
-      radioMoto.disabled = !ok;
-      if (!ok && estado.veiculo === "moto") estado.veiculo = "carro";
-      if (!ok) radioMoto.checked = false;
-    }
-    if (estado.veiculo === "carro" && radioCarro) radioCarro.checked = true;
-    if (estado.veiculo === "moto" && radioMoto && ok) radioMoto.checked = true;
-    if (aviso) {
-      aviso.hidden = false;
-      aviso.textContent = ok
-        ? "Pedidos com muitos produtos precisam ir de carro, porque não cabem na bag da moto. O seu ainda pode ir de moto ou de carro."
-        : "Pedidos com muitos produtos precisam ir de carro, porque não cabem na bag da moto. Neste pedido, só o carro está disponível.";
-    }
-  }
-
-  function taxaCentavos() {
-    if (estado.modo !== "delivery" || !estado.faixa || !estado.veiculo) return null;
-    return estado.veiculo === "carro" ? estado.faixa.carro : estado.faixa.moto;
   }
 
   function atualizarTotais() {
@@ -246,54 +238,10 @@
     var dados = linhasPedido(pedidoAtual(), itens);
     var boxes = $$("[data-checkout-totais]");
     if (!boxes.length) return;
-    function preencher(html) {
-      boxes.forEach(function (box) {
-        box.innerHTML = html;
-      });
-    }
-    if (estado.modo === "retirada") {
-      preencher(
-        "<p>Total dos produtos: <strong>" +
-          formatarReais(dados.subtotal) +
-          "</strong></p><p class='checkout__nota'>Na retirada não há taxa de entrega.</p>"
-      );
-      return;
-    }
-    var partes = ["<p>Subtotal dos produtos: <strong>" + formatarReais(dados.subtotal) + "</strong></p>"];
-    if (estado.distancia) {
-      partes.push(
-        "<p>Distância: <strong>" +
-          escapar(EntregaServico.textoDistancia(estado.distancia)) +
-          "</strong>" +
-          (estado.faixaManual ? " (faixa escolhida à mão)" : "") +
-          "</p>"
-      );
-    }
-    if (estado.escolhido && estado.escolhido.aviso) {
-      partes.push("<p class='checkout__nota'>" + escapar(estado.escolhido.aviso) + "</p>");
-    }
-    if (estado.faixa) {
-      partes.push("<p>Faixa: <strong>" + escapar(estado.faixa.rotulo) + "</strong></p>");
-    }
-    var taxa = taxaCentavos();
-    if (taxa != null) {
-      partes.push(
-        "<p>Taxa estimada (valor máximo, 99 Entrega): <strong>" +
-          formatarReais(taxa) +
-          "</strong></p>"
-      );
-      partes.push(
-        "<p>Total estimado: <strong>" + formatarReais(dados.subtotal + taxa) + "</strong></p>"
-      );
-      partes.push(
-        "<p class='checkout__nota'>Você nunca paga mais do que o valor mostrado aqui. Se a 99 Entrega cobrar menos, você paga o valor real, menor. Se cobrar mais, você paga só esta taxa.</p>"
-      );
-    } else if (estado.geoFalhou) {
-      partes.push(
-        "<p class='checkout__nota'>Não localizamos o ponto no mapa. Você pode escolher a faixa à mão ou seguir e combinar a taxa no WhatsApp.</p>"
-      );
-    }
-    preencher(partes.join(""));
+    var html = "<p>Subtotal: <strong>" + formatarReais(dados.subtotal) + "</strong></p>";
+    boxes.forEach(function (box) {
+      box.innerHTML = html;
+    });
   }
 
   function montarMensagem() {
@@ -305,70 +253,44 @@
     if (estado.nome) linhas.push("Nome: " + estado.nome);
 
     if (estado.modo === "retirada") {
-      linhas.push("Modo: vou retirar no local");
-      linhas.push("Endereço da retirada: " + EntregaServico.textoOrigem());
+      linhas.push("Modo: Retirada no local");
     } else if (estado.modo === "delivery") {
-      linhas.push("Modo: delivery (entrega pela 99 Entrega)");
-      var end =
-        [estado.rua, estado.numero && "nº " + estado.numero, estado.bairro, "Manaus/AM"]
-          .filter(Boolean)
-          .join(", ");
+      linhas.push("Modo: Entrega");
+      var end = [estado.rua.trim(), estado.numero.trim() && "nº " + estado.numero.trim(), estado.bairro.trim(), "Manaus/AM"]
+        .filter(Boolean)
+        .join(", ");
       if (end) linhas.push("Endereço: " + end);
-      if (estado.referencia) linhas.push("Referência: " + estado.referencia);
-      if (estado.escolhido && estado.escolhido.label) {
-        linhas.push("Endereço encontrado: " + estado.escolhido.label);
-      }
-      if (estado.escolhido && estado.escolhido.aviso) {
-        linhas.push(estado.escolhido.aviso);
-      }
+      if (estado.referencia.trim()) linhas.push("Referência: " + estado.referencia.trim());
     }
 
     linhas.push("");
     linhas.push("Pedido:");
     dados.linhas.forEach(function (l) {
-      linhas.push("• " + l.qtd + "× " + l.nome + " (" + l.preco + ") — " + formatarReais(l.linhaCentavos));
+      linhas.push("* " + l.qtd + "× " + l.nome + " — " + formatarReaisMsg(l.linhaCentavos));
     });
     linhas.push("");
-
-    if (estado.modo === "retirada") {
-      linhas.push("Total: " + formatarReais(dados.subtotal));
-    } else {
-      linhas.push("Subtotal: " + formatarReais(dados.subtotal));
-      if (estado.distancia) {
-        linhas.push("Distância: " + EntregaServico.textoDistancia(estado.distancia));
-      }
-      if (estado.faixa) {
-        linhas.push(
-          "Faixa: " + estado.faixa.rotulo + (estado.faixaManual ? " (escolhida à mão)" : "")
-        );
-      }
-      if (estado.veiculo) linhas.push("Veículo: " + (estado.veiculo === "carro" ? "carro" : "moto"));
-      var taxa = taxaCentavos();
-      if (taxa != null) {
-        linhas.push("Taxa estimada (valor máximo): " + formatarReais(taxa));
-        linhas.push("Total estimado: " + formatarReais(dados.subtotal + taxa));
-      } else {
-        linhas.push("Taxa de entrega: a combinar no WhatsApp (entrega pela 99 Entrega).");
-      }
-    }
+    linhas.push("Subtotal: " + formatarReaisMsg(dados.subtotal));
     return linhas.join("\n");
   }
 
-  function atualizarLinkWhatsApp() {
-    var podeFinalizar = false;
-    if (estado.modo === "retirada") {
-      podeFinalizar = validarPrimeiroNome(estado.nome).ok;
-    } else if (estado.modo === "delivery") {
-      var nomeOk = validarPrimeiroNome(estado.nome).ok;
-      var endOk = estado.rua.trim() && estado.numero.trim() && estado.bairro.trim();
-      var precisaVeiculo = estado.faixa && taxaCentavos() == null;
-      var temTeto = Boolean(estado.faixa) || estado.geoFalhou;
-      podeFinalizar = nomeOk && endOk && !precisaVeiculo && temTeto;
+  function podeFinalizar() {
+    if (!linhasPedido(pedidoAtual(), mapaItens()).linhas.length) return false;
+    if (estado.modo === "retirada") return validarPrimeiroNome(estado.nome).ok;
+    if (estado.modo === "delivery") {
+      return (
+        validarPrimeiroNome(estado.nome).ok &&
+        Boolean(estado.rua.trim() && estado.numero.trim() && estado.bairro.trim())
+      );
     }
-    var url = podeFinalizar ? urlWhatsApp(montarMensagem()) : "";
+    return false;
+  }
+
+  function atualizarLinkWhatsApp() {
+    var ok = podeFinalizar();
+    var url = ok ? urlWhatsApp(montarMensagem()) : "";
     $$("[data-checkout-wa]").forEach(function (el) {
-      el.classList.toggle("is-bloqueado", !podeFinalizar);
-      if (!url || !podeFinalizar) {
+      el.classList.toggle("is-bloqueado", !ok);
+      if (!url || !ok) {
         el.setAttribute("aria-disabled", "true");
         el.removeAttribute("href");
         el.removeAttribute("data-wa-url");
@@ -382,7 +304,7 @@
       }
       el.removeAttribute("aria-disabled");
     });
-    return podeFinalizar;
+    return ok;
   }
 
   function podeAbrir() {
@@ -425,136 +347,9 @@
     }
   }
 
-  function mostrarResultados(lista) {
-    var box = $("[data-geo-resultado]");
-    if (!box) return;
-    if (!lista.length) {
-      box.hidden = false;
-      box.innerHTML =
-        "<p role='status'>Não encontramos esse endereço em Manaus. Confira os dados, escolha a faixa à mão ou siga e combine no WhatsApp.</p>";
-      return;
-    }
-    lista = lista.slice(0, 5);
-    estado.resultados = lista;
-    var opts = lista
-      .map(function (item, i) {
-        var texto = item.rotulo || EntregaServico.rotuloDestino(item) || item.label;
-        return (
-          "<label class='checkout__opcao'><input type='radio' name='geo-escolha' value='" +
-          i +
-          "'" +
-          (i === 0 ? " checked" : "") +
-          "> <span>" +
-          escapar(texto) +
-          "</span></label>"
-        );
-      })
-      .join("");
-    var intro = (lista[0] && lista[0].aviso) || "Encontramos este endereço. Confira se está certo:";
-    box.hidden = false;
-    box.innerHTML =
-      "<p>" +
-      escapar(intro) +
-      "</p>" +
-      "<div class='checkout__lista'>" +
-      opts +
-      "</div>";
-  }
-
-  function aplicarDestino(dest, opcoes) {
-    var seq = opcoes && opcoes.seq != null ? opcoes.seq : ++calcSeq;
-    estado.escolhido = dest;
-    var status = $("[data-geo-status]");
-    if (status) {
-      status.hidden = false;
-      status.textContent = "Calculando a distância…";
-    }
-    return EntregaServico.estimarDistancia(dest).then(function (dist) {
-      if (seq !== calcSeq) return;
-      estado.distancia = dist;
-      if (!(opcoes && opcoes.manterFaixaManual)) {
-        estado.faixa = EntregaServico.faixaPorKm(dist.km);
-        estado.faixaManual = false;
-        var sel = $("#faixa-manual");
-        if (sel) sel.value = "";
-      }
-      estado.geoFalhou = false;
-      atualizarVeiculo();
-      atualizarTotais();
-      atualizarLinkWhatsApp();
-      var status = $("[data-geo-status]");
-      if (status) {
-        status.hidden = false;
-        status.textContent =
-          "Distância: " +
-          EntregaServico.textoDistancia(dist) +
-          ". Faixa: " +
-          (estado.faixa ? estado.faixa.rotulo : "—") +
-          ".";
-        try {
-          var tot = $("[data-bloco='delivery'] [data-checkout-totais]");
-          (tot || status).scrollIntoView({ block: "nearest", behavior: "smooth" });
-        } catch (e) {}
-      }
-    });
-  }
-
-  function calcularEntrega() {
-    var status = $("[data-geo-status]");
-    var erro = $("[data-erro-endereco]");
-    setErro(erro, "");
-    var rua = estado.rua.trim();
-    var numero = estado.numero.trim();
-    var bairro = estado.bairro.trim();
-    if (!rua || !numero || !bairro) {
-      setErro(erro, "Preencha rua, número e bairro para calcular a entrega.");
-      return;
-    }
-    if (status) {
-      status.hidden = false;
-      status.textContent = "Buscando o endereço em Manaus…";
-    }
-    var botao = $("[data-calcular-entrega]");
-    if (botao) botao.disabled = true;
-    var seq = ++calcSeq;
-    EntregaServico.geocodificar({
-      rua: rua,
-      numero: numero,
-      bairro: bairro,
-      referencia: String(estado.referencia || "").trim(),
-    })
-      .then(function (lista) {
-        if (seq !== calcSeq) return;
-        estado.resultados = lista;
-        if (!lista.length) {
-          estado.geoFalhou = true;
-          estado.escolhido = null;
-          estado.distancia = null;
-          if (!estado.faixaManual) estado.faixa = null;
-          mostrarResultados([]);
-          if (status) status.hidden = true;
-          atualizarTotais();
-          atualizarLinkWhatsApp();
-          return;
-        }
-        mostrarResultados(lista);
-        return aplicarDestino(lista[0], { seq: seq });
-      })
-      .catch(function () {
-        estado.geoFalhou = true;
-        estado.escolhido = null;
-        estado.distancia = null;
-        mostrarResultados([]);
-        if (status) {
-          status.hidden = false;
-          status.textContent = "Não deu para consultar o mapa agora. Escolha a faixa à mão ou siga e combine no WhatsApp.";
-        }
-        atualizarTotais();
-        atualizarLinkWhatsApp();
-      })
-      .finally(function () {
-        if (botao) botao.disabled = false;
-      });
+  function depoisDeEnviarWhatsApp() {
+    if (window.MF && typeof MF.limparPedido === "function") MF.limparPedido();
+    fechar();
   }
 
   function ligarCampos() {
@@ -587,22 +382,7 @@
       if (!el) return;
       el.addEventListener("input", function () {
         estado[campo] = el.value;
-        calcSeq += 1;
-        estado.escolhido = null;
-        estado.distancia = null;
-        estado.geoFalhou = false;
-        if (!estado.faixaManual) estado.faixa = null;
-        var box = $("[data-geo-resultado]");
-        if (box) {
-          box.hidden = true;
-          box.innerHTML = "";
-        }
-        var st = $("[data-geo-status]");
-        if (st) {
-          st.hidden = true;
-          st.textContent = "";
-        }
-        atualizarTotais();
+        setErro($("[data-erro-endereco]"), "");
         atualizarLinkWhatsApp();
       });
     });
@@ -612,66 +392,6 @@
         estado.modo = el.value;
       });
     });
-
-    $$("input[name='veiculo']").forEach(function (el) {
-      el.addEventListener("change", function () {
-        if (el.value === "moto" && !motoOk()) {
-          el.checked = false;
-          var carro = $("#veiculo-carro");
-          if (carro) carro.checked = true;
-          estado.veiculo = "carro";
-        } else {
-          estado.veiculo = el.value;
-        }
-        atualizarTotais();
-        atualizarLinkWhatsApp();
-      });
-    });
-
-    var faixa = $("#faixa-manual");
-    if (faixa) {
-      faixa.addEventListener("change", function () {
-        var escolhida = EntregaServico.faixaPorId(faixa.value);
-        var calculada = estado.distancia ? EntregaServico.faixaPorKm(estado.distancia.km) : null;
-        var erroFaixa = $("[data-erro-faixa]");
-        if (!escolhida) {
-          estado.faixaManual = false;
-          estado.faixa = calculada;
-          setErro(erroFaixa, "");
-        } else if (calculada && escolhida.ateKm < calculada.ateKm) {
-          faixa.value = "";
-          estado.faixa = calculada;
-          estado.faixaManual = false;
-          setErro(
-            erroFaixa,
-            "A distância calculada é de " +
-              String(estado.distancia.kmExibido).replace(".", ",") +
-              " km. Escolha essa faixa ou uma maior."
-          );
-        } else {
-          estado.faixa = escolhida;
-          estado.faixaManual = true;
-          setErro(erroFaixa, "");
-        }
-        atualizarTotais();
-        atualizarLinkWhatsApp();
-      });
-    }
-
-    var geoBox = $("[data-geo-resultado]");
-    if (geoBox) {
-      geoBox.addEventListener("change", function (ev) {
-        var alvo = ev.target;
-        if (!alvo || alvo.name !== "geo-escolha") return;
-        var item = estado.resultados[Number(alvo.value)];
-        if (item) {
-          estado.distancia = null;
-          atualizarTotais();
-          atualizarLinkWhatsApp();
-          aplicarDestino(item);
-        }
-      });
-    }
   }
 
   function iniciar() {
@@ -679,6 +399,18 @@
     if (!d) return;
 
     ligarCampos();
+
+    var lista = $("[data-checkout-itens]");
+    if (lista) {
+      lista.addEventListener("click", function (ev) {
+        var mais = ev.target.closest && ev.target.closest("[data-mais]");
+        var menos = ev.target.closest && ev.target.closest("[data-menos]");
+        var remover = ev.target.closest && ev.target.closest("[data-remover]");
+        if (mais && window.MF && MF.alterarItem) MF.alterarItem(mais.getAttribute("data-mais"), 1);
+        else if (menos && window.MF && MF.alterarItem) MF.alterarItem(menos.getAttribute("data-menos"), -1);
+        else if (remover && window.MF && MF.removerItem) MF.removerItem(remover.getAttribute("data-remover"));
+      });
+    }
 
     document.addEventListener("click", function (ev) {
       var abre = ev.target.closest && ev.target.closest("[data-abre-checkout]");
@@ -710,7 +442,7 @@
         var escolhido = $("input[name='modo-receber']:checked");
         var erro = $("[data-erro-modo]");
         if (!escolhido) {
-          setErro(erro, "Escolha retirada no local ou delivery para continuar.");
+          setErro(erro, "Escolha retirada no local ou entrega para continuar.");
           return;
         }
         setErro(erro, "");
@@ -725,40 +457,39 @@
       });
     });
 
-    var calc = $("[data-calcular-entrega]");
-    if (calc) calc.addEventListener("click", calcularEntrega);
-
     $$("[data-checkout-wa]").forEach(function (el) {
       el.addEventListener("click", function (ev) {
         var bloqueado = el.getAttribute("aria-disabled") === "true" || el.classList.contains("is-bloqueado");
-        if (bloqueado) ev.preventDefault();
         var url = el.getAttribute("data-wa-url") || el.getAttribute("href") || "";
-        if (!bloqueado && el.tagName !== "A" && url) {
-          ev.preventDefault();
-          window.open(url, "_blank", "noopener,noreferrer");
+        if (!bloqueado && url) {
+          if (el.tagName !== "A") {
+            ev.preventDefault();
+            var janela = window.open(url, "_blank", "noopener,noreferrer");
+            if (!janela) return;
+          }
+          depoisDeEnviarWhatsApp();
           return;
         }
-        if (!bloqueado) return;
         ev.preventDefault();
-        var nomeSel =
-          estado.modo === "retirada" ? "[data-erro-nome-retirada]" : "[data-erro-nome-delivery]";
+        var nomeSel = estado.modo === "retirada" ? "[data-erro-nome-retirada]" : "[data-erro-nome-delivery]";
         var v = validarPrimeiroNome(estado.nome);
         if (!v.ok) setErro($(nomeSel), v.erro || "Digite o primeiro nome.");
         if (estado.modo === "delivery") {
           var endErro = $("[data-erro-endereco]");
           if (!estado.rua.trim() || !estado.numero.trim() || !estado.bairro.trim()) {
             setErro(endErro, "Preencha rua, número e bairro.");
-          } else if (!estado.faixa && !estado.geoFalhou) {
-            setErro(endErro, "Calcule a entrega ou escolha a faixa para ver a taxa máxima.");
           }
         }
-        var invalido =
-          (estado.modo === "retirada" && $("#nome-retirada")) ||
-          (estado.modo === "delivery" &&
-            (!v.ok ? $("#nome-delivery") : !$("#end-rua").value.trim() ? $("#end-rua") : !$("#end-numero").value.trim() ? $("#end-numero") : !$("#end-bairro").value.trim() ? $("#end-bairro") : $("[data-calcular-entrega]")));
-        if (!v.ok && estado.modo === "retirada") invalido = $("#nome-retirada");
+        var invalido = null;
+        if (estado.modo === "retirada") invalido = $("#nome-retirada");
+        else if (!v.ok) invalido = $("#nome-delivery");
+        else if (!$("#end-rua").value.trim()) invalido = $("#end-rua");
+        else if (!$("#end-numero").value.trim()) invalido = $("#end-numero");
+        else if (!$("#end-bairro").value.trim()) invalido = $("#end-bairro");
         if (invalido) {
-          try { invalido.focus(); } catch (e) {}
+          try {
+            invalido.focus();
+          } catch (e) {}
         }
       });
     });
@@ -769,10 +500,35 @@
       if (d.open || d.hasAttribute("open")) fechar();
     });
 
-    document.addEventListener("mf:pedido-atualizado", function () {
+    document.addEventListener("mf:pedido-atualizado", function (ev) {
       if (d.open || d.hasAttribute("open")) {
+        var foco = document.activeElement;
+        var focoAcao = "";
+        var focoId = "";
+        if (foco && lista && lista.contains(foco)) {
+          focoAcao = foco.hasAttribute("data-mais")
+            ? "mais"
+            : foco.hasAttribute("data-menos")
+              ? "menos"
+              : foco.hasAttribute("data-remover")
+                ? "remover"
+                : "";
+          focoId = foco.getAttribute("data-mais") || foco.getAttribute("data-menos") || foco.getAttribute("data-remover") || "";
+        }
         renderResumo();
-        atualizarBlocoDados();
+        atualizarTotais();
+        atualizarLinkWhatsApp();
+        if (!podeAbrir()) {
+          fechar();
+          return;
+        }
+        if (focoAcao && focoId) {
+          var sel = focoAcao === "mais" ? "[data-mais='" + focoId + "']" : focoAcao === "menos" ? "[data-menos='" + focoId + "']" : "[data-remover='" + focoId + "']";
+          var novo = lista && lista.querySelector(sel);
+          if (novo) {
+            try { novo.focus(); } catch (e) {}
+          }
+        }
       }
     });
 
