@@ -203,6 +203,18 @@
       atualizarControles();
     });
 
+    function sincronizarPedido() {
+      pedido = lerPedido();
+      atualizarControles();
+    }
+
+    // bfcache / voltar do WhatsApp Web (wa.me, api.whatsapp, web.whatsapp)
+    // e retorno à aba: relê o storage para não reexibir um carrinho já limpo.
+    window.addEventListener("pageshow", sincronizarPedido);
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "visible") sincronizarPedido();
+    });
+
     window.MF = window.MF || {};
     MF.lerPedido = function () {
       return pedido;
