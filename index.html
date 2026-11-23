@@ -193,6 +193,20 @@
         <h2 id="titulo-cardapio" class="reveal">O que sai do forno</h2>
         <p class="lead">Pode escolher vários produtos e a quantidade de cada um. O pedido aparece na barra embaixo, com o total. Depois você escolhe retirada ou entrega e envia no WhatsApp.</p>
         <p class="aviso" role="note">Cardápio de exemplo, só para esta versão de teste. Nomes, descrições e preços ainda não são os oficiais da casa.</p>
+        <div class="loja-info" data-loja-info>
+          <div class="loja-status" data-loja-status data-estado="fechado">
+            <span class="loja-status__dot" aria-hidden="true"></span>
+            <p class="loja-status__texto" data-loja-status-texto aria-live="polite">Horário de exemplo: segunda a sexta, das 8h às 20h. Sábado e domingo, das 8h às 17h. Fora do horário, você ainda pode montar o pedido e enviar como encomenda no WhatsApp.</p>
+          </div>
+          <details class="loja-horarios">
+            <summary>Ver horários <span data-horario-exemplo>(horários de exemplo)</span></summary>
+            <ul data-horario-lista>
+              <li>Segunda a sexta, das 8h às 20h</li>
+              <li>Sábado e domingo, das 8h às 17h</li>
+            </ul>
+          </details>
+          <p class="loja-pagamento" data-pagamento-texto>Pagamento: Pix, cartão ou dinheiro. Combinamos no WhatsApp, na retirada ou na entrega.</p>
+        </div>
         <div class="cardapio-busca-wrap">
           <form class="cardapio-busca" data-busca role="search" aria-label="Buscar no cardápio">
             <label class="sr-only" for="busca-cardapio">Buscar no cardápio</label>
@@ -535,14 +549,14 @@
             <span class="step__num">03</span>
             <div>
               <strong>A gente confirma</strong>
-              <p>Conversamos sobre o pedido e o jeito de receber. Em seguida enviamos o Pix.</p>
+              <p>Conversamos sobre o pedido, o jeito de receber e o pagamento (Pix, cartão ou dinheiro). Combinamos no WhatsApp, na retirada ou na entrega.</p>
             </div>
           </li>
           <li class="reveal">
             <span class="step__num">04</span>
             <div>
               <strong>Produção depois do pagamento</strong>
-              <p>Com o Pix confirmado, o pedido vai para o forno.</p>
+              <p>Com o pagamento confirmado, o pedido vai para o forno.</p>
             </div>
           </li>
         </ol>
@@ -554,7 +568,8 @@
           </article>
           <article class="panel reveal">
             <h3>Horário</h3>
-            <p>Segunda a sexta, das 8h às 20h. Sábado e domingo, das 8h às 17h.</p>
+            <p data-horario-grade>Segunda a sexta, das 8h às 20h. Sábado e domingo, das 8h às 17h.</p>
+            <p data-horario-exemplo>(horários de exemplo)</p>
           </article>
           <article class="panel reveal">
             <h3>Retirada</h3>
@@ -716,6 +731,7 @@
           <label class="campo" for="obs-retirada">Observação (opcional)</label>
           <textarea id="obs-retirada" name="observacao" data-observacao rows="3" maxlength="200" placeholder="Ex.: sem cebola, retirar depois das 18h"></textarea>
           <div class="checkout__totais" data-checkout-totais></div>
+          <p class="checkout__nota" data-pagamento-texto>Pagamento: Pix, cartão ou dinheiro. Combinamos no WhatsApp, na retirada ou na entrega.</p>
           <div class="checkout__acoes">
             <button type="button" class="btn btn--ghost-ink" data-checkout-voltar="receber">Voltar</button>
             <button type="button" class="btn btn--yellow" data-checkout-wa>Enviar no WhatsApp<span class="sr-only"> (abre em nova aba)</span></button>
@@ -758,6 +774,7 @@
           <textarea id="obs-delivery" name="observacao" data-observacao rows="3" maxlength="200" placeholder="Ex.: sem cebola, entregar depois das 18h"></textarea>
           <div class="checkout__totais" data-checkout-totais></div>
           <p class="checkout__nota">A taxa de entrega é combinada pelo WhatsApp. A entrega é feita por aplicativo, como a 99 Entrega.</p>
+          <p class="checkout__nota" data-pagamento-texto>Pagamento: Pix, cartão ou dinheiro. Combinamos no WhatsApp, na retirada ou na entrega.</p>
 
           <div class="checkout__acoes">
             <button type="button" class="btn btn--ghost-ink" data-checkout-voltar="receber">Voltar</button>
@@ -773,5 +790,6 @@
   <script src="js/main.js" defer></script>
   <script src="js/checkout.js" defer></script>
   <script src="js/busca.js" defer></script>
+  <script src="js/horario.js" defer></script>
 </body>
 </html>
