@@ -410,3 +410,215 @@ html {
     display: none !important;
   }
 }
+
+/* Busca do cardápio */
+.cardapio-busca-wrap {
+  margin-top: 1.15rem;
+}
+
+.cardapio-busca {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cardapio-busca input[type="search"] {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.55rem 2.7rem 0.55rem 0.95rem;
+  border: 2px solid var(--black);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+}
+
+.cardapio-busca input[type="search"]::placeholder {
+  color: #6a645c;
+  font-weight: 500;
+}
+
+.cardapio-busca input[type="search"]:focus {
+  outline: 3px solid var(--yellow);
+  outline-offset: 1px;
+}
+
+.cardapio-busca input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.cardapio-busca__limpar {
+  position: absolute;
+  right: 0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--black);
+  color: var(--yellow);
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.cardapio-busca__limpar:hover,
+.cardapio-busca__limpar:focus-visible {
+  background: #1a1a1a;
+}
+
+.cardapio-busca__sugestao,
+.cardapio-busca__vazio {
+  margin: 0.7rem 0 0;
+  font-weight: 600;
+}
+
+.cardapio-busca__sugestao button {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+
+.cardapio-busca__sugestao button:hover,
+.cardapio-busca__sugestao button:focus-visible {
+  color: var(--black);
+}
+
+.cardapio-busca__vazio a {
+  font-weight: 800;
+  color: var(--ink);
+  text-underline-offset: 0.18em;
+}
+
+.menu-group[hidden],
+.item[hidden],
+.menu-jump[hidden] {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .cardapio-busca-wrap {
+    position: sticky;
+    top: calc(var(--header-h) + env(safe-area-inset-top) + 3px);
+    z-index: 30;
+    margin-top: 1rem;
+    padding: 0.45rem 0 0.7rem;
+    background: var(--white);
+    box-shadow: 0 8px 10px -8px rgba(0, 0, 0, 0.18);
+  }
+
+  /* Cards compactos só no celular. Desktop (640px+) permanece igual. */
+  #cardapio .menu-grid {
+    gap: 0.65rem;
+  }
+
+  #cardapio .menu-group {
+    margin-top: 1.35rem;
+  }
+
+  #cardapio .menu-group__head h3 {
+    font-size: 1.35rem;
+  }
+
+  #cardapio .menu-group__head p:last-child {
+    font-size: 0.9rem;
+  }
+
+  #cardapio .item {
+    position: relative;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0.65rem;
+    padding: 0.5rem;
+    height: auto;
+  }
+
+  #cardapio .item > picture {
+    flex: 0 0 100px;
+    width: 100px;
+    max-width: 100px;
+    height: 100px;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+
+  #cardapio .item > picture img,
+  #cardapio .item img {
+    width: 100px;
+    max-width: 100px;
+    height: 100px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+  }
+
+  #cardapio .item__body {
+    min-width: 0;
+    padding: 0;
+    gap: 0.2rem;
+    flex: 1;
+  }
+
+  #cardapio .item h4 {
+    font-size: 0.98rem;
+  }
+
+  #cardapio .item__top {
+    gap: 0.35rem;
+    align-items: center;
+  }
+
+  #cardapio .item .badge {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.4rem;
+    z-index: 1;
+    min-height: 1.3rem;
+    padding: 0 0.35rem;
+    font-size: 0.58rem;
+    background: var(--white);
+  }
+
+  #cardapio .item__body > p {
+    font-size: 0.82rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  #cardapio .item__foot {
+    margin-top: auto;
+    gap: 0.4rem;
+  }
+
+  #cardapio .price {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  #cardapio .item .qty button {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardapio-busca-wrap {
+    box-shadow: none;
+  }
+}

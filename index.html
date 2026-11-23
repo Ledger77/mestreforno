@@ -193,6 +193,16 @@
         <h2 id="titulo-cardapio" class="reveal">O que sai do forno</h2>
         <p class="lead">Pode escolher vários produtos e a quantidade de cada um. O pedido aparece na barra embaixo, com o total. Depois você escolhe retirada ou entrega e envia no WhatsApp.</p>
         <p class="aviso" role="note">Cardápio de exemplo, só para esta versão de teste. Nomes, descrições e preços ainda não são os oficiais da casa.</p>
+        <div class="cardapio-busca-wrap">
+          <form class="cardapio-busca" data-busca role="search" aria-label="Buscar no cardápio">
+            <label class="sr-only" for="busca-cardapio">Buscar no cardápio</label>
+            <input type="search" id="busca-cardapio" name="q" data-busca-campo placeholder="Buscar, ex.: kibe, coxinha" autocomplete="off" spellcheck="false" enterkeyhint="search">
+            <button type="button" class="cardapio-busca__limpar" data-busca-limpar hidden aria-label="Limpar busca">&times;</button>
+          </form>
+          <p class="cardapio-busca__sugestao" data-busca-sugestao hidden></p>
+          <p class="cardapio-busca__vazio" data-busca-vazio hidden>Não achamos esse item. <a data-whatsapp href="https://wa.me/5592992487642?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">Chama a gente no WhatsApp<span class="sr-only js-nova-aba"> (abre em nova aba)</span></a>.</p>
+          <p class="sr-only" data-busca-status aria-live="polite"></p>
+        </div>
         <nav class="menu-jump" data-menu-jump aria-label="Grupos do cardápio">
           <a href="#salgados">Salgados</a>
           <a href="#pizzas">Pizzas</a>
@@ -758,5 +768,6 @@
   <script src="js/cardapio.js" defer></script>
   <script src="js/main.js" defer></script>
   <script src="js/checkout.js" defer></script>
+  <script src="js/busca.js" defer></script>
 </body>
 </html>
