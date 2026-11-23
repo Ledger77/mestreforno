@@ -270,12 +270,48 @@ button.btn:disabled,
   padding: 0;
 }
 
-.checkout__itens li {
+.checkout__itens li,
+.checkout__item {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 0.5rem;
-  padding: 0.55rem 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 0.75rem;
+  padding: 0.7rem 0;
   border-bottom: 1px solid #ece8e2;
+}
+
+.checkout__item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 8rem;
+  flex: 1;
+}
+
+.checkout__item-acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.checkout__remover {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1.5px solid var(--black);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--black);
+  font-size: 1.35rem;
+  line-height: 1;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.checkout__remover:hover,
+.checkout__remover:focus-visible {
+  background: var(--black);
+  color: var(--yellow);
 }
 
 .checkout__subtotal,
@@ -464,52 +500,6 @@ html.checkout-aberto body {
 .passos-entrega .step__num {
   font-weight: 800;
   color: var(--yellow);
-}
-
-.taxa-teto {
-  margin: 0 0 1.5rem;
-  padding: 1.1rem 1.2rem;
-  background: var(--yellow);
-  color: var(--black);
-  border-radius: 16px;
-}
-
-.taxa-teto h3 {
-  margin: 0 0 0.45rem;
-}
-
-.taxa-teto p {
-  margin: 0;
-}
-
-.faixas-tabela {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 0.75rem 0 0;
-  font-size: 0.95rem;
-}
-
-.faixas-tabela th,
-.faixas-tabela td {
-  padding: 0.45rem 0.4rem;
-  text-align: left;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-@media (min-width: 860px) {
-  .passos-entrega {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.on-dark .faixas-tabela th,
-.on-dark .faixas-tabela td {
-  color: var(--white);
-  border-bottom-color: #3a3a3a;
-}
-
-.on-dark .faixas-tabela {
-  margin-top: 0.85rem;
 }
 
 .js .cta-row [data-abre-checkout] {

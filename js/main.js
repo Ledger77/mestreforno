@@ -7,6 +7,7 @@
   "use strict";
 
   var STORAGE = "mestreforno-pedido";
+  var EXPIRA_MS = 2 * 60 * 60 * 1000;
 
   function urlWhatsApp(texto) {
     if (typeof SITE === "undefined" || !SITE) return "";
@@ -64,20 +65,38 @@
     return mapa;
   }
 
+  function itensValidos(dados) {
+    var limpo = {};
+    if (!dados || typeof dados !== "object" || Array.isArray(dados)) return limpo;
+    Object.keys(dados).forEach(function (id) {
+      var q = Number(dados[id]);
+      if (!id || !Number.isFinite(q)) return;
+      q = Math.floor(q);
+      if (q < 1) return;
+      limpo[id] = Math.min(q, 99);
+    });
+    return limpo;
+  }
+
   function lerPedido() {
     try {
       var bruto = localStorage.getItem(STORAGE);
-      var dados = bruto ? JSON.parse(bruto) : {};
+      var dados = bruto ? JSON.parse(bruto) : null;
       if (!dados || typeof dados !== "object" || Array.isArray(dados)) return {};
-      var limpo = {};
-      Object.keys(dados).forEach(function (id) {
-        var q = Number(dados[id]);
-        if (!id || !Number.isFinite(q)) return;
-        q = Math.floor(q);
-        if (q < 1) return;
-        limpo[id] = Math.min(q, 99);
-      });
-      return limpo;
+      // Formato antigo (só o mapa de itens), ou registro sem data: trata como visita anterior.
+      if (typeof dados.em !== "number" || !dados.itens) {
+        try {
+          localStorage.removeItem(STORAGE);
+        } catch (e) {}
+        return {};
+      }
+      if (Date.now() - dados.em > EXPIRA_MS) {
+        try {
+          localStorage.removeItem(STORAGE);
+        } catch (e) {}
+        return {};
+      }
+      return itensValidos(dados.itens);
     } catch (e) {
       return {};
     }
@@ -85,7 +104,15 @@
 
   function gravarPedido(pedido) {
     try {
-      localStorage.setItem(STORAGE, JSON.stringify(pedido));
+      var limpo = itensValidos(pedido);
+      if (!Object.keys(limpo).length) {
+        localStorage.removeItem(STORAGE);
+        return;
+      }
+      localStorage.setItem(
+        STORAGE,
+        JSON.stringify({ v: 1, em: Date.now(), itens: limpo })
+      );
     } catch (e) {}
   }
 
@@ -178,7 +205,21 @@
 
     window.MF = window.MF || {};
     MF.lerPedido = function () {
-      return lerPedido();
+      return pedido;
+    };
+    MF.alterarItem = function (id, delta) {
+      mudar(id, delta);
+    };
+    MF.removerItem = function (id) {
+      if (!itens[id] && !pedido[id]) return;
+      delete pedido[id];
+      gravarPedido(pedido);
+      atualizarControles();
+    };
+    MF.limparPedido = function () {
+      pedido = {};
+      gravarPedido(pedido);
+      atualizarControles();
     };
     MF.formatarReais = formatarReais;
     MF.urlWhatsApp = urlWhatsApp;
