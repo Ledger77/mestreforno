@@ -420,6 +420,13 @@ button.btn:disabled,
   margin-top: 0.45rem;
 }
 
+.checkout__endereco .mapa-link {
+  display: inline-block;
+  color: var(--ink);
+  font-weight: 700;
+  text-underline-offset: 0.22em;
+}
+
 .checkout__endereco--origem {
   margin-bottom: 1.35rem;
 }
