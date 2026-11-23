@@ -61,10 +61,9 @@ const HORARIOS = {
 
 /*
   Texto único de pagamento, usado no cardápio e no checkout.
-  O pagamento é combinado no WhatsApp (retirada ou entrega).
+  Por enquanto o pagamento é somente Pix, combinado no WhatsApp.
   A mensagem do pedido não inclui Pix nem valor de taxa.
 */
 const PAGAMENTO = {
-  texto:
-    "Pagamento: Pix, cartão ou dinheiro. Combinamos no WhatsApp, na retirada ou na entrega.",
+  texto: "Pagamento: somente Pix, combinado no WhatsApp.",
 };
