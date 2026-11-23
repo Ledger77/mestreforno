@@ -227,8 +227,9 @@
     $$("[data-bloco]").forEach(function (el) {
       el.hidden = el.getAttribute("data-bloco") !== estado.modo;
     });
-    var end = $("[data-endereco-retirada]");
-    if (end) end.textContent = textoRetirada();
+    $$("[data-endereco-retirada], [data-endereco-origem]").forEach(function (el) {
+      el.textContent = textoRetirada();
+    });
     atualizarTotais();
     atualizarLinkWhatsApp();
   }

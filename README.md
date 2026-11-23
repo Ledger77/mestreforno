@@ -57,4 +57,4 @@ Os itens e os preços do cardápio nesta versão são exemplos fictícios, só p
 
 Com JavaScript, o visitante monta o pedido no cardápio (vários itens e quantidades), abre a lista do pedido para ajustar ou remover itens, escolhe retirada ou entrega e abre o WhatsApp com a mensagem pronta. A mensagem não pede Pix e não traz taxa. A taxa de entrega é combinada pelo WhatsApp. A entrega é feita por aplicativo, como a 99 Entrega.
 
-O endereço de retirada fica em `js/config.js` (`RETIRADA`). No delivery, o cliente informa rua, número, bairro e referência. O carrinho vale por cerca de 2 horas na mesma visita e é limpo depois de enviar para o WhatsApp; uma visita nova começa vazia.
+O endereço da casa fica em `js/config.js` (`RETIRADA`). No delivery, o cliente informa rua, número, bairro e referência, e o checkout também mostra de onde a entrega sai (esse endereço da casa não entra na mensagem do WhatsApp). O carrinho vale por cerca de 2 horas na mesma visita e é limpo depois de enviar para o WhatsApp; uma visita nova começa vazia.
