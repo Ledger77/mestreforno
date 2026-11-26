@@ -4,7 +4,10 @@
   Tokens em styles.css. Movimento em direcao.css.
 */
 
-html {
+/* Rede de segurança: nada alarga a página. Clip não cria rolagem, então
+   position: sticky e fixed continuam funcionando. */
+html,
+body {
   overflow-x: clip;
 }
 
@@ -374,6 +377,9 @@ html {
 }
 
 .ig-strip li {
+  /* Âncora dos textos .sr-only (position: absolute) de cada link. Sem isso
+     eles escapam do corte da faixa e alargam a página no celular. */
+  position: relative;
   flex: 0 0 auto;
   width: min(11rem, 44vw);
   scroll-snap-align: start;
