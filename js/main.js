@@ -1,7 +1,8 @@
 /*
-  Liga o WhatsApp, o cardápio com quantidades, o vídeo do hero,
-  as revelações e o menu. O HTML já traz o cardápio e os links
+  Liga o WhatsApp, o cardápio com quantidades, os vídeos (com
+  botão de pausar) e o menu. O HTML já traz o cardápio e os links
   wa.me, então a página continua utilizável se este arquivo falhar.
+  Nenhum conteúdo depende deste arquivo para ficar visível.
 */
 (function () {
   "use strict";
@@ -180,6 +181,7 @@
       );
     }
 
+    // Só o badge reage (1 → 1.15 → 1, 200 ms; ver direcao.css). Reinicia a animação a cada "+".
     function animarCarrinho() {
       document.querySelectorAll("[data-carrinho]").forEach(function (el) {
         el.classList.remove("is-anima");
@@ -337,103 +339,117 @@
     }
   }
 
-  function podeVideo() {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+  var reduzMovimento = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  // exigente: o hero só baixa vídeo em conexão boa (4g ou sem informação).
+  function podeVideo(exigente) {
+    if (reduzMovimento.matches) return false;
     var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     if (c) {
       if (c.saveData) return false;
       var tipo = String(c.effectiveType || "");
       if (tipo === "slow-2g" || tipo === "2g") return false;
+      if (exigente && tipo && tipo !== "4g") return false;
     }
     return true;
   }
 
-  function ligarVideo(seletor, src, botaoPausa) {
-    var video = document.querySelector(seletor);
-    if (!video || !src) return;
-    if (!podeVideo()) return;
-    video.src = src;
-    var play = video.play();
-    if (play && play.catch) play.catch(function () {});
-    if (botaoPausa) {
-      botaoPausa.hidden = false;
-      botaoPausa.addEventListener("click", function () {
-        if (video.paused) {
-          var p = video.play();
-          if (p && p.catch) p.catch(function () {});
-          botaoPausa.textContent = "Pausar vídeo";
-        } else {
-          video.pause();
-          botaoPausa.textContent = "Reproduzir vídeo";
-        }
-      });
+  function tocar(video) {
+    var p = video.play();
+    if (p && p.catch) p.catch(function () {});
+  }
+
+  /*
+    Botão de pausar/reproduzir (WCAG 2.2.2). Fica escondido até o
+    vídeo tocar de verdade; é absoluto, então aparecer não mexe no layout.
+  */
+  function ligarControle(video, botao) {
+    if (!botao) return;
+    function marcar() {
+      var tocando = !video.paused;
+      botao.setAttribute("aria-label", tocando ? "Pausar vídeo" : "Reproduzir vídeo");
+      botao.setAttribute("data-estado", tocando ? "tocando" : "pausado");
     }
+    video.addEventListener("playing", function () {
+      botao.hidden = false;
+      marcar();
+    });
+    video.addEventListener("pause", marcar);
+    botao.addEventListener("click", function () {
+      if (video.paused) tocar(video);
+      else video.pause();
+      marcar();
+    });
+  }
+
+  /*
+    O vídeo entra por cima da foto só no evento "playing" (classe
+    .is-tocando, crossfade de 400 ms em direcao.css). Se o vídeo não
+    carregar, a foto continua e o botão não aparece.
+  */
+  function ligarVideo(video, src, botao, exigente) {
+    if (!video || !src || video.getAttribute("src")) return;
+    if (!podeVideo(exigente)) return;
+    video.addEventListener("playing", function () {
+      video.classList.add("is-tocando");
+    }, { once: true });
+    ligarControle(video, botao);
+    video.src = src;
+    tocar(video);
+  }
+
+  function aoAparecer(alvo, fn) {
+    if (!alvo) return;
+    if (!("IntersectionObserver" in window)) {
+      fn();
+      return;
+    }
+    var obs = new IntersectionObserver(function (entradas) {
+      if (!entradas.some(function (e) { return e.isIntersecting; })) return;
+      obs.disconnect();
+      fn();
+    }, { rootMargin: "200px 0px" });
+    obs.observe(alvo);
   }
 
   function iniciarVideos() {
-    ligarVideo(".hero__video", "assets/video/hero-queijo.mp4", document.querySelector(".hero__pause"));
-    var clip = document.querySelector(".historia-clip__video");
-    if (clip && clip.getAttribute("data-src") && "IntersectionObserver" in window && podeVideo()) {
-      var o2 = new IntersectionObserver(function (entradas) {
-        entradas.forEach(function (entrada) {
-          if (!entrada.isIntersecting) return;
-          ligarVideo(".historia-clip__video", clip.getAttribute("data-src"));
-          o2.disconnect();
-        });
-      }, { rootMargin: "200px 0px" });
-      o2.observe(clip);
+    var hero = document.querySelector(".hero");
+    var heroVideo = document.querySelector(".hero__video");
+    // Celular: o hero fica só com a foto (LCP). Desktop: o vídeo entra depois do load.
+    if (heroVideo && !window.matchMedia("(max-width: 719px)").matches) {
+      var ligarHero = function () {
+        ligarVideo(heroVideo, "assets/video/hero-queijo.mp4", hero && hero.querySelector("[data-video-toggle]"), true);
+      };
+      if (document.readyState === "complete") ligarHero();
+      else window.addEventListener("load", function () { (window.requestIdleCallback || setTimeout)(ligarHero); });
     }
 
     var assinatura = document.querySelector(".assinatura");
-    var videoAssinatura = document.querySelector(".assinatura__video");
-    if (!assinatura || !videoAssinatura || !podeVideo()) return;
-    if (!("IntersectionObserver" in window)) {
-      ligarVideo(".assinatura__video", "assets/video/forno-abre.mp4");
-      return;
+    var forno = document.querySelector(".assinatura__video");
+    if (forno && podeVideo()) {
+      aoAparecer(assinatura, function () {
+        ligarVideo(forno, "assets/video/forno-abre.mp4", assinatura.querySelector("[data-video-toggle]"));
+      });
     }
-    var visto = false;
-    var obs = new IntersectionObserver(
-      function (entradas) {
-        entradas.forEach(function (entrada) {
-          if (!entrada.isIntersecting || visto) return;
-          visto = true;
-          ligarVideo(".assinatura__video", "assets/video/forno-abre.mp4");
-          obs.disconnect();
-        });
-      },
-      { rootMargin: "200px 0px" }
-    );
-    obs.observe(assinatura);
-  }
 
-  function iniciarRevelacoes() {
-    var blocos = document.querySelectorAll(".reveal");
-    if (!blocos.length) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      blocos.forEach(function (el) {
-        el.classList.add("is-in");
+    var clip = document.querySelector(".historia-clip__video");
+    if (clip && clip.getAttribute("data-src") && podeVideo()) {
+      var frame = clip.closest(".historia-clip__frame");
+      aoAparecer(clip, function () {
+        ligarVideo(clip, clip.getAttribute("data-src"), frame && frame.querySelector("[data-video-toggle]"));
       });
-      return;
     }
-    if (!("IntersectionObserver" in window)) {
-      blocos.forEach(function (el) {
-        el.classList.add("is-in");
+
+    // Se a pessoa ativar "reduzir movimento" com a página aberta, os vídeos param
+    // (o CSS também os esconde nesse caso).
+    var aoMudar = function () {
+      if (!reduzMovimento.matches) return;
+      document.querySelectorAll("video").forEach(function (v) {
+        if (!v.paused) v.pause();
       });
-      return;
-    }
-    var obs = new IntersectionObserver(
-      function (entradas) {
-        entradas.forEach(function (entrada) {
-          if (!entrada.isIntersecting) return;
-          entrada.target.classList.add("is-in");
-          obs.unobserve(entrada.target);
-        });
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
-    );
-    blocos.forEach(function (el) {
-      obs.observe(el);
-    });
+    };
+    if (reduzMovimento.addEventListener) reduzMovimento.addEventListener("change", aoMudar);
+    else if (reduzMovimento.addListener) reduzMovimento.addListener(aoMudar);
   }
 
   function marcarAno() {
@@ -446,6 +462,5 @@
   iniciarPedido();
   iniciarMenu();
   iniciarVideos();
-  iniciarRevelacoes();
   marcarAno();
 })();

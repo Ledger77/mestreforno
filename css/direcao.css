@@ -1,0 +1,228 @@
+/*
+  Forno Aceso · movimento contido.
+  Todo o movimento do site está neste arquivo, e são só estes 6 itens:
+    1. Entrada do hero (1× por visita; o h1 lidera; a foto LCP não anima)
+    2. :active em controles (scale 0.97 / 0.95, 160 ms)
+    3. Barra do pedido entra por baixo (@starting-style, 300 ms, ease-drawer)
+    4. Badge do pedido: 1 → 1.15 → 1, 200 ms, a cada "+"
+    5. Checkout abre (celular: sheet 360 ms; desktop: 200 ms fade + scale 0.97). Fecha instantâneo.
+    6. Crossfade foto → vídeo no evento "playing" (.is-tocando)
+  Só transform e opacity. Nada de transition: all, nada de will-change.
+  Reduzir movimento = só fade curto (≤ 200 ms), sem translate/scale e sem stagger.
+  Tokens --ease-out e --ease-drawer em styles.css.
+*/
+
+@keyframes mf-sobe {
+  from {
+    opacity: 0;
+    transform: translateY(var(--y, 8px));
+  }
+}
+
+@keyframes mf-aparece {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes mf-badge {
+  40% {
+    transform: scale(1.15);
+  }
+}
+
+/* Âncoras: rolagem suave só para quem não pediu menos movimento. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* 1. Entrada do hero (choreograph: h1 = lead; eyebrow = decoração; lede e CTAs = suporte).
+      fill-mode both: nada pisca antes do delay. É CSS puro: sem JS, termina visível igual. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__copy > * {
+    animation: mf-sobe 500ms var(--ease-out) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  .hero__copy > .eyebrow {
+    animation-name: mf-aparece;
+    animation-duration: 400ms;
+  }
+
+  .hero__copy > h1 {
+    --y: 12px;
+    animation-duration: 600ms;
+  }
+
+  .hero__copy > .lede {
+    --y: 8px;
+    --d: 120ms;
+  }
+
+  .hero__copy > .actions {
+    --y: 6px;
+    --d: 200ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__copy > * {
+    animation: mf-aparece 200ms ease both;
+  }
+}
+
+/* 2. Pressionar: resposta imediata ao toque (feedback). */
+.btn,
+.qty button,
+.menu-jump__btn,
+.header-pedido,
+.checkout__fechar,
+.checkout__remover,
+.nav-toggle,
+.video-toggle,
+.cardapio-busca__limpar {
+  transition: transform 160ms var(--ease-out);
+}
+
+.btn:active:not(:disabled):not([aria-disabled="true"]):not(.is-bloqueado),
+.menu-jump__btn:active,
+.header-pedido:active,
+.checkout__fechar:active,
+.nav-toggle:active {
+  transform: scale(0.97);
+}
+
+.qty button:active,
+.checkout__remover:active,
+.video-toggle:active,
+.cardapio-busca__limpar:active {
+  transform: scale(0.95);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .qty button,
+  .menu-jump__btn,
+  .header-pedido,
+  .checkout__fechar,
+  .checkout__remover,
+  .nav-toggle,
+  .video-toggle,
+  .cardapio-busca__limpar {
+    transition: opacity 100ms ease;
+  }
+
+  .btn:active:not(:disabled):not([aria-disabled="true"]):not(.is-bloqueado),
+  .menu-jump__btn:active,
+  .header-pedido:active,
+  .checkout__fechar:active,
+  .nav-toggle:active,
+  .qty button:active,
+  .checkout__remover:active,
+  .video-toggle:active,
+  .cardapio-busca__limpar:active {
+    transform: none;
+    opacity: 0.75;
+  }
+}
+
+/* 3. Barra do pedido entra por baixo (é fixa: entrar não empurra o layout). Sai instantânea. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .pedido-bar.tem-itens {
+    transition: transform 300ms var(--ease-drawer);
+  }
+
+  @starting-style {
+    .js .pedido-bar.tem-itens {
+      transform: translateY(100%);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .pedido-bar.tem-itens {
+    transition: opacity 150ms ease;
+  }
+
+  @starting-style {
+    .js .pedido-bar.tem-itens {
+      opacity: 0;
+    }
+  }
+}
+
+/* 4. Badge do pedido (indicação de estado). Com menos movimento, só o número troca. */
+@media (prefers-reduced-motion: no-preference) {
+  .carrinho.is-anima .carrinho__badge {
+    animation: mf-badge 200ms var(--ease-out);
+  }
+}
+
+/* 5. Checkout abre. A transição só existe em [open]: fechar é instantâneo. */
+@media (prefers-reduced-motion: no-preference) and (max-width: 859px) {
+  .checkout[open] {
+    transition: transform 360ms var(--ease-drawer);
+  }
+
+  .checkout[open]::backdrop {
+    transition: opacity 360ms var(--ease-drawer);
+  }
+
+  @starting-style {
+    .checkout[open] {
+      transform: translateY(100%);
+    }
+
+    .checkout[open]::backdrop {
+      opacity: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-width: 860px) {
+  /* Modal: origem no centro (não está ancorado a um gatilho). */
+  .checkout[open] {
+    transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+  }
+
+  .checkout[open]::backdrop {
+    transition: opacity 200ms var(--ease-out);
+  }
+
+  @starting-style {
+    .checkout[open] {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+
+    .checkout[open]::backdrop {
+      opacity: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkout[open],
+  .checkout[open]::backdrop {
+    transition: opacity 200ms ease;
+  }
+
+  @starting-style {
+    .checkout[open],
+    .checkout[open]::backdrop {
+      opacity: 0;
+    }
+  }
+}
+
+/* 6. Crossfade foto → vídeo, disparado pelo evento "playing" (main.js adiciona .is-tocando).
+      Com menos movimento os vídeos nem carregam. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__video,
+  .assinatura__video,
+  .historia-clip__video {
+    transition: opacity 400ms ease;
+  }
+}

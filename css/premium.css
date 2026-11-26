@@ -1,94 +1,23 @@
+/*
+  Componentes de mídia e do cardápio: hero, forno, vídeos (com botão de
+  pausar), Instagram, busca, quantidade e fotos da história.
+  Tokens em styles.css. Movimento em direcao.css.
+*/
+
 html {
   overflow-x: clip;
 }
 
-/*
-  Camada visual da versão premium.
-  Mantém o kit: preto, amarelo #FFC629, branco, Montserrat.
-  Amarelo só sobre preto. Respeita prefers-reduced-motion.
-*/
-
-.js .qty {
-  display: inline-flex;
-}
-
-.qty {
-  display: none;
-  align-items: center;
-  gap: 0.2rem;
-  border: 1.5px solid var(--black);
-  border-radius: 999px;
-  padding: 0.1rem;
-  background: var(--white);
-}
-
-.qty button {
-  width: 2.25rem;
-  height: 2.25rem;
-  border: 0;
-  border-radius: 999px;
-  background: var(--black);
-  color: var(--yellow);
-  font-weight: 800;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.qty button:hover {
-  background: #1a1a1a;
-}
-
-.qty [data-qty] {
-  min-width: 1.4rem;
-  text-align: center;
-  font-weight: 800;
-  color: var(--black);
-}
-
-.item.is-escolhido {
-  border-color: var(--black);
-  box-shadow: 0 0 0 2px var(--yellow);
-}
-
-.item {
-  padding: 0;
-  overflow: hidden;
-}
-
-.item picture,
-.item img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  background: #111;
-}
-
-.item__body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 0.9rem 1rem 1rem;
-  flex: 1;
-}
-
-.item__foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-top: auto;
-}
-
+/* Hero: foto em tela cheia, texto na grade da página */
 .hero {
   position: relative;
   isolation: isolate;
-  min-height: min(100svh, 52rem);
   display: grid;
   align-items: end;
-  text-align: left;
+  min-height: min(calc(100svh - var(--header-h) - env(safe-area-inset-top, 0px)), 56rem);
   padding: 0;
   overflow: hidden;
-  border-bottom: 3px solid var(--yellow);
+  text-align: left;
 }
 
 .hero__media,
@@ -108,86 +37,135 @@ html {
   object-position: center;
 }
 
+/* A foto (LCP) nunca anima. O vídeo só aparece quando toca (.is-tocando). */
 .hero__video {
   z-index: 1;
   opacity: 0;
-  transition: opacity 0.6s ease;
 }
 
-.hero__video[src] {
+.hero__video.is-tocando {
   opacity: 1;
 }
 
 .hero__shade {
   z-index: 2;
-  background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.15) 32%, rgba(0, 0, 0, 0.82) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.05) 28%, rgba(0, 0, 0, 0.7) 60%, rgba(0, 0, 0, 0.92) 100%);
   pointer-events: none;
 }
 
 .hero__copy {
   position: relative;
   z-index: 3;
-  padding: 7.5rem 0 3rem;
-  max-width: 38rem;
-  margin-right: auto;
-  text-align: left;
+  padding: 7rem 0 clamp(2rem, 6svh, 4rem);
+}
+
+.hero .eyebrow {
+  color: var(--yellow);
 }
 
 .hero h1 {
-  margin: 0 0 1rem;
-  font-size: clamp(2.6rem, 9vw, 5.4rem);
-  line-height: 0.92;
-  letter-spacing: -0.04em;
-  max-width: 10ch;
+  max-width: 9ch;
+  margin: 0 0 1.25rem;
+  font-size: var(--fs-display);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
 }
 
-.hero h1 span {
+/* "em Manaus" em linha própria: a troca de fonte não muda a altura do h1. */
+.hero h1 .acento {
   display: block;
+  font-size: 1.08em;
+  white-space: nowrap;
 }
 
 .hero .lede {
   margin: 0;
-  max-width: 28ch;
-  color: #f3f3f3;
-  font-size: 1.125rem;
-  text-align: left;
+  max-width: 32ch;
 }
 
 .hero .actions {
   justify-content: flex-start;
-  margin-top: 1.5rem;
+  margin-top: 1.75rem;
 }
 
-.hero__pause {
+@media (max-width: 719px) {
+  /* Celular: só a foto. O vídeo nem é baixado (main.js). */
+  .hero__video,
+  .hero .hero__toggle {
+    display: none;
+  }
+}
+
+@media (min-width: 860px) {
+  .hero__copy {
+    padding: 9rem 0 clamp(3rem, 8svh, 5rem);
+  }
+
+  /* Sombra lateral: o texto fica legível sem escurecer o assunto da foto. */
+  .hero__shade {
+    background:
+      linear-gradient(90deg, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.5) 36%, rgba(0, 0, 0, 0) 62%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, transparent 22%, transparent 72%, rgba(0, 0, 0, 0.55) 100%);
+  }
+}
+
+/* Botão de pausar/reproduzir (WCAG 2.2.2), igual nos três vídeos */
+.video-toggle {
   position: absolute;
-  right: 1rem;
-  bottom: 1rem;
   z-index: 4;
-  min-height: 40px;
-  padding: 0.35rem 0.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
   background: rgba(0, 0, 0, 0.55);
   color: var(--white);
-  font-size: 0.75rem;
-  font-weight: 700;
   cursor: pointer;
 }
 
-.aviso {
-  font-weight: 700;
+.video-toggle[hidden] {
+  display: none;
 }
 
+.video-toggle svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.video-toggle[data-estado="tocando"] .video-toggle__play,
+.video-toggle[data-estado="pausado"] .video-toggle__pausa {
+  display: none;
+}
+
+.video-toggle:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .video-toggle:hover {
+    background: var(--black);
+    border-color: var(--white);
+  }
+}
+
+.hero__toggle {
+  right: max(1rem, calc((100% - var(--max)) / 2));
+  bottom: 1.25rem;
+}
+
+/* Forno: o momento de impacto, vídeo em largura total */
 .assinatura {
   position: relative;
   isolation: isolate;
-  min-height: min(36rem, 90svh);
   display: grid;
   align-items: end;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
-  border-top: 3px solid var(--yellow);
-  border-bottom: 3px solid var(--yellow);
 }
 
 .assinatura__media,
@@ -209,95 +187,216 @@ html {
 .assinatura__video {
   z-index: 1;
   opacity: 0;
-  transition: opacity 0.6s ease;
 }
 
-.assinatura__video[src] {
+.assinatura__video.is-tocando {
   opacity: 1;
 }
 
 .assinatura__shade {
   z-index: 2;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.82));
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.1) 35%, rgba(0, 0, 0, 0.85) 100%);
   pointer-events: none;
 }
 
 .assinatura__copy {
   position: relative;
   z-index: 3;
-  padding: 6rem 0 3.2rem;
-  max-width: 36rem;
+  padding: 5rem 0 clamp(2.5rem, 6vw, 4.5rem);
 }
 
-.assinatura__logo {
-  width: 4.4rem;
-  height: auto;
-  margin-bottom: 1rem;
+.assinatura .eyebrow {
+  color: var(--yellow);
+}
+
+.assinatura h2 {
+  max-width: 12ch;
+  margin: 0 0 1.25rem;
+  font-size: var(--fs-display);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+}
+
+.assinatura h2 .acento {
+  display: block;
+  font-size: 1.08em;
+  white-space: nowrap;
 }
 
 .assinatura__copy p:last-child {
-  max-width: 46ch;
-  color: #f3f3f3;
+  margin: 0;
+  max-width: 40ch;
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--farinha-50);
 }
 
+.assinatura__toggle {
+  top: 1rem;
+  right: max(1rem, calc((100% - var(--max)) / 2));
+}
+
+@media (min-width: 860px) {
+  .assinatura {
+    aspect-ratio: 21 / 9;
+    min-height: 34rem;
+  }
+
+  .assinatura__shade {
+    background:
+      linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.35) 40%, rgba(0, 0, 0, 0) 65%),
+      linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.6) 100%);
+  }
+
+  .assinatura__toggle {
+    top: 1.5rem;
+  }
+}
+
+/* História: fotos (1 grande + 2 deslocadas), legendas numeradas */
 .historia-fotos {
   display: grid;
-  gap: 1rem;
-  margin-top: 2rem;
-  padding-bottom: 3.5rem;
+  gap: 2rem;
+  margin-top: 4rem;
 }
 
-.historia-fotos figure,
-.quote picture,
-.quote img {
+.historia-foto {
   margin: 0;
 }
 
-.historia-fotos img,
-.quote img {
+.historia-foto img {
   width: 100%;
   height: auto;
-  border-radius: 16px;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
+  border-radius: var(--radius-m);
+  background: var(--carvao-800);
 }
 
-.historia-fotos figcaption,
-.quote figcaption {
-  margin-top: 0.7rem;
-  font-weight: 700;
+.historia-foto figcaption {
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+  margin-top: 0.75rem;
+  max-width: 48ch;
+  font-size: var(--fs-small);
+  color: var(--tinta-600);
 }
 
+.historia-foto .fig {
+  flex: 0 0 auto;
+  font-size: var(--fs-eyebrow);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.historia-clip__frame {
+  position: relative;
+}
+
+.historia-clip__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-m);
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.historia-clip__video.is-tocando {
+  opacity: 1;
+}
+
+.historia-clip__toggle {
+  right: 0.75rem;
+  bottom: 0.75rem;
+}
+
+@media (min-width: 860px) {
+  .historia-fotos {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    row-gap: 2.5rem;
+    align-items: start;
+  }
+
+  .historia-foto--grande {
+    grid-column: 1 / span 7;
+    grid-row: 1 / span 2;
+  }
+
+  .historia-clip {
+    grid-column: 9 / span 4;
+    margin-top: 4rem;
+  }
+
+  .historia-foto--fritura {
+    grid-column: 8 / span 5;
+  }
+}
+
+/* Vídeos não carregam com "reduzir movimento" (main.js); escondidos por garantia. */
+@media (prefers-reduced-motion: reduce) {
+  .hero__video,
+  .assinatura__video,
+  .historia-clip__video,
+  .video-toggle {
+    display: none !important;
+  }
+}
+
+/* Instagram: faixa no celular, mosaico no desktop */
 .ig-handle {
   color: var(--yellow);
   font-weight: 800;
+  text-underline-offset: 0.2em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ig-handle:hover {
+    color: var(--white);
+  }
 }
 
 .ig-strip {
   list-style: none;
   display: flex;
-  gap: 0.65rem;
-  margin: 1.4rem 0 0;
-  padding: 0 0 0.4rem;
+  gap: 0.75rem;
+  margin: 2.5rem 0 0;
+  padding: 0 0 0.5rem;
   max-width: 100%;
   min-width: 0;
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  contain: content;
   scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
 .ig-strip li {
   flex: 0 0 auto;
-  width: min(11rem, 70vw);
+  width: min(11rem, 44vw);
   scroll-snap-align: start;
 }
 
 .ig-strip a {
   display: block;
-  border-radius: 14px;
   overflow: hidden;
-  border: 1px solid #2a2a2a;
+  border-radius: var(--radius-m);
+  background: var(--carvao-800);
+}
+
+/* A faixa rola e corta o que passa da borda: o foco fica por dentro. */
+.ig-strip a:focus-visible {
+  outline-offset: -3px;
+}
+
+.ig-strip picture {
+  display: block;
 }
 
 .ig-strip img {
@@ -306,114 +405,34 @@ html {
   object-fit: cover;
 }
 
-@media (max-width: 859px) {
-  .hero__copy {
-    padding-top: 6.5rem;
-    padding-bottom: 4.2rem;
-  }
-}
-
 @media (min-width: 860px) {
-  .hero__copy {
-    padding: 9rem 0 4.2rem;
+  .ig-strip {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1rem;
+    overflow: visible;
+    padding: 0;
+    scroll-snap-type: none;
   }
 
-  .historia-fotos {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+  .ig-strip li {
+    width: auto;
   }
 
-  .assinatura__copy {
-    padding: 8rem 0 4rem;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .reveal {
-    opacity: 0;
-    transform: translateY(1.15rem);
+  /* 2 colunas + 1 vão = 2 linhas + 1 vão: o quadrado grande fecha certo. */
+  .ig-strip li:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
   }
 
-  .reveal.is-in {
-    opacity: 1;
-    transform: none;
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-
-  .assinatura.is-in .brand-glow,
-  .assinatura .brand-glow {
-    filter: drop-shadow(0 0 0 transparent);
-  }
-
-  .assinatura:has(.assinatura__video[src]) .brand-glow,
-  .js .assinatura.is-in .brand-glow {
-    animation: acende 2.6s ease forwards;
-  }
-
-  .item img {
-    transition: transform 0.45s ease;
-  }
-
-  .item:hover img,
-  .item:focus-within img {
-    transform: scale(1.04);
-  }
-}
-
-@keyframes acende {
-  0% {
-    filter: drop-shadow(0 0 0 transparent);
-  }
-  45%,
-  100% {
-    filter: drop-shadow(0 0 14px #ffc629) drop-shadow(0 0 32px rgba(255, 198, 41, 0.4));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero__video,
-  .assinatura__video {
-    display: none !important;
-  }
-
-  .hero__pause {
-    display: none !important;
-  }
-}
-
-.historia-clip__frame {
-  position: relative;
-}
-
-.historia-clip__frame img {
-  display: block;
-}
-
-.historia-clip__video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 16px;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  pointer-events: none;
-}
-
-.historia-clip__video[src] {
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .historia-clip__video {
-    display: none !important;
+  .ig-strip a:focus-visible {
+    outline-offset: 3px;
   }
 }
 
 /* Busca do cardápio */
 .cardapio-busca-wrap {
-  margin-top: 1.15rem;
+  margin-top: 1.25rem;
 }
 
 .cardapio-busca {
@@ -425,23 +444,24 @@ html {
 .cardapio-busca input[type="search"] {
   width: 100%;
   min-height: 48px;
-  padding: 0.55rem 2.7rem 0.55rem 0.95rem;
-  border: 2px solid var(--black);
+  padding: 0.55rem 3.1rem 0.55rem 1.1rem;
+  border: 1.5px solid var(--ink);
   border-radius: 999px;
   background: var(--white);
   color: var(--ink);
   font: inherit;
-  font-weight: 600;
-}
-
-.cardapio-busca input[type="search"]::placeholder {
-  color: #6a645c;
+  font-size: 1rem;
   font-weight: 500;
 }
 
-.cardapio-busca input[type="search"]:focus {
-  outline: 3px solid var(--yellow);
-  outline-offset: 1px;
+.cardapio-busca input[type="search"]::placeholder {
+  color: var(--tinta-600);
+  font-weight: 500;
+}
+
+.cardapio-busca input[type="search"]:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
 }
 
 .cardapio-busca input[type="search"]::-webkit-search-cancel-button {
@@ -449,35 +469,48 @@ html {
   appearance: none;
 }
 
+/* Sem transform no posicionamento, para o :active poder usar scale(). */
 .cardapio-busca__limpar {
   position: absolute;
-  right: 0.35rem;
+  right: 2px;
   top: 50%;
-  transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
+  margin-top: -22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
   border: 0;
   border-radius: 999px;
-  background: var(--black);
-  color: var(--yellow);
-  font-size: 1.4rem;
-  font-weight: 800;
+  background: transparent;
+  color: var(--ink);
+  font-size: 1.5rem;
+  font-weight: 700;
   line-height: 1;
   cursor: pointer;
 }
 
-.cardapio-busca__limpar:hover,
-.cardapio-busca__limpar:focus-visible {
-  background: #1a1a1a;
+.cardapio-busca__limpar[hidden] {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cardapio-busca__limpar:hover {
+    background: var(--papel-100);
+  }
 }
 
 .cardapio-busca__sugestao,
 .cardapio-busca__vazio {
-  margin: 0.7rem 0 0;
-  font-weight: 600;
+  margin: 0.75rem 0 0;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--ink);
 }
 
 .cardapio-busca__sugestao button {
+  min-height: 44px;
   border: 0;
   padding: 0;
   background: none;
@@ -489,9 +522,10 @@ html {
   cursor: pointer;
 }
 
-.cardapio-busca__sugestao button:hover,
-.cardapio-busca__sugestao button:focus-visible {
-  color: var(--black);
+@media (hover: hover) and (pointer: fine) {
+  .cardapio-busca__sugestao button:hover {
+    text-decoration-thickness: 2px;
+  }
 }
 
 .cardapio-busca__vazio a {
@@ -500,129 +534,63 @@ html {
   text-underline-offset: 0.18em;
 }
 
-.menu-group[hidden],
-.item[hidden],
-.menu-jump[hidden] {
+/* Quantidade (−/+): neutra; vira preta com número amarelo quando escolhida */
+.qty {
   display: none;
+  align-items: center;
+  border-radius: 999px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
 }
 
-.cardapio-busca-wrap .menu-jump {
-  margin-top: 0.85rem;
+.js .qty {
+  display: inline-flex;
 }
 
-@media (max-width: 639px) {
-  .cardapio-busca-wrap {
-    position: sticky;
-    top: calc(var(--header-h) + env(safe-area-inset-top) + 3px);
-    z-index: 30;
-    margin-top: 1rem;
-    padding: 0.45rem 0 0.7rem;
-    background: var(--white);
-    box-shadow: 0 8px 10px -8px rgba(0, 0, 0, 0.18);
-  }
-
-  /* Cards compactos só no celular. Desktop (640px+) permanece igual. */
-  #cardapio .menu-grid {
-    gap: 0.65rem;
-  }
-
-  #cardapio .menu-group {
-    margin-top: 1.35rem;
-  }
-
-  #cardapio .menu-group__head h3 {
-    font-size: 1.35rem;
-  }
-
-  #cardapio .menu-group__head p:last-child {
-    font-size: 0.9rem;
-  }
-
-  #cardapio .item {
-    position: relative;
-    flex-direction: row;
-    align-items: stretch;
-    gap: 0.65rem;
-    padding: 0.5rem;
-    height: auto;
-  }
-
-  #cardapio .item > picture {
-    flex: 0 0 100px;
-    width: 100px;
-    max-width: 100px;
-    height: 100px;
-    margin: 0;
-    overflow: hidden;
-    border-radius: 10px;
-  }
-
-  #cardapio .item > picture img,
-  #cardapio .item img {
-    width: 100px;
-    max-width: 100px;
-    height: 100px;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    display: block;
-  }
-
-  #cardapio .item__body {
-    min-width: 0;
-    padding: 0;
-    gap: 0.2rem;
-    flex: 1;
-  }
-
-  #cardapio .item h4 {
-    font-size: 0.98rem;
-  }
-
-  #cardapio .item__top {
-    gap: 0.35rem;
-    align-items: center;
-  }
-
-  #cardapio .item .badge {
-    position: absolute;
-    top: 0.4rem;
-    left: 0.4rem;
-    z-index: 1;
-    min-height: 1.3rem;
-    padding: 0 0.35rem;
-    font-size: 0.58rem;
-    background: var(--white);
-  }
-
-  #cardapio .item__body > p {
-    font-size: 0.82rem;
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-  }
-
-  #cardapio .item__foot {
-    margin-top: auto;
-    gap: 0.4rem;
-  }
-
-  #cardapio .price {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.9rem;
-  }
-
-  #cardapio .item .qty button {
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
-    min-height: 40px;
-  }
+.qty button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .cardapio-busca-wrap {
-    box-shadow: none;
+.qty [data-qty] {
+  min-width: 1.75rem;
+  text-align: center;
+  font-weight: 800;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.item.is-escolhido .qty {
+  background: var(--black);
+  box-shadow: none;
+}
+
+.item.is-escolhido .qty button {
+  color: var(--white);
+}
+
+.item.is-escolhido .qty [data-qty] {
+  color: var(--yellow);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .qty button:hover {
+    background: var(--papel-100);
+  }
+
+  .item.is-escolhido .qty button:hover {
+    background: var(--carvao-700);
   }
 }

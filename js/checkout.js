@@ -126,7 +126,7 @@
 
   function mapsRetirada() {
     if (typeof RETIRADA !== "undefined" && RETIRADA && RETIRADA.maps) return RETIRADA.maps;
-    return "https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+140+-+Compensa,+Manaus+-+AM,+69035-540";
+    return "https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+110+-+Compensa,+Manaus+-+AM,+69035-650";
   }
 
   function dialogEl() {
@@ -329,7 +329,8 @@
   function abrir(origem) {
     if (!podeAbrir()) {
       var cardapio = document.getElementById("cardapio");
-      if (cardapio) cardapio.scrollIntoView({ behavior: "smooth", block: "start" });
+      var reduzir = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (cardapio) cardapio.scrollIntoView({ behavior: reduzir ? "auto" : "smooth", block: "start" });
       return;
     }
     ultimoFoco = origem || document.activeElement;

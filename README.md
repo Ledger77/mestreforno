@@ -47,6 +47,8 @@ Hero, aviso do cardápio, como pedir, entrega, horário, retirada, sobre e rodap
 - Texto amarelo só em fundo preto. Em fundo claro, o texto fica preto.
 - Papel `#f4f2ee` e texto `#1a1a1a` são neutros de apoio, não cor de marca.
 - Títulos em Montserrat ExtraBold, hospedada em `assets/fonts/` (pesos 500, 700 e 800).
+- Acento em Instrument Serif Italic (`assets/fonts/instrument-serif-italic.woff2`, licença OFL em `assets/fonts/OFL-instrument-serif.txt`), no máximo uma expressão por seção.
+- Movimento contido em `css/direcao.css` (entrada do hero, toque nos botões, barra do pedido, badge, abertura do checkout, troca foto → vídeo), com versão reduzida para quem prefere menos movimento. Os vídeos em loop têm botão de pausar.
 - Logos oficiais em `assets/`. Não estique nem mude as cores. O viewBox do logo horizontal só corta a margem transparente, sem alterar o desenho.
 
 ## Versão de teste

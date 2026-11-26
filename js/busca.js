@@ -140,14 +140,35 @@
       return mapa[id] || id;
     }
 
+    /*
+      No HTML os filtros são âncoras (#salgados, #pizzas), que funcionam
+      sem JavaScript. Com JS viram <button type="button" aria-pressed>,
+      porque são botões de liga/desliga (aria-pressed não vale em <a>).
+    */
+    function promoverFiltros() {
+      if (!jump) return;
+      Array.prototype.slice.call(jump.querySelectorAll("a[data-filtro]")).forEach(function (link) {
+        var btn = document.createElement("button");
+        var alvo = (link.getAttribute("href") || "").replace(/^#/, "");
+        btn.type = "button";
+        btn.className = link.className;
+        btn.setAttribute("data-filtro", link.getAttribute("data-filtro") || "");
+        btn.setAttribute("aria-pressed", "false");
+        if (alvo && document.getElementById(alvo)) btn.setAttribute("aria-controls", alvo);
+        btn.textContent = link.textContent;
+        link.parentNode.replaceChild(btn, link);
+      });
+    }
+
     function atualizarBotoes() {
       if (!jump) return;
       Array.prototype.slice.call(jump.querySelectorAll("[data-filtro]")).forEach(function (btn) {
         var ativo = Boolean(filtro) && btn.getAttribute("data-filtro") === filtro;
-        btn.classList.toggle("is-ativo", ativo);
         btn.setAttribute("aria-pressed", ativo ? "true" : "false");
       });
     }
+
+    promoverFiltros();
 
     function mostrarSugestao(nome, extra, grupoId) {
       if (!sugestaoEl) return;
@@ -265,10 +286,12 @@
       var g = grupos.filter(function (gr) { return !gr.hidden; })[0];
       if (!g) return;
       var header = document.querySelector("header.site-header");
-      var sticky = document.querySelector(".cardapio-busca-wrap");
-      var offset = 6;
+      var offset = 8;
       if (header) offset += header.getBoundingClientRect().height;
-      if (sticky) offset += sticky.getBoundingClientRect().height;
+      // No celular só os filtros ficam grudados embaixo do header.
+      if (jump && window.getComputedStyle(jump).position === "sticky") {
+        offset += jump.getBoundingClientRect().height;
+      }
       g.style.scrollMarginTop = offset + "px";
       var reduzir = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       try {

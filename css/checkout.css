@@ -1,45 +1,9 @@
-/* Checkout, barra do pedido e textos de entrega. */
+/*
+  Pedido: atalho no header, badge, barra do pedido e checkout (3 passos).
+  Tokens em styles.css. Entradas (barra, badge, checkout) em direcao.css.
+*/
 
-button.btn,
-.btn[type="button"] {
-  font-family: inherit;
-  font-size: 1rem;
-  appearance: none;
-  -webkit-appearance: none;
-}
-
-button.btn--yellow,
-.btn.btn--yellow {
-  background: var(--yellow);
-  color: var(--black);
-  border-color: var(--black);
-}
-
-button.btn--yellow:hover,
-.btn.btn--yellow:hover {
-  background: #ffd24d;
-}
-
-button.btn--ghost,
-.btn.btn--ghost-ink {
-  background: transparent;
-  color: var(--ink);
-  border-color: var(--ink);
-}
-
-button.btn--ghost:hover,
-.btn.btn--ghost-ink:hover {
-  background: var(--ink);
-  color: var(--white);
-}
-
-button.btn:disabled,
-.btn.is-bloqueado,
-.btn[aria-disabled="true"] {
-  cursor: not-allowed;
-  opacity: 0.55;
-}
-
+/* Atalho "Pedido" no header (o WhatsApp do header continua ao lado). */
 .header-pedido[hidden] {
   display: none !important;
 }
@@ -47,26 +11,26 @@ button.btn:disabled,
 .header-pedido {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   min-height: 44px;
   overflow: visible;
-  padding: 0.3rem 0.65rem;
-  border: 2px solid var(--yellow);
+  padding: 0.3rem 0.85rem 0.3rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 999px;
   background: transparent;
   color: var(--white);
   font-family: inherit;
+  font-size: 0.875rem;
   font-weight: 800;
-  font-size: 0.85rem;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   cursor: pointer;
   flex: 0 0 auto;
 }
 
-.header-pedido:hover,
-.header-pedido:focus-visible {
-  background: var(--yellow);
-  color: var(--black);
+@media (hover: hover) and (pointer: fine) {
+  .header-pedido:hover {
+    border-color: var(--white);
+  }
 }
 
 .carrinho {
@@ -84,11 +48,8 @@ button.btn:disabled,
   width: 1.5rem;
   height: 1.5rem;
   color: currentColor;
-  transform-origin: 50% 85%;
 }
 
-.header-pedido__badge,
-.pedido-bar__badge,
 .carrinho__badge {
   position: absolute;
   top: -0.3rem;
@@ -102,10 +63,45 @@ button.btn:disabled,
   border-radius: 999px;
   background: var(--yellow);
   color: var(--black);
-  font-size: 0.68rem;
+  font-size: 0.6875rem;
   font-weight: 800;
   line-height: 1;
+  font-variant-numeric: tabular-nums;
   box-shadow: 0 0 0 2px var(--black);
+}
+
+/* Barra do pedido: o total é a informação principal. */
+.pedido-bar {
+  display: none;
+}
+
+.js .pedido-bar.tem-itens {
+  display: block;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  padding: 0.75rem max(1rem, env(safe-area-inset-right, 0px)) calc(0.75rem + env(safe-area-inset-bottom, 0px)) max(1rem, env(safe-area-inset-left, 0px));
+  background: var(--black);
+  border-top: 1px solid var(--carvao-700);
+}
+
+.pedido-bar__inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: min(var(--max), 100%);
+  margin-inline: auto;
+}
+
+.pedido-bar__info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  flex: 1;
+  color: var(--white);
 }
 
 .pedido-bar .carrinho {
@@ -127,81 +123,33 @@ button.btn:disabled,
   right: -0.28rem;
 }
 
-@keyframes carrinho-pulo {
-  0% { transform: translateY(0) rotate(0deg); }
-  28% { transform: translateY(-6px) rotate(-10deg); }
-  52% { transform: translateY(0) rotate(7deg); }
-  76% { transform: translateY(-3px) rotate(-4deg); }
-  100% { transform: translateY(0) rotate(0deg); }
-}
-
-@keyframes badge-pop {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.28); }
-  100% { transform: scale(1); }
-}
-
-.carrinho.is-anima .carrinho__icone {
-  animation: carrinho-pulo 0.48s ease;
-}
-
-.carrinho.is-anima .carrinho__badge {
-  animation: badge-pop 0.36s ease;
-}
-
-.header-pedido:hover .header-pedido__badge,
-.header-pedido:focus-visible .header-pedido__badge {
-  background: var(--black);
-  color: var(--yellow);
-}
-
-.pedido-bar {
-  display: none;
-}
-
-.js .pedido-bar.tem-itens {
-  display: block;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 50;
-  padding: 0.65rem 1rem calc(0.65rem + env(safe-area-inset-bottom));
-  background: rgba(0, 0, 0, 0.94);
-  border-top: 2px solid var(--yellow);
-}
-
-.pedido-bar__inner {
+/* No HTML vem "N itens" e depois o total; na tela o total fica em cima. */
+.pedido-bar__textos {
   display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  width: min(var(--max), 100%);
-  margin-inline: auto;
-}
-
-.pedido-bar__info {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
+  flex-direction: column-reverse;
   min-width: 0;
-  flex: 1;
-  color: var(--white);
 }
 
 .pedido-bar__qtd,
 .pedido-bar__total {
   margin: 0;
-  line-height: 1.25;
-}
-
-.pedido-bar__qtd {
-  font-weight: 800;
-  letter-spacing: -0.02em;
 }
 
 .pedido-bar__total {
-  font-size: 0.9rem;
-  color: #f0f0f0;
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
+}
+
+.pedido-bar__qtd {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--cinza-400);
+  font-variant-numeric: tabular-nums;
 }
 
 .pedido-bar .btn {
@@ -210,22 +158,20 @@ button.btn:disabled,
 }
 
 .js.tem-pedido body {
-  padding-bottom: 5.9rem;
+  padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
 }
 
 @media (min-width: 860px) {
-  .pedido-bar.tem-itens {
-    padding: 0.75rem 1.5rem;
-  }
-
   .pedido-bar .btn {
     min-width: 11rem;
   }
 }
 
+/* Checkout */
 .checkout {
-  width: min(42rem, calc(100% - 1.25rem));
-  max-height: min(92vh, 56rem);
+  --checkout-pad: 1.5rem;
+  width: min(40rem, calc(100% - 2rem));
+  max-height: min(90dvh, 56rem);
   padding: 0;
   border: 0;
   background: transparent;
@@ -233,7 +179,7 @@ button.btn:disabled,
 }
 
 .checkout::backdrop {
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(14, 12, 10, 0.75);
 }
 
 .checkout.is-fallback {
@@ -244,150 +190,229 @@ button.btn:disabled,
   place-items: center;
   width: auto;
   max-height: none;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(14, 12, 10, 0.75);
 }
 
 .checkout__panel {
+  display: flex;
+  flex-direction: column;
+  max-height: min(90dvh, 56rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: var(--checkout-pad) var(--checkout-pad) 0;
+  border-radius: var(--radius-l);
   background: var(--white);
   color: var(--ink);
-  border-radius: 18px;
-  max-height: min(92vh, 56rem);
-  overflow: auto;
-  padding: 1.25rem 1.2rem 1.6rem;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+}
+
+.checkout__panel > * {
+  flex-shrink: 0;
+}
+
+/* O passo visível ocupa o espaço que sobra, para as ações ficarem no rodapé. */
+.checkout [data-checkout-passo]:not([hidden]),
+.checkout [data-bloco]:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
+/* Espaço mínimo antes das ações (que vêm por último). */
+.checkout [data-checkout-passo="resumo"]::after,
+.checkout [data-checkout-passo="receber"]::after,
+.checkout [data-bloco]::after {
+  content: "";
+  flex: 1 0 1rem;
+  order: 1;
 }
 
 .checkout__topo {
   position: relative;
-  padding-right: 2.6rem;
-  margin-bottom: 1rem;
+  padding-right: 3rem;
+  margin-bottom: 1.25rem;
 }
 
 .checkout__topo .eyebrow {
-  color: #6a645c;
+  color: var(--tinta-600);
 }
 
 .checkout__topo h2 {
   margin: 0;
-  font-size: clamp(1.45rem, 3vw, 1.85rem);
+  font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
 }
 
 .checkout__fechar {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -0.25rem;
+  right: -0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 44px;
   height: 44px;
+  padding: 0;
   border: 0;
   border-radius: 999px;
-  background: var(--paper);
+  background: var(--papel-100);
   color: var(--ink);
   font-size: 1.6rem;
   line-height: 1;
   cursor: pointer;
 }
 
-.checkout__fechar:hover,
-.checkout__fechar:focus-visible {
-  background: var(--yellow);
+@media (hover: hover) and (pointer: fine) {
+  .checkout__fechar:hover {
+    background: var(--fio-200);
+  }
 }
 
+/* Etapas numeradas: 1 Itens · 2 Como receber · 3 Dados */
 .checkout__passos {
   list-style: none;
   display: flex;
-  gap: 0.4rem;
-  margin: 0 0 1.2rem;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem;
   padding: 0;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  counter-reset: passo;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
   text-transform: uppercase;
-  color: #7a746c;
+  color: var(--tinta-600);
 }
 
 .checkout__passos li {
   flex: 1;
-  padding: 0.35rem 0;
-  border-bottom: 2px solid #e4dfd8;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--fio-200);
+  counter-increment: passo;
 }
 
+.checkout__passos li::before {
+  content: counter(passo);
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.checkout__passos li.is-feito,
 .checkout__passos li.is-atual {
-  color: var(--ink);
-  border-bottom-color: var(--yellow);
-}
-
-.checkout__passos li.is-feito {
   color: var(--ink);
   border-bottom-color: var(--ink);
 }
 
-.checkout__itens ul,
-.checkout__lista {
+.checkout__passos li.is-atual::before {
+  background: var(--black);
+  border-color: var(--black);
+  color: var(--yellow);
+}
+
+/* Itens */
+.checkout__itens ul {
   list-style: none;
-  margin: 0 0 1rem;
+  margin: 0;
   padding: 0;
 }
 
-.checkout__itens li,
 .checkout__item {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem 0.75rem;
-  padding: 0.7rem 0;
-  border-bottom: 1px solid #ece8e2;
+  gap: 0.5rem 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--fio-200);
 }
 
 .checkout__item-info {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.1rem;
   min-width: 8rem;
   flex: 1;
+}
+
+.checkout__item-info strong {
+  font-weight: 700;
+}
+
+.checkout__item-info span {
+  color: var(--tinta-600);
+  font-variant-numeric: tabular-nums;
 }
 
 .checkout__item-acoes {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.35rem;
 }
 
 .checkout__remover {
-  width: 2.25rem;
-  height: 2.25rem;
-  border: 1.5px solid var(--black);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
   border-radius: 999px;
-  background: var(--white);
-  color: var(--black);
-  font-size: 1.35rem;
+  background: transparent;
+  color: var(--tinta-600);
+  font-size: 1.5rem;
+  font-weight: 500;
   line-height: 1;
-  font-weight: 700;
   cursor: pointer;
 }
 
-.checkout__remover:hover,
-.checkout__remover:focus-visible {
-  background: var(--black);
-  color: var(--yellow);
+@media (hover: hover) and (pointer: fine) {
+  .checkout__remover:hover {
+    background: var(--papel-100);
+    color: var(--ink);
+  }
 }
 
-.checkout__subtotal,
+.checkout__subtotal {
+  margin: 1rem 0 0;
+  text-align: right;
+  font-size: 1.125rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
 .checkout__totais {
   margin: 0 0 1rem;
-  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .checkout__totais p {
-  margin: 0 0 0.4rem;
+  margin: 0;
+}
+
+.checkout__totais strong {
+  font-size: 1.125rem;
+  font-weight: 800;
 }
 
 .checkout__nota {
-  font-weight: 500 !important;
-  font-size: 0.95rem;
-  color: #3d3a36;
+  margin: 0 0 0.6rem;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--tinta-600);
 }
 
+/* Formulário */
 .checkout fieldset {
   margin: 0 0 1rem;
   padding: 0;
@@ -395,45 +420,52 @@ button.btn:disabled,
 }
 
 .checkout legend,
-.checkout label.campo,
-.checkout .campo-rotulo {
+.checkout label.campo {
   display: block;
-  font-weight: 800;
+  font-weight: 700;
   margin-bottom: 0.45rem;
 }
 
 .checkout__opcao {
   display: flex;
   align-items: flex-start;
-  gap: 0.65rem;
-  margin: 0 0 0.55rem;
-  padding: 0.8rem 0.9rem;
-  border: 2px solid #e4dfd8;
-  border-radius: 14px;
-  font-weight: 700;
+  gap: 0.75rem;
+  margin: 0 0 0.6rem;
+  padding: 0.9rem 1rem;
+  border: 1.5px solid var(--fio-200);
+  border-radius: var(--radius-m);
+  font-weight: 500;
   cursor: pointer;
 }
 
+.checkout__opcao strong {
+  font-weight: 800;
+}
+
 .checkout__opcao:has(input:checked) {
-  border-color: var(--black);
-  background: var(--paper);
+  border-color: var(--ink);
+  background: var(--farinha-50);
+  box-shadow: inset 0 0 0 1px var(--ink);
 }
 
 .checkout__opcao input {
-  margin-top: 0.2rem;
   flex: 0 0 auto;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0.15rem 0 0;
+  accent-color: var(--black);
 }
 
 .checkout input[type="text"],
-.checkout select,
 .checkout textarea {
   width: 100%;
   min-height: 48px;
   margin-bottom: 0.85rem;
-  padding: 0.55rem 0.8rem;
-  border: 2px solid #cfc9c0;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid var(--cinza-400);
   border-radius: 12px;
   font: inherit;
+  font-size: 1rem;
   color: var(--ink);
   background: var(--white);
 }
@@ -445,38 +477,33 @@ button.btn:disabled,
   line-height: 1.4;
 }
 
-.checkout input[type="text"]:focus,
-.checkout select:focus,
-.checkout textarea:focus {
-  outline: 3px solid var(--yellow);
-  outline-offset: 1px;
-  border-color: var(--black);
+.checkout input[type="text"]:focus-visible,
+.checkout textarea:focus-visible {
+  border-color: var(--ink);
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
 }
 
 .checkout__ajuda,
 .checkout .erro {
   margin: -0.45rem 0 0.85rem;
-  font-size: 0.92rem;
+  font-size: var(--fs-small);
+}
+
+.checkout__ajuda {
+  color: var(--tinta-600);
 }
 
 .checkout .erro {
-  color: #8a1f11;
+  color: var(--erro);
   font-weight: 700;
-}
-
-.checkout__acoes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-top: 1rem;
 }
 
 .checkout__endereco {
   margin: 0 0 1rem;
-  padding: 0.9rem 1rem;
-  background: var(--paper);
-  border-radius: 14px;
-  border-left: 4px solid var(--yellow);
+  padding: 1rem;
+  background: var(--papel-100);
+  border-radius: var(--radius-m);
 }
 
 .checkout__endereco p {
@@ -488,10 +515,10 @@ button.btn:disabled,
 }
 
 .checkout__endereco .mapa-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--ink);
-  font-weight: 700;
-  text-underline-offset: 0.22em;
 }
 
 .checkout__endereco--origem {
@@ -499,9 +526,8 @@ button.btn:disabled,
 }
 
 .checkout__destino {
-  margin: 0 0 1rem;
   padding-top: 0.15rem;
-  border-top: 1px solid #e4dfd8;
+  border-top: 1px solid var(--fio-200);
 }
 
 .checkout__destino legend {
@@ -509,18 +535,40 @@ button.btn:disabled,
   font-size: 1.05rem;
 }
 
-.checkout__aviso {
-  margin: 0 0 1rem;
-  padding: 0.85rem 1rem;
-  background: #fff6d6;
-  border-radius: 14px;
-  font-weight: 700;
+/* Ações fixas no rodapé do painel: primário largo, "Voltar" como link. */
+.checkout__acoes {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  order: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 calc(-1 * var(--checkout-pad));
+  padding: 0.85rem var(--checkout-pad) calc(0.85rem + env(safe-area-inset-bottom, 0px));
+  background: var(--white);
+  box-shadow: 0 -1px 0 var(--fio-200);
 }
 
-.checkout__atribuicao {
-  margin: 1rem 0 0;
-  font-size: 0.75rem;
-  color: #6a645c;
+.checkout__acoes .btn--yellow {
+  flex: 1 1 auto;
+  order: 2;
+}
+
+.checkout__acoes .btn--ghost-ink {
+  flex: 0 0 auto;
+  order: 1;
+  padding-inline: 0.5rem;
+  border-color: transparent;
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .checkout__acoes .btn--ghost-ink:hover {
+    background: var(--papel-100);
+    color: var(--ink);
+  }
 }
 
 html.checkout-aberto,
@@ -528,26 +576,29 @@ html.checkout-aberto body {
   overflow: hidden;
 }
 
+/* Celular: tela cheia (sheet), com as ações sempre à mão. */
 @media (max-width: 859px) {
   .checkout {
+    --checkout-pad: 1rem;
     width: 100%;
     max-width: 100%;
-    max-height: 100%;
     height: 100%;
     height: 100dvh;
+    max-height: 100%;
     max-height: 100dvh;
     margin: 0;
   }
 
   .checkout__panel {
-    border-radius: 0;
+    height: 100%;
     max-height: 100%;
-    min-height: 100%;
-    padding: 1.1rem 1rem calc(1.2rem + env(safe-area-inset-bottom));
+    padding-top: calc(1.1rem + env(safe-area-inset-top, 0px));
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .header-pedido {
-    padding: 0.25rem 0.45rem;
+    padding: 0.25rem 0.5rem;
     font-size: 0;
     gap: 0;
   }
@@ -557,65 +608,17 @@ html.checkout-aberto body {
     height: 1.4rem;
   }
 
-  .header-pedido__badge {
+  .header-pedido .carrinho__badge {
     font-size: 0.7rem;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .checkout,
-  .checkout__panel {
-    transition: none;
+@media (min-width: 860px) {
+  .checkout__acoes .btn--yellow {
+    flex: 0 0 auto;
+    min-width: 12rem;
+    margin-left: auto;
   }
-
-  .carrinho.is-anima .carrinho__icone,
-  .carrinho.is-anima .carrinho__badge {
-    animation: none;
-  }
-}
-
-.passos-entrega {
-  list-style: none;
-  margin: 0 0 1.75rem;
-  padding: 0;
-  display: grid;
-  gap: 0.75rem;
-}
-
-.passos-entrega li {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.85rem;
-  align-items: start;
-  padding: 1rem 1.1rem;
-  background: #141414;
-  border-radius: 16px;
-}
-
-.on-dark .passos-entrega li {
-  border: 1px solid #2a2a2a;
-}
-
-.passos-entrega strong {
-  display: block;
-  margin-bottom: 0.2rem;
-}
-
-.passos-entrega .step__num {
-  font-weight: 800;
-  color: var(--yellow);
-}
-
-.js .cta-row [data-abre-checkout] {
-  margin-right: 0.6rem;
-}
-
-.cta-row [data-abre-checkout] {
-  display: none;
-}
-
-.js .cta-row [data-abre-checkout] {
-  display: inline-flex;
 }
 
 @media (min-width: 640px) {
@@ -624,4 +627,13 @@ html.checkout-aberto body {
     grid-template-columns: 1fr 8.5rem;
     gap: 0.75rem;
   }
+}
+
+/* "Continuar o pedido" depois do cardápio só existe com JS. */
+.cta-row [data-abre-checkout] {
+  display: none;
+}
+
+.js .cta-row [data-abre-checkout] {
+  display: inline-flex;
 }
