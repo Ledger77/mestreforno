@@ -38,17 +38,12 @@
   }
 }
 
-/* 1. Entrada do hero (choreograph: h1 = lead; eyebrow = decoração; lede e CTAs = suporte).
+/* 1. Entrada do hero (choreograph: h1 = lead; lede e CTAs = suporte).
       fill-mode both: nada pisca antes do delay. É CSS puro: sem JS, termina visível igual. */
 @media (prefers-reduced-motion: no-preference) {
   .hero__copy > * {
     animation: mf-sobe 500ms var(--ease-out) both;
     animation-delay: var(--d, 0ms);
-  }
-
-  .hero__copy > .eyebrow {
-    animation-name: mf-aparece;
-    animation-duration: 400ms;
   }
 
   .hero__copy > h1 {
