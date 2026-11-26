@@ -126,7 +126,7 @@
 
   function mapsRetirada() {
     if (typeof RETIRADA !== "undefined" && RETIRADA && RETIRADA.maps) return RETIRADA.maps;
-    return "https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+110+-+Compensa,+Manaus+-+AM,+69035-650";
+    return "https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+140+-+Compensa,+Manaus+-+AM,+69035-540";
   }
 
   function dialogEl() {

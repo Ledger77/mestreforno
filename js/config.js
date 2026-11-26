@@ -28,12 +28,15 @@ const SITE = {
   combinada no WhatsApp; a entrega é feita por aplicativo,
   como a 99 Entrega. Este endereço não entra na mensagem.
   maps: link do Google Maps para o ponto (abre em nova aba).
+        Usa o nº 140 / CEP 69035-540 de propósito: no Maps, o
+        endereço atual (110 / 69035-650) cai em outro ponto da
+        mesma rua. O texto visível e o JSON-LD continuam com o 110.
 */
 const RETIRADA = {
   texto:
     "Rua Grande Cidade (antiga Rua Vinte e Cinco de Dezembro), nº 110 (antigo 836), Compensa 2, Manaus/AM. Referência: final da rua, portão marrom de ferro com listras brancas.",
   maps:
-    "https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+110+-+Compensa,+Manaus+-+AM,+69035-650",
+    "https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+140+-+Compensa,+Manaus+-+AM,+69035-540",
 };
 
 /*
