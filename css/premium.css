@@ -59,10 +59,6 @@ html {
   padding: 7rem 0 clamp(2rem, 6svh, 4rem);
 }
 
-.hero .eyebrow {
-  color: var(--yellow);
-}
-
 .hero h1 {
   max-width: 9ch;
   margin: 0 0 1.25rem;
