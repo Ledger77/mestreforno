@@ -9,7 +9,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Salgados e pizzas frescos em Manaus, feitos em família. Peça pelo WhatsApp. A entrega é feita por aplicativo, como a 99 Entrega.">
   <meta name="theme-color" content="#000000">
   <meta name="format-detection" content="telephone=no">
@@ -34,10 +34,12 @@
   <link rel="icon" type="image/png" href="assets/favicon-32.png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
   <link rel="preload" href="assets/fonts/montserrat-800.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" as="image" type="image/avif" imagesrcset="assets/foto/hero-mobile-720.avif 720w, assets/foto/hero-mobile-1080.avif 1080w, assets/foto/hero-desktop-960.avif 960w, assets/foto/hero-desktop-1600.avif 1600w" imagesizes="100vw">
+  <link rel="preload" as="image" type="image/avif" media="(max-width: 719px)" imagesrcset="assets/foto/hero-mobile-720.avif 720w, assets/foto/hero-mobile-1080.avif 1080w" imagesizes="100vw">
+  <link rel="preload" as="image" type="image/avif" media="(min-width: 720px)" imagesrcset="assets/foto/hero-desktop-960.avif 960w, assets/foto/hero-desktop-1600.avif 1600w" imagesizes="100vw">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/premium.css">
   <link rel="stylesheet" href="css/checkout.css">
+  <link rel="stylesheet" href="css/direcao.css">
   <noscript>
     <style>
       @media (max-width: 859px) {
@@ -116,6 +118,12 @@
     <symbol id="i-carrinho" viewBox="0 0 24 24">
       <path fill="currentColor" d="M3 3.75A.75.75 0 0 1 3.75 3h.9c.87 0 1.63.6 1.84 1.45l.16.67h12.52a1.5 1.5 0 0 1 1.47 1.82l-1.3 5.85A2.25 2.25 0 0 1 17.4 14.5H8.55a2.25 2.25 0 0 1-2.2-1.75L5.07 6.28 4.77 5.1a.38.38 0 0 0-.37-.35h-.65A.75.75 0 0 1 3 3.75Zm4.5 14.5a1.75 1.75 0 1 1-3.5 0 1.75 1.75 0 0 1 3.5 0Zm11.25 0a1.75 1.75 0 1 1-3.5 0 1.75 1.75 0 0 1 3.5 0Z"/>
     </symbol>
+    <symbol id="i-pausa" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/>
+    </symbol>
+    <symbol id="i-play" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M8 5.6v12.8a.6.6 0 0 0 .92.5l9.8-6.4a.6.6 0 0 0 0-1L8.92 5.1a.6.6 0 0 0-.92.5z"/>
+    </symbol>
   </svg>
 
   <a class="skip" href="#conteudo">Ir para o conteúdo</a>
@@ -168,31 +176,37 @@
           <source type="image/webp" srcset="assets/foto/hero-desktop-640.webp 640w, assets/foto/hero-desktop-960.webp 960w, assets/foto/hero-desktop-1600.webp 1600w" sizes="100vw">
           <img class="hero__poster" src="assets/foto/hero-desktop-960.jpg" width="1600" height="900" alt="Pizza saindo do forno, com o queijo puxando, em uma cozinha escura." fetchpriority="high" decoding="async">
         </picture>
-        <video class="hero__video" muted playsinline loop preload="none" tabindex="-1" aria-hidden="true" poster="assets/foto/hero-desktop-960.jpg"></video>
+        <video class="hero__video" muted playsinline loop preload="none" tabindex="-1" aria-hidden="true"></video>
         <div class="hero__shade"></div>
       </div>
       <div class="wrap hero__copy">
-        <p class="eyebrow">Manaus · Amazonas</p>
-        <h1 id="titulo-principal">Salgados e pizzas <span>em Manaus</span></h1>
-        <p class="lede">Quentinho, feito em família. Peça pelo WhatsApp e receba em toda a cidade.</p>
+        <p class="eyebrow">Desde 1990 · Compensa 2</p>
+        <h1 id="titulo-principal">Salgados e pizzas <span class="acento">em Manaus</span></h1>
+        <p class="lede">Quentinho, feito em família. Monte o pedido, envie pelo WhatsApp e receba em toda a cidade.</p>
         <div class="actions">
-          <a class="btn btn--yellow" data-whatsapp href="https://wa.me/5592992487642?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
+          <a class="btn btn--yellow" href="#cardapio">Montar pedido</a>
+          <a class="btn btn--ghost" data-whatsapp href="https://wa.me/5592992487642?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">
             <svg aria-hidden="true"><use href="#i-wa"></use></svg>
-            Peça pelo WhatsApp
+            WhatsApp
             <span class="sr-only js-nova-aba"> (abre em nova aba)</span>
           </a>
-          <a class="btn btn--ghost" href="#cardapio">Ver cardápio</a>
         </div>
-        <button type="button" class="hero__pause" hidden>Pausar vídeo</button>
       </div>
+      <button type="button" class="video-toggle hero__toggle" data-video-toggle data-estado="tocando" aria-label="Pausar vídeo" hidden>
+        <svg class="video-toggle__pausa" width="18" height="18" aria-hidden="true" focusable="false"><use href="#i-pausa"></use></svg>
+        <svg class="video-toggle__play" width="18" height="18" aria-hidden="true" focusable="false"><use href="#i-play"></use></svg>
+      </button>
     </section>
 
-    <section class="section section--light" id="cardapio" aria-labelledby="titulo-cardapio">
-      <div class="wrap">
-        <p class="eyebrow">Cardápio</p>
-        <h2 id="titulo-cardapio" class="reveal">O que sai do forno</h2>
-        <p class="lead">Pode escolher vários produtos e a quantidade de cada um. O pedido aparece na barra embaixo, com o total. Depois você escolhe retirada ou entrega e envia no WhatsApp.</p>
-        <p class="aviso" role="note">Cardápio de exemplo, só para esta versão de teste. Nomes, descrições e preços ainda não são os oficiais da casa.</p>
+    <section class="section section--light cardapio" id="cardapio" aria-labelledby="titulo-cardapio">
+      <div class="wrap cardapio__wrap">
+        <div class="section-head">
+          <h2 id="titulo-cardapio">O que sai do forno</h2>
+          <div class="section-head__texto">
+            <p class="lead">Escolha os itens e as quantidades; o total aparece na barra embaixo.</p>
+            <p class="aviso" role="note">Cardápio de exemplo, só para esta versão de teste. Nomes, descrições e preços ainda não são os oficiais da casa.</p>
+          </div>
+        </div>
         <div class="loja-info" data-loja-info>
           <div class="loja-status" data-loja-status data-estado="fechado">
             <span class="loja-status__dot" aria-hidden="true"></span>
@@ -216,16 +230,18 @@
           <p class="cardapio-busca__sugestao" data-busca-sugestao hidden></p>
           <p class="cardapio-busca__vazio" data-busca-vazio hidden>Não achamos esse item. <a data-whatsapp href="https://wa.me/5592992487642?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">Chama a gente no WhatsApp<span class="sr-only js-nova-aba"> (abre em nova aba)</span></a>.</p>
           <p class="sr-only" data-busca-status aria-live="polite"></p>
-          <nav class="menu-jump" data-menu-jump aria-label="Filtrar o cardápio">
-            <a href="#salgados" class="menu-jump__btn" data-filtro="salgados" aria-pressed="false">Salgados</a>
-            <a href="#pizzas" class="menu-jump__btn" data-filtro="pizzas" aria-pressed="false">Pizzas</a>
-          </nav>
         </div>
-        <div data-cardapio>
+        <!-- Sem JS são âncoras; o busca.js troca por <button aria-pressed> (filtro liga/desliga). -->
+        <div class="menu-jump" data-menu-jump role="group" aria-label="Filtrar o cardápio">
+          <a href="#salgados" class="menu-jump__btn" data-filtro="salgados">Salgados</a>
+          <a href="#pizzas" class="menu-jump__btn" data-filtro="pizzas">Pizzas</a>
+        </div>
+        <div class="cardapio__lista" data-cardapio>
           <section class="menu-group" id="salgados" aria-labelledby="titulo-salgados">
             <div class="menu-group__head">
               <h3 id="titulo-salgados">Salgados</h3>
-              <p>Fritos na hora, para o lanche ou para a festa. Valores por unidade, salvo o cento.</p>
+              <p class="menu-meta">7 itens</p>
+              <p class="menu-group__resumo">Fritos na hora, para o lanche ou para a festa. Valores por unidade, salvo o cento.</p>
             </div>
             <ul class="menu-grid">
               <li class="item" data-item="coxinha" data-centavos="800">
@@ -366,7 +382,8 @@
           <section class="menu-group" id="pizzas" aria-labelledby="titulo-pizzas">
             <div class="menu-group__head">
               <h3 id="titulo-pizzas">Pizzas</h3>
-              <p>Pizza grande, com cerca de oito fatias, assada no forno.</p>
+              <p class="menu-meta">5 itens</p>
+              <p class="menu-group__resumo">Pizza grande, com cerca de oito fatias, assada no forno.</p>
             </div>
             <ul class="menu-grid">
               <li class="item" data-item="calabresa" data-centavos="5200">
@@ -480,79 +497,83 @@
 
     <section class="section on-dark" id="instagram" aria-labelledby="titulo-instagram">
       <div class="wrap">
-        <p class="eyebrow">Instagram</p>
-        <h2 id="titulo-instagram" class="reveal">Do forno para a tela</h2>
-        <p class="lead">Uma prévia do que sai por aqui. Siga <a class="ig-handle" href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer">@mestreforno<span class="sr-only"> (abre em nova aba)</span></a> para ver o dia a dia da casa.</p>
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Instagram</p>
+            <h2 id="titulo-instagram">Do forno para a tela</h2>
+          </div>
+          <div class="section-head__texto">
+            <p class="lead">Uma prévia do que sai por aqui. Siga <a class="ig-handle" href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer">@mestreforno<span class="sr-only"> (abre em nova aba)</span></a> para ver o dia a dia da casa.</p>
+          </div>
+        </div>
         <ul class="ig-strip">
           <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
-              <source type="image/avif" srcset="assets/foto/coxinha-320.avif 320w, assets/foto/coxinha-600.avif 600w" sizes="160px">
-              <source type="image/webp" srcset="assets/foto/coxinha-320.webp 320w, assets/foto/coxinha-600.webp 600w" sizes="160px">
-              <img src="assets/foto/coxinha-320.jpg" width="600" height="600" alt="Coxinhas douradas." loading="lazy" decoding="async">
-            </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
-          <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
-              <source type="image/avif" srcset="assets/foto/calabresa-320.avif 320w, assets/foto/calabresa-600.avif 600w" sizes="160px">
-              <source type="image/webp" srcset="assets/foto/calabresa-320.webp 320w, assets/foto/calabresa-600.webp 600w" sizes="160px">
-              <img src="assets/foto/calabresa-320.jpg" width="600" height="600" alt="Pizza calabresa saindo do forno." loading="lazy" decoding="async">
-            </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
-          <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
-              <source type="image/avif" srcset="assets/foto/forno-720.avif 720w, assets/foto/forno-1280.avif 1280w" sizes="160px">
-              <source type="image/webp" srcset="assets/foto/forno-720.webp 720w, assets/foto/forno-1280.webp 1280w" sizes="160px">
+              <source type="image/avif" srcset="assets/foto/forno-720.avif 720w, assets/foto/forno-1280.avif 1280w" sizes="(min-width: 860px) 420px, 176px">
+              <source type="image/webp" srcset="assets/foto/forno-720.webp 720w, assets/foto/forno-1280.webp 1280w" sizes="(min-width: 860px) 420px, 176px">
               <img src="assets/foto/forno-720.jpg" width="1280" height="720" alt="Forno a lenha com uma pizza na pá." loading="lazy" decoding="async">
             </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
           <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
-              <source type="image/avif" srcset="assets/foto/massas-320.avif 320w, assets/foto/massas-600.avif 600w" sizes="160px">
-              <source type="image/webp" srcset="assets/foto/massas-320.webp 320w, assets/foto/massas-600.webp 600w" sizes="160px">
+              <source type="image/avif" srcset="assets/foto/massas-320.avif 320w, assets/foto/massas-600.avif 600w" sizes="(min-width: 860px) 200px, 176px">
+              <source type="image/webp" srcset="assets/foto/massas-320.webp 320w, assets/foto/massas-600.webp 600w" sizes="(min-width: 860px) 200px, 176px">
               <img src="assets/foto/massas-320.jpg" width="600" height="600" alt="Mãos preparando massa em uma bancada enfarinhada." loading="lazy" decoding="async">
             </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
           <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
-              <source type="image/avif" srcset="assets/foto/cento-320.avif 320w, assets/foto/cento-600.avif 600w" sizes="160px">
-              <source type="image/webp" srcset="assets/foto/cento-320.webp 320w, assets/foto/cento-600.webp 600w" sizes="160px">
+              <source type="image/avif" srcset="assets/foto/balcao-720.avif 720w, assets/foto/balcao-1200.avif 1200w" sizes="(min-width: 860px) 200px, 176px">
+              <source type="image/webp" srcset="assets/foto/balcao-720.webp 720w, assets/foto/balcao-1200.webp 1200w" sizes="(min-width: 860px) 200px, 176px">
+              <img src="assets/foto/balcao-720.jpg" width="1200" height="900" alt="Balcão com bandejas de salgados e uma pizza." loading="lazy" decoding="async">
+            </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
+          <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
+              <source type="image/avif" srcset="assets/foto/coxinha-320.avif 320w, assets/foto/coxinha-600.avif 600w" sizes="(min-width: 860px) 200px, 176px">
+              <source type="image/webp" srcset="assets/foto/coxinha-320.webp 320w, assets/foto/coxinha-600.webp 600w" sizes="(min-width: 860px) 200px, 176px">
+              <img src="assets/foto/coxinha-320.jpg" width="600" height="600" alt="Coxinhas douradas." loading="lazy" decoding="async">
+            </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
+          <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
+              <source type="image/avif" srcset="assets/foto/calabresa-320.avif 320w, assets/foto/calabresa-600.avif 600w" sizes="(min-width: 860px) 200px, 176px">
+              <source type="image/webp" srcset="assets/foto/calabresa-320.webp 320w, assets/foto/calabresa-600.webp 600w" sizes="(min-width: 860px) 200px, 176px">
+              <img src="assets/foto/calabresa-320.jpg" width="600" height="600" alt="Pizza calabresa saindo do forno." loading="lazy" decoding="async">
+            </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
+          <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
+              <source type="image/avif" srcset="assets/foto/cento-320.avif 320w, assets/foto/cento-600.avif 600w" sizes="(min-width: 860px) 200px, 176px">
+              <source type="image/webp" srcset="assets/foto/cento-320.webp 320w, assets/foto/cento-600.webp 600w" sizes="(min-width: 860px) 200px, 176px">
               <img src="assets/foto/cento-320.jpg" width="600" height="600" alt="Bandeja de salgados para festa." loading="lazy" decoding="async">
             </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
           <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
-              <source type="image/avif" srcset="assets/foto/tucuma-320.avif 320w, assets/foto/tucuma-600.avif 600w" sizes="160px">
-              <source type="image/webp" srcset="assets/foto/tucuma-320.webp 320w, assets/foto/tucuma-600.webp 600w" sizes="160px">
+              <source type="image/avif" srcset="assets/foto/tucuma-320.avif 320w, assets/foto/tucuma-600.avif 600w" sizes="(min-width: 860px) 200px, 176px">
+              <source type="image/webp" srcset="assets/foto/tucuma-320.webp 320w, assets/foto/tucuma-600.webp 600w" sizes="(min-width: 860px) 200px, 176px">
               <img src="assets/foto/tucuma-320.jpg" width="600" height="600" alt="Pizza de tucumã com queijo coalho." loading="lazy" decoding="async">
-            </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
-          <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer"><picture>
-              <source type="image/avif" srcset="assets/foto/balcao-720.avif 720w, assets/foto/balcao-1200.avif 1200w" sizes="160px">
-              <source type="image/webp" srcset="assets/foto/balcao-720.webp 720w, assets/foto/balcao-1200.webp 1200w" sizes="160px">
-              <img src="assets/foto/balcao-720.jpg" width="1200" height="900" alt="Balcão com bandejas de salgados e uma pizza." loading="lazy" decoding="async">
             </picture><span class="sr-only">Ver no Instagram (abre em nova aba)</span></a></li>
         </ul>
       </div>
     </section>
 
-    <section class="section on-dark" id="como-pedir" aria-labelledby="titulo-pedir">
+    <section class="section on-dark section--carvao" id="como-pedir" aria-labelledby="titulo-pedir">
       <div class="wrap">
-        <p class="eyebrow">Como pedir</p>
-        <h2 id="titulo-pedir" class="reveal">Como pedir</h2>
+        <h2 id="titulo-pedir">Como pedir</h2>
         <p class="lead">Você monta o pedido no site, envia a mensagem no WhatsApp e a gente confirma. Também dá para retirar no local.</p>
-        <p class="lead">A taxa de entrega é combinada pelo WhatsApp. A entrega é feita por aplicativo, como a 99 Entrega.</p>
 
         <ol class="passos-entrega">
-          <li class="reveal">
+          <li>
             <span class="step__num">01</span>
             <div>
               <strong>Você escolhe</strong>
               <p>Separe vários produtos e as quantidades no cardápio. O pedido aparece na barra, com o total.</p>
             </div>
           </li>
-          <li class="reveal">
+          <li>
             <span class="step__num">02</span>
             <div>
               <strong>Envia no WhatsApp</strong>
               <p>Toque em Continuar, escolha retirada ou delivery e abra a mensagem pronta para revisar e enviar.</p>
             </div>
           </li>
-          <li class="reveal">
+          <li>
             <span class="step__num">03</span>
             <div>
               <strong>A gente confirma</strong>
               <p>Conversamos sobre o pedido e o jeito de receber. Em seguida enviamos o Pix pelo WhatsApp.</p>
             </div>
           </li>
-          <li class="reveal">
+          <li>
             <span class="step__num">04</span>
             <div>
               <strong>Produção depois do pagamento</strong>
@@ -562,80 +583,103 @@
         </ol>
 
         <div class="info-grid">
-          <article class="panel reveal">
+          <article class="panel">
             <h3>Entrega</h3>
             <p>Levamos para toda Manaus, por aplicativo, como a 99 Entrega. No pedido você informa o endereço. A taxa de entrega é combinada pelo WhatsApp.</p>
           </article>
-          <article class="panel reveal">
+          <article class="panel">
             <h3>Horário</h3>
             <p data-horario-grade>Segunda a sexta, das 8h às 20h. Sábado e domingo, das 8h às 17h.</p>
             <p data-horario-exemplo>(horários de exemplo)</p>
           </article>
-          <article class="panel reveal">
+          <article class="panel">
             <h3>Retirada</h3>
             <p>Rua Grande Cidade (antiga Rua Vinte e Cinco de Dezembro), nº 110 (antigo nº 836), Compensa 2, Manaus/AM. Referência: final da rua, portão marrom de ferro com listras brancas.</p>
-            <p><a class="mapa-link" href="https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+140+-+Compensa,+Manaus+-+AM,+69035-540" target="_blank" rel="noopener noreferrer">Ver no Google Maps<span class="sr-only"> (abre em nova aba)</span></a></p>
+            <p><a class="mapa-link" href="https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+110+-+Compensa,+Manaus+-+AM,+69035-650" target="_blank" rel="noopener noreferrer">Ver no Google Maps<span class="sr-only"> (abre em nova aba)</span></a></p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="assinatura on-dark reveal" id="forno" aria-labelledby="titulo-forno">
+    <section class="assinatura on-dark" id="forno" aria-labelledby="titulo-forno">
       <div class="assinatura__media">
         <picture>
               <source type="image/avif" srcset="assets/foto/forno-720.avif 720w, assets/foto/forno-1280.avif 1280w" sizes="100vw">
               <source type="image/webp" srcset="assets/foto/forno-720.webp 720w, assets/foto/forno-1280.webp 1280w" sizes="100vw">
               <img src="assets/foto/forno-720.jpg" width="1280" height="720" alt="Forno aceso, com uma pizza na pá entrando na labareda." loading="lazy" decoding="async">
             </picture>
-        <video class="assinatura__video" muted playsinline loop preload="none" tabindex="-1" aria-hidden="true" poster="assets/foto/forno-1280.jpg"></video>
+        <video class="assinatura__video" muted playsinline loop preload="none" tabindex="-1" aria-hidden="true"></video>
         <div class="assinatura__shade"></div>
       </div>
-      <div class="wrap assinatura__copy reveal">
-        <img class="assinatura__logo brand-glow" src="assets/mestreforno_simbolo_transparente.svg" width="102" height="80" alt="">
+      <div class="wrap assinatura__copy">
         <p class="eyebrow">O forno acende</p>
-        <h2 id="titulo-forno">A brasa, o queijo, o ponto</h2>
-        <p>Este é o momento da casa: o forno quente e o pedido saindo no ponto. Um recorte curto, só para ver de perto — e, se a conexão estiver lenta ou você preferir menos movimento, a foto fica no lugar do vídeo.</p>
+        <h2 id="titulo-forno">A brasa, o queijo, <span class="acento">o ponto</span></h2>
+        <p>Este é o momento da casa: o forno quente e o pedido saindo no ponto.</p>
       </div>
+      <button type="button" class="video-toggle assinatura__toggle" data-video-toggle data-estado="tocando" aria-label="Pausar vídeo" hidden>
+        <svg class="video-toggle__pausa" width="18" height="18" aria-hidden="true" focusable="false"><use href="#i-pausa"></use></svg>
+        <svg class="video-toggle__play" width="18" height="18" aria-hidden="true" focusable="false"><use href="#i-play"></use></svg>
+      </button>
     </section>
 
-    <section class="section section--paper" id="historia" aria-labelledby="titulo-historia">
-      <div class="wrap about">
-        <div class="reveal">
-          <p class="eyebrow">História</p>
-          <h2 id="titulo-historia">A empresa é nova. A experiência, não.</h2>
-          <p class="lead">O Cláudio trabalha com salgados desde 1990. Em 2000, ele e a Nilde abriram a primeira empresa da família. O movimento cresceu, mas naquela época faltou transporte e logística para acompanhar a demanda, e a casa precisou encerrar.</p>
-          <p class="lead">Nesse tempo, a família não parou. Aprimorou a coxinha, as frituras e as massas — e o Cláudio acumulou uma experiência que hoje também chega à pizza.</p>
-          <p class="lead">Agora a Mestre Forno volta ao forno, em Manaus.</p>
-        </div>
-        <figure class="quote reveal">
-          <picture>
-              <source type="image/avif" srcset="assets/foto/familia-720.avif 720w, assets/foto/familia-1200.avif 1200w" sizes="(max-width: 859px) 100vw, 28vw">
-              <source type="image/webp" srcset="assets/foto/familia-720.webp 720w, assets/foto/familia-1200.webp 1200w" sizes="(max-width: 859px) 100vw, 28vw">
-              <img src="assets/foto/familia-720.jpg" width="1200" height="900" alt="Duas pessoas de costas, em uma cozinha, preparando massas ao lado do forno aceso." loading="lazy" decoding="async">
-            </picture>
-          <blockquote>Quentinho, feito em casa, pedido pelo WhatsApp.</blockquote>
+    <section class="section section--paper historia" id="historia" aria-labelledby="titulo-historia">
+      <div class="wrap historia__intro">
+        <p class="historia__ano" aria-hidden="true">1990</p>
+        <h2 id="titulo-historia">A empresa é nova. A experiência, não.</h2>
+      </div>
+      <div class="wrap historia__corpo">
+        <ol class="historia__linha" aria-label="Linha do tempo da família">
+          <li>
+            <span class="historia__marco">1990</span>
+            <p>O Cláudio começa a trabalhar com salgados.</p>
+          </li>
+          <li>
+            <span class="historia__marco">2000</span>
+            <p>Ele e a Nilde abrem a primeira empresa da família. O movimento cresceu, mas naquela época faltou transporte e logística para acompanhar a demanda, e a casa precisou encerrar.</p>
+          </li>
+          <li>
+            <span class="historia__marco">Hoje</span>
+            <p>Nesse tempo, a família não parou. Aprimorou a coxinha, as frituras e as massas — e o Cláudio acumulou uma experiência que hoje também chega à pizza. Agora a Mestre Forno volta ao forno, em Manaus.</p>
+          </li>
+        </ol>
+        <figure class="historia__citacao">
+          <blockquote>
+            <p class="acento">“Quentinho, feito em casa, pedido pelo WhatsApp.”</p>
+          </blockquote>
           <figcaption>Mestre Forno · Manaus</figcaption>
         </figure>
       </div>
       <div class="wrap historia-fotos">
-        <figure class="reveal historia-clip">
-          <div class="historia-clip__frame">
+        <figure class="historia-foto historia-foto--grande">
           <picture>
-              <source type="image/avif" srcset="assets/foto/massas-720.avif 720w, assets/foto/massas-1200.avif 1200w" sizes="(max-width: 859px) 100vw, 45vw">
-              <source type="image/webp" srcset="assets/foto/massas-720.webp 720w, assets/foto/massas-1200.webp 1200w" sizes="(max-width: 859px) 100vw, 45vw">
+              <source type="image/avif" srcset="assets/foto/familia-720.avif 720w, assets/foto/familia-1200.avif 1200w" sizes="(max-width: 859px) 100vw, 620px">
+              <source type="image/webp" srcset="assets/foto/familia-720.webp 720w, assets/foto/familia-1200.webp 1200w" sizes="(max-width: 859px) 100vw, 620px">
+              <img src="assets/foto/familia-720.jpg" width="1200" height="900" alt="Duas pessoas de costas, em uma cozinha, preparando massas ao lado do forno aceso." loading="lazy" decoding="async">
+            </picture>
+          <figcaption><span class="fig">Fig. 01</span> Massa sendo aberta ao lado do forno aceso (imagem ilustrativa).</figcaption>
+        </figure>
+        <figure class="historia-foto historia-clip">
+          <div class="historia-clip__frame">
+            <picture>
+              <source type="image/avif" srcset="assets/foto/massas-720.avif 720w, assets/foto/massas-1200.avif 1200w" sizes="(max-width: 859px) 100vw, 360px">
+              <source type="image/webp" srcset="assets/foto/massas-720.webp 720w, assets/foto/massas-1200.webp 1200w" sizes="(max-width: 859px) 100vw, 360px">
               <img src="assets/foto/massas-720.jpg" width="1200" height="900" alt="Duas pares de mãos preparando massa de pizza em uma mesa enfarinhada." loading="lazy" decoding="async">
             </picture>
-              <video class="historia-clip__video" muted playsinline loop preload="none" tabindex="-1" aria-hidden="true" poster="assets/foto/massas-1200.jpg" data-src="assets/video/preparo-massas.mp4"></video>
+            <video class="historia-clip__video" muted playsinline loop preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preparo-massas.mp4"></video>
+            <button type="button" class="video-toggle historia-clip__toggle" data-video-toggle data-estado="tocando" aria-label="Pausar vídeo" hidden>
+              <svg class="video-toggle__pausa" width="18" height="18" aria-hidden="true" focusable="false"><use href="#i-pausa"></use></svg>
+              <svg class="video-toggle__play" width="18" height="18" aria-hidden="true" focusable="false"><use href="#i-play"></use></svg>
+            </button>
           </div>
-          <figcaption>As massas, no capricho de sempre.</figcaption>
+          <figcaption><span class="fig">Fig. 02</span> As massas, no capricho de sempre.</figcaption>
         </figure>
-        <figure class="reveal">
+        <figure class="historia-foto historia-foto--fritura">
           <picture>
-              <source type="image/avif" srcset="assets/foto/fritura-720.avif 720w, assets/foto/fritura-1200.avif 1200w" sizes="(max-width: 859px) 100vw, 45vw">
-              <source type="image/webp" srcset="assets/foto/fritura-720.webp 720w, assets/foto/fritura-1200.webp 1200w" sizes="(max-width: 859px) 100vw, 45vw">
+              <source type="image/avif" srcset="assets/foto/fritura-720.avif 720w, assets/foto/fritura-1200.avif 1200w" sizes="(max-width: 859px) 100vw, 440px">
+              <source type="image/webp" srcset="assets/foto/fritura-720.webp 720w, assets/foto/fritura-1200.webp 1200w" sizes="(max-width: 859px) 100vw, 440px">
               <img src="assets/foto/fritura-720.jpg" width="1200" height="900" alt="Mãos retirando coxinhas douradas de uma panela de óleo quente." loading="lazy" decoding="async">
             </picture>
-          <figcaption>A fritura no ponto, como a casa aprendeu com o tempo.</figcaption>
+          <figcaption><span class="fig">Fig. 03</span> A fritura no ponto, como a casa aprendeu com o tempo.</figcaption>
         </figure>
       </div>
     </section>
@@ -644,14 +688,30 @@
 
   <footer class="site-footer on-dark">
     <div class="wrap footer__grid">
-      <div>
-        <img class="footer__logo" src="assets/mestreforno_horizontal_transparente.svg" width="210" height="56" alt="Mestre Forno" decoding="async">
+      <div class="footer__marca">
+        <img class="footer__logo" src="assets/mestreforno_horizontal_transparente.svg" width="292" height="48" alt="Mestre Forno" decoding="async">
         <p class="footer__tag">Salgados e pizzas em Manaus/AM. A taxa de entrega é combinada pelo WhatsApp. A entrega é feita por aplicativo, como a 99 Entrega.</p>
       </div>
-      <nav aria-label="Redes e contato">
+      <nav class="footer__col" aria-labelledby="rodape-pedido">
+        <h2 class="footer__titulo" id="rodape-pedido">Pedido</h2>
         <ul class="footer-links">
-          <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer">Instagram<span class="sr-only"> (abre em nova aba)</span></a></li>
+          <li><a href="#cardapio">Cardápio</a></li>
           <li><a data-whatsapp href="https://wa.me/5592992487642?text=Ol%C3%A1%2C%20Mestre%20Forno!%20Quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">WhatsApp<span class="sr-only js-nova-aba"> (abre em nova aba)</span></a></li>
+          <li><a href="https://instagram.com/mestreforno" target="_blank" rel="noopener noreferrer">Instagram<span class="sr-only"> (abre em nova aba)</span></a></li>
+        </ul>
+      </nav>
+      <div class="footer__col">
+        <h2 class="footer__titulo">Endereço e horário</h2>
+        <address class="footer__endereco">Rua Grande Cidade (antiga Rua Vinte e Cinco de Dezembro), nº 110, Compensa 2, Manaus/AM, CEP 69035-650</address>
+        <p><a class="mapa-link" href="https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+110+-+Compensa,+Manaus+-+AM,+69035-650" target="_blank" rel="noopener noreferrer">Ver no Google Maps<span class="sr-only"> (abre em nova aba)</span></a></p>
+        <p data-horario-grade>Segunda a sexta, das 8h às 20h. Sábado e domingo, das 8h às 17h.</p>
+        <p class="footer__nota" data-horario-exemplo>(horários de exemplo)</p>
+      </div>
+      <nav class="footer__col" aria-labelledby="rodape-legal">
+        <h2 class="footer__titulo" id="rodape-legal">Legal</h2>
+        <ul class="footer-links">
+          <li><a href="privacidade.html">Política de Privacidade</a></li>
+          <li><a href="termos.html">Termos de Uso</a></li>
         </ul>
       </nav>
     </div>
@@ -665,7 +725,7 @@
           <svg class="carrinho__icone" width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-carrinho"></use></svg>
           <span class="carrinho__badge pedido-bar__badge" data-pedido-badge aria-hidden="true">0</span>
         </span>
-        <div>
+        <div class="pedido-bar__textos">
           <p class="pedido-bar__qtd" data-pedido-rotulo>Nenhum item ainda</p>
           <p class="pedido-bar__total" data-pedido-subtotal hidden></p>
         </div>
@@ -726,7 +786,7 @@
           <div class="checkout__endereco">
             <p><strong>Onde retirar</strong></p>
             <p data-endereco-retirada></p>
-            <p><a class="mapa-link" data-endereco-maps href="https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+140+-+Compensa,+Manaus+-+AM,+69035-540" target="_blank" rel="noopener noreferrer">Ver no Google Maps<span class="sr-only"> (abre em nova aba)</span></a></p>
+            <p><a class="mapa-link" data-endereco-maps href="https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+110+-+Compensa,+Manaus+-+AM,+69035-650" target="_blank" rel="noopener noreferrer">Ver no Google Maps<span class="sr-only"> (abre em nova aba)</span></a></p>
           </div>
           <label class="campo" for="obs-retirada">Observação (opcional)</label>
           <textarea id="obs-retirada" name="observacao" data-observacao rows="3" maxlength="200" placeholder="Ex.: sem cebola, retirar depois das 18h"></textarea>
@@ -747,7 +807,7 @@
           <div class="checkout__endereco checkout__endereco--origem">
             <p><strong>De onde a entrega sai</strong></p>
             <p data-endereco-origem></p>
-            <p><a class="mapa-link" data-endereco-maps href="https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+140+-+Compensa,+Manaus+-+AM,+69035-540" target="_blank" rel="noopener noreferrer">Ver no Google Maps<span class="sr-only"> (abre em nova aba)</span></a></p>
+            <p><a class="mapa-link" data-endereco-maps href="https://www.google.com/maps/search/?api=1&query=R.+Vinte+e+Cinco+de+Dezembro,+110+-+Compensa,+Manaus+-+AM,+69035-650" target="_blank" rel="noopener noreferrer">Ver no Google Maps<span class="sr-only"> (abre em nova aba)</span></a></p>
           </div>
 
           <fieldset class="checkout__destino">
